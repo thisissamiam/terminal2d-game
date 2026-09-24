@@ -27,10 +27,10 @@ for i in range(1000):
 
 	    for x in range(width):
 	        small = gen.noise2((x + l) / 10.0, 0) * 2
-medium = gen.noise2((x + l) / 50.0, 0) * 4
-big = gen.noise2((x + l) / 200.0, 0) * 8
+			medium = gen.noise2((x + l) / 50.0, 0) * 4
+			big = gen.noise2((x + l) / 200.0, 0) * 8
 
-terrain_height = int(8 + small + medium + big)
+			terrain_height = int(8 + small + medium + big)
 
 	        for y in range(terrain_height):
 	            world[height - 1 - y][x] = 'D'
