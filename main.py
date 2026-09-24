@@ -46,4 +46,3 @@ for i in range(1):
 
     l += 1
     time.sleep(1 / 60)
-    os.system("clear")
