@@ -38,7 +38,7 @@ terrain_height = int(8 + small + medium + big)
 	loop()
 
 	for row in world:
-	    print("".join(row))
+	    print(row)
 	l += 1
 	time.sleep(1/60)
 	os.system('clear')
