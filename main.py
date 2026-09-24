@@ -38,11 +38,11 @@ def loop():
             world[height - 1 - y][x] = 'D'
 
 
-for i in range(1000):
+for i in range(1):
     loop()
 
     for row in world:
-        print("".join(row))
+        print(row)
 
     l += 1
     time.sleep(1 / 60)
