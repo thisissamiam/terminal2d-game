@@ -7,8 +7,8 @@ world = [] # Create the 2d world, starting as nothing
 seed = random.randint(0, 100000000) # Generate the seed, determines what is generated
 gen = OpenSimplex(seed=seed)
 term = blessed.Terminal() # Term is basicly the terminal, allows editing and getting data about the terminal.
-for i in range(256):
-    print(f"\033[48;2;{i};0;{255-i}m \033[0m", end="")
+for i in range(100, 110):
+    print(f"\033[48;2;{i};100;100m  \033[0m", end="")
 print()
 def gameloop():
     # Chunk Settings
