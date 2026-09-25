@@ -10,7 +10,8 @@ print(term.clear) # Clear the screen before printing
 width = 100
 height = 30
 chunk = [' '] * width * height
-chunk[gen.noise2((x + l) / 10.0, 0) * 2 * width + x] = '!'
+for x in range(100):
+    chunk[gen.noise2((x + l) / 10.0, 0) * 2 * width + x] = '!'
 
 
 print(term.home, end="")
