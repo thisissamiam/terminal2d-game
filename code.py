@@ -1,4 +1,5 @@
 import curses
+import random
 from opensimplex import OpenSimplex
 game = None # Create empty game screen
 world = [] # Create the 2d world, starting as nothing
