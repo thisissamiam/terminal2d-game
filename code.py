@@ -12,7 +12,7 @@ height = 30
 chunk = [' '] * width * height
 lasttopheight = 15
 for x in range(width):
-    isflat = abs(int(gen.noise2(x / 20.0, 0))*3) < 0.2
+    isflat = abs(int(gen.noise2(x / 20.0, 0)*3)) < 0.2
     if isflat:
         topheight = lasttopheight
     else:
