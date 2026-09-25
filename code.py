@@ -7,7 +7,11 @@ gen = OpenSimplex(seed=seed)
 term = blessed.Terminal() # Term is basicly the terminal, allows editing and getting data about the terminal.
 print(term.clear) # Clear the screen before printing
 # Chunk Settings
-print(term.color_rgb(255, 0, 255)("hello"))
+print(term.clear)
+print(term.home, end="")
+
+for i in range(30):
+    print("*" * 100)
 # width = 100
 # height = 30
 # chunk = ['*'] * width * height
