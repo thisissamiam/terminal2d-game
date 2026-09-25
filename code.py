@@ -8,8 +8,8 @@ seed = random.randint(0, 100000000) # Generate the seed, determines what is gene
 gen = OpenSimplex(seed=seed)
 term = blessed.Terminal() # Term is basicly the terminal, allows editing and getting data about the terminal.
 for i in range(256):
-    print(f"\x1b[38;2;{i};0;0m█", end="")
-print("\x1b[0m")
+    print(f"\033[48;2;{i};0;{255-i}m \033[0m", end="")
+print()
 def gameloop():
     # Chunk Settings
     width = 100
