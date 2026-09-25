@@ -10,16 +10,10 @@ print(term.clear) # Clear the screen before printing
 width = 100
 height = 30
 chunk = [' '] * width * height
-lasttopheight = 15
 for x in range(width):
-    isflat = abs(int(gen.noise2(x / 20.0, 0)*3)) < 0.2
-    if isflat:
-        topheight = lasttopheight
-    else:
-        topheight = 15 - int(gen.noise2(x / 10.0, 0) * 10)
+    topheight = 15 - int(gen.noise2(x / 10.0, 0) * 10)
     for y in range(topheight, 30):
         chunk[y * width + x] = '!'
-    lasttopheight = topheight
 
 
 print(term.home, end="")
