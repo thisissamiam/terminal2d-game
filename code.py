@@ -5,6 +5,9 @@ game = None # Create empty game screen
 world = [] # Create the 2d world, starting as nothing
 seed = random.randint(0, 100000000) # Generate the seed, determines what is generated
 gen = OpenSimplex(seed=seed)
+import blessed
+term = blessed.Terminal() # Term is basicly the terminal, allows editing and getting data about the terminal.
+print(term.number_of_colors)
 def gameloop():
     # Chunk Settings
     width = 100
