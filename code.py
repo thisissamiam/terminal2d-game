@@ -11,8 +11,8 @@ height = 30
 for y in range(height): # Make a chunk
         row = []
         for x in range(width):
-            row.append(' ')
+            row.append('*')
         world.append(row)
         
 for row in world:
-    print(term.color_rgb(255, 0, 255)(row))
+    print(term.color_rgb(255, 0, 255)("".join(row)))
