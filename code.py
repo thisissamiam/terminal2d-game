@@ -17,6 +17,6 @@ for i in range(10000):
             chunk[y * width + x] = '█'
 
 
-    print(term.home, end="")
+    print(term.home + term.clear, end="")
     for i in range(len(chunk) // width):
         print(term.color_rgb(255, 0, 255)("".join(chunk[i*width:i*width+width])))
