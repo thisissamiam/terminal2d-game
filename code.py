@@ -9,9 +9,7 @@ print(term.clear) # Clear the screen before printing
 # Chunk Settings
 width = 100
 height = 30
-for y in range(height): # Make a chunk
-        chunk = []
-        for i in range(3000):
-            chunk.append('*')
-        
-print(term.home() + term.color_rgb(255, 0, 255)("".join(chunk)))
+chunk = ['*'] * width * height
+print(term.home, end="")
+for i in range(len(chunk) // width):
+    print(term.color_rgb(255, 0, 255)("".join(chunk[i*width:i*width+100])))
