@@ -11,10 +11,10 @@ width = 100
 height = 30
 chunk = [' '] * width * height
 for i in 10000:
-    for x+i in range(width):
-        topheight = 15 - int(gen.noise2(x / 10.0, 0) * 10)
+    for x in range(width):
+        topheight = 15 - int(gen.noise2(x+i / 10.0, 0) * 10)
         for y in range(topheight, 30):
-            chunk[y * width + x] = '█'
+            chunk[y * width + x+i] = '█'
 
 
     print(term.home, end="")
