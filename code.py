@@ -13,7 +13,7 @@ chunk = [' '] * width * height
 for x in range(width):
     topheight = 15 - int(gen.noise2(x / 10.0, 0) * 10)
     for y in range(topheight, 30):
-        chunk[y * width + x] = '!'
+        chunk[y * width + x] = '█'
 
 
 print(term.home, end="")
