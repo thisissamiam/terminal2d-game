@@ -10,12 +10,13 @@ print(term.clear) # Clear the screen before printing
 width = 100
 height = 30
 chunk = [' '] * width * height
-for x in range(width):
-    topheight = 15 - int(gen.noise2(x / 10.0, 0) * 10)
-    for y in range(topheight, 30):
-        chunk[y * width + x] = '█'
+for i in 10000:
+    for x+i in range(width):
+        topheight = 15 - int(gen.noise2(x / 10.0, 0) * 10)
+        for y in range(topheight, 30):
+            chunk[y * width + x] = '█'
 
 
-print(term.home, end="")
-for i in range(len(chunk) // width):
-    print(term.color_rgb(255, 0, 255)("".join(chunk[i*width:i*width+width])))
+    print(term.home, end="")
+    for i in range(len(chunk) // width):
+        print(term.color_rgb(255, 0, 255)("".join(chunk[i*width:i*width+width])))
