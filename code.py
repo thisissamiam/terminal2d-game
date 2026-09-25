@@ -11,7 +11,7 @@ width = 100
 height = 30
 for y in range(height): # Make a chunk
         chunk = []
-        for i in range(100):
+        for i in range(3000):
             chunk.append('*')
         
 print(term.home() + term.color_rgb(255, 0, 255)("".join(chunk)))
