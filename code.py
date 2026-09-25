@@ -5,14 +5,13 @@ world = [] # Create the 2d world, starting as nothing
 seed = random.randint(0, 100000000) # Generate the seed, determines what is generated
 gen = OpenSimplex(seed=seed)
 term = blessed.Terminal() # Term is basicly the terminal, allows editing and getting data about the terminal.
+print(term.clear) # Clear the screen before printing
 # Chunk Settings
 width = 100
 height = 30
 for y in range(height): # Make a chunk
-        row = []
-        for x in range(width):
-            row.append('*')
-        world.append(row)
+        chunk = []
+        for i in range(100):
+            chunk.append('*')
         
-for row,y in world:
-    print(term.move_xy(row, y) + term.color_rgb(255, 0, 255)("".join(row)))
+print(term.home() + term.color_rgb(255, 0, 255)("".join(chunk)))
