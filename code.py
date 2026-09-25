@@ -12,7 +12,7 @@ height = 30
 chunk = [' '] * width * height
 for x in range(100):
     y = 15 - int(gen.noise2(x / 10.0, 0)*5)
-    for y in range(y):
+    for y in range(1-y):
         chunk[y * width + x] = '!'
 
 
