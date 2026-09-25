@@ -10,6 +10,7 @@ print(term.clear) # Clear the screen before printing
 width = 100
 height = 30
 chunk = [' '] * width * height
+lasttopheight = None
 for x in range(width):
     isflat = abs(int(gen.noise2(x / 20.0, 0))) < 0.2
     if isflat:
