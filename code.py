@@ -10,7 +10,7 @@ print(term.clear) # Clear the screen before printing
 width = 100
 height = 30
 chunk = [' '] * width * height
-for i in 10000:
+for i in range(10000):
     for x in range(width):
         topheight = 15 - int(gen.noise2(x+i / 10.0, 0) * 10)
         for y in range(topheight, 30):
