@@ -14,5 +14,5 @@ for y in range(height): # Make a chunk
             row.append('*')
         world.append(row)
         
-for row in world:
-    print(term.color_rgb(255, 0, 255)("".join(row)))
+for row,y in world:
+    print(term.move_xy(row, y) + term.color_rgb(255, 0, 255)("".join(row)))
