@@ -1,13 +1,16 @@
 import curses
 import random
 from opensimplex import OpenSimplex
+import blessed
 game = None # Create empty game screen
 world = [] # Create the 2d world, starting as nothing
 seed = random.randint(0, 100000000) # Generate the seed, determines what is generated
 gen = OpenSimplex(seed=seed)
-import blessed
 term = blessed.Terminal() # Term is basicly the terminal, allows editing and getting data about the terminal.
-print(term.number_of_colors)
+for i in range(256):
+    print(term.color(i)(f"{i:3}"), end=" ")
+    if (i + 1) % 16 == 0:
+        print()
 def gameloop():
     # Chunk Settings
     width = 100
