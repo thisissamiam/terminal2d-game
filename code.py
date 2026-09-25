@@ -9,7 +9,10 @@ print(term.clear) # Clear the screen before printing
 # Chunk Settings
 width = 100
 height = 30
-chunk = ['*'] * width * height
+chunk = [' '] * width * height
+chunk[gen.noise2((x + l) / 10.0, 0) * 2 * width + x] = '!'
+
+
 print(term.home, end="")
 for i in range(len(chunk) // width):
     print(term.color_rgb(255, 0, 255)("".join(chunk[i*width:i*width+width])))
