@@ -11,7 +11,7 @@ width = 100
 height = 30
 chunk = [' '] * width * height
 for x in range(100):
-    chunk[int(gen.noise2(x / 10.0, 0))+ 1 * 2 * width + x] = '!'
+    chunk[int(gen.noise2(x / 10.0, 0)) + 10 * 2 * width + x] = '!'
 
 
 print(term.home, end="")
