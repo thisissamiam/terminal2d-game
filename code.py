@@ -16,7 +16,7 @@ for i in range(10000):
         topheight = 15 - int(gen.noise2((x+i) / 10.0, 0) * 10)
         for y in range(topheight, 30):
             chunk[y * width + x] = '█'
-            time.sleep(0.1)
+            time.sleep(0.01)
 
 
     frame = ''
