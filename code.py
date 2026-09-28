@@ -21,6 +21,6 @@ for i in range(10000):
     print(term.home, end="", flush=True)
     frame = ''
     for i in range(len(chunk) // width):
-        frame = frame + "".join(chunk[i*width:i*width+width])
+        frame = frame + '\n' + "".join(chunk[i*width:i*width+width])
     print(term.color_rgb(255, 0, 255)(frame))
     time.sleep(1)
