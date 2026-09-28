@@ -15,9 +15,9 @@ for i in range(10000):
     for x in range(width):
         topheight = 15 - int(gen.noise2((x+i) / 10.0, 0) * 10)
         for y in range(topheight, 30):
-            chunk[y * width + x] = '█'
+            chunk[y * width + x] = '#'
     frame = ''
     for i in range(len(chunk) // width):
         frame = frame + '\n' + "".join(chunk[i*width:i*width+width])
-    print(term.home + (frame), end="", flush=True)
+    print(term.home + term.color_rgb(255, 0, 255)(frame), end="", flush=True)
     time.sleep(0.1)
