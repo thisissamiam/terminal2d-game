@@ -11,7 +11,7 @@ print(term.clear) # Clear the screen before printing
 width = 100
 height = 30
 last = time.time()
-for i in range(1000):
+for i in range(100):
     chunk = [' '] * width * height # Reset current chunk data before calculating terrain
     for x in range(width):
         topheight = 15 - int(gen.noise2((x+i) / 10.0, 0) * 10)
