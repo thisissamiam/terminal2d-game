@@ -1,6 +1,7 @@
 import random
 from opensimplex import OpenSimplex
 import blessed
+import time
 world = [] # Create the 2d world, starting as nothing
 seed = random.randint(0, 100000000) # Generate the seed, determines what is generated
 gen = OpenSimplex(seed=seed)
@@ -22,3 +23,4 @@ for i in range(10000):
     for i in range(len(chunk) // width):
         frame = frame + "".join(chunk[i*width:i*width+width])
     print(term.color_rgb(255, 0, 255)(frame))
+    time.sleep(0.1)
