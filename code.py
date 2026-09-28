@@ -12,12 +12,12 @@ height = 30
 for i in range(10000):
     chunk = [' '] * width * height # Reset current chunk data before calculating terrain
     for x in range(width):
-        topheight = 15 - int(gen.noise2(x+i / 10.0, 0) * 10)
+        topheight = 15 - int(gen.noise2((x+i) / 10.0, 0) * 10)
         for y in range(topheight, 30):
             chunk[y * width + x] = '█'
 
 
-    print(term.home + term.clear, end="")
+    print(term.home, end="", flush=True)
     frame = ''
     for i in range(len(chunk) // width):
         frame = frame + "".join(chunk[i*width:i*width+width])
