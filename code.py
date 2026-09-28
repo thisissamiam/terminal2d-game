@@ -22,3 +22,4 @@ for i in range(1000):
         frame = frame + '\n' + "".join(chunk[i*width:i*width+width])
     print(term.home + term.color_rgb(255, 0, 255)(frame), end="", flush=True)
 print(time.time()-last)
+time.sleep(10)
