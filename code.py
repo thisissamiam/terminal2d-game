@@ -16,8 +16,9 @@ for i in range(10000):
         topheight = 15 - int(gen.noise2((x+i) / 10.0, 0) * 10)
         for y in range(topheight, 30):
             chunk[y * width + x] = '█'
-    print(chunk)
-    time.sleep(1)
+            if chunk[y * width + x] != '█':
+                print("changed!")
+    print('loop')
 
 
     # frame = ''
