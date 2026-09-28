@@ -18,7 +18,6 @@ for i in range(10000):
             chunk[y * width + x] = '█'
             if chunk[y * width + x] != '█':
                 print("changed!")
-    print('loop')
 
 
     # frame = ''
