@@ -19,5 +19,5 @@ for i in range(10000):
 
     print(term.home + term.clear, end="")
     for i in range(len(chunk) // width):
-        frame = "".join(chunk[i*width:i*width+width]
+        frame = "".join(chunk[i*width:i*width+width])
     print(term.color_rgb(255, 0, 255)(frame)))
