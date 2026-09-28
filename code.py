@@ -18,9 +18,8 @@ for i in range(10000):
             chunk[y * width + x] = '█'
 
 
-    print(term.home, end="", flush=True)
     frame = ''
     for i in range(len(chunk) // width):
         frame = frame + '\n' + "".join(chunk[i*width:i*width+width])
-    print(term.color_rgb(255, 0, 255)(frame))
+    print(term.home + term.color_rgb(255, 0, 255)(frame), end="", flush=True)
     time.sleep(1)
