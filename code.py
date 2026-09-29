@@ -16,8 +16,8 @@ for i in range(10000):
         topheight = 15 - int(gen.noise2((x+i) / 10.0, 0) * 10)
         for y in range(topheight, 30):
             chunk[y * width + x] = '#`255,0,255'
-    # for textx in range(len(str(i))):
-    #     chunk[1-height * width + textx] = str(i)[textx]
+    for textx in range(len(str(i))):
+        chunk[1-height * width + textx] = str(i)[textx]
     frame = ''
     for i in range(len(chunk) // width):
         print(chunk[i*width:i*width+width])
