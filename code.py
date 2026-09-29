@@ -28,7 +28,7 @@ for i in range(10000):
                         incolorcode = False # This would trigger at the end of 255,0,255, meaning to that is the end, and the next tile is coming up so inside of color should go to false.
                     else:
                         incolorcode = True # For example if not inside of 255,0,255 yet, set inside to true.
-                        colorcode # Reset color code because the color code mode was just entered.
+                        colorcode = None # Reset color code because the color code mode was just entered.
                         continue
                 if incolorcode:
                     colorcode += char # Add to color code the next char
