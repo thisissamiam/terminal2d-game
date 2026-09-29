@@ -17,7 +17,7 @@ for i in range(10000):
         for y in range(topheight, 30):
             chunk[y * width + x] = '#'
     for textx in range(len(str(i))):
-        chunk[height * width + textx] = str(i)[textx]
+        chunk[1-height * width + textx] = str(i)[textx]
     frame = ''
     for i in range(len(chunk) // width):
         frame = frame + '\n' + "".join(chunk[i*width:i*width+width])
