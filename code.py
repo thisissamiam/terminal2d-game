@@ -15,11 +15,12 @@ for i in range(10000):
     for x in range(width):
         topheight = 15 - int(gen.noise2((x+i) / 10.0, 0) * 10)
         for y in range(topheight, 30):
-            chunk[y * width + x] = '#'
-    for textx in range(len(str(i))):
-        chunk[1-height * width + textx] = 'POS: X=' + str(i)[textx]
+            chunk[y * width + x] = '#`255,0,255'
+    # for textx in range(len(str(i))):
+    #     chunk[1-height * width + textx] = str(i)[textx]
     frame = ''
     for i in range(len(chunk) // width):
-        frame = frame + '\n' + "".join(chunk[i*width:i*width+width])
-    print(term.home + term.color_rgb(255, 0, 255)(frame), end="", flush=True)
-    time.sleep(1)
+        print(chunk[i*width:i*width+width])
+    #     frame = frame + '\n' + "".join(line)
+    # print(term.home + term.color_rgb(255, 0, 255)(frame), end="", flush=True)
+    # time.sleep(1)
