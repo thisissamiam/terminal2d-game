@@ -12,7 +12,7 @@ vy = 0.0
 left_until = 0
 right_until = 0
 
-HOLD_TIME = 0.08
+HOLD_TIME = 0.01
 
 WIDTH = 80
 GROUND_Y = 20
