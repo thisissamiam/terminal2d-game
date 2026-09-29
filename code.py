@@ -22,4 +22,4 @@ for i in range(10000):
     for i in range(len(chunk) // width):
         frame = frame + '\n' + "".join(chunk[i*width:i*width+width])
     print(term.home + term.color_rgb(255, 0, 255)(frame), end="", flush=True)
-    time.sleep(1)
+    time.sleep(0.001)
