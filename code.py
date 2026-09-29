@@ -24,4 +24,4 @@ for i in range(10000):
         frame = frame + '\n' + "".join(chunk[i*width:i*width+width])
     print(term.home + term.color_rgb(255, 0, 255)(frame), end="", flush=True)
     time.sleep(time1)
-    time1 -= 0.01
+    time1 / 2 = time1
