@@ -3,8 +3,11 @@ import time
 
 term = Terminal()
 
+WIDTH = 80
+HEIGHT = 25
+
 x = 40.0
-y = 10.0
+y = 20.0
 
 vx = 0.0
 vy = 0.0
@@ -12,14 +15,12 @@ vy = 0.0
 left_until = 0
 right_until = 0
 
-HOLD_TIME = 0.01
-
-WIDTH = 80
-GROUND_Y = 20
+HOLD_TIME = 0.08
 
 last_time = time.time()
 
-with term.cbreak(), term.hidden_cursor():
+with term.fullscreen(), term.cbreak(), term.hidden_cursor():
+
     while True:
         now = time.time()
         dt = now - last_time
@@ -34,7 +35,7 @@ with term.cbreak(), term.hidden_cursor():
             elif key.lower() == "d":
                 right_until = now + HOLD_TIME
 
-            elif key == " " and y >= GROUND_Y:
+            elif key == " " and y >= HEIGHT - 2:
                 vy = -15
 
             elif key.lower() == "q":
@@ -53,20 +54,32 @@ with term.cbreak(), term.hidden_cursor():
         x += vx * dt
         y += vy * dt
 
-        if y > GROUND_Y:
-            y = GROUND_Y
+        if y > HEIGHT - 2:
+            y = HEIGHT - 2
             vy = 0
 
-        x = max(0, min(WIDTH - 1, x))
+        if x < 0:
+            x = 0
 
-        print(term.home + term.clear, end="")
+        if x > WIDTH - 1:
+            x = WIDTH - 1
 
-        for row in range(GROUND_Y + 1):
+        lines = []
+
+        for row in range(HEIGHT):
+            if row == HEIGHT - 1:
+                lines.append("_" * WIDTH)
+                continue
+
+            line = [" "] * WIDTH
+
             if row == int(y):
-                print(" " * int(x) + "@")
-            elif row == GROUND_Y:
-                print("_" * WIDTH)
-            else:
-                print()
+                line[int(x)] = "@"
+
+            lines.append("".join(line))
+
+        frame = "\n".join(lines)
+
+        print(term.home + frame, end="", flush=True)
 
         time.sleep(1 / 60)
