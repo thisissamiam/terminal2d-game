@@ -10,7 +10,7 @@ print(term.clear) # Clear the screen before printing
 # Chunk Settings
 width = 100
 height = 30
-time = 1
+time1 = 1
 for i in range(10000):
     chunk = [' '] * width * height # Reset current chunk data before calculating terrain
     for x in range(width):
@@ -23,5 +23,5 @@ for i in range(10000):
     for i in range(len(chunk) // width):
         frame = frame + '\n' + "".join(chunk[i*width:i*width+width])
     print(term.home + term.color_rgb(255, 0, 255)(frame), end="", flush=True)
-    time.sleep(1)
-    time -= 0.01
+    time.sleep(time1)
+    time1 -= 0.01
