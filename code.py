@@ -21,8 +21,8 @@ for i in range(10000):
     frame = ''
     for i in range(len(chunk) // width):
         for tile in chunk[i*width:i*width+width]:
-            print(tile)
-            print()
+            for char in tile:
+                print(char)
     #     frame = frame + '\n' + "".join(line)
     # print(term.home + term.color_rgb(255, 0, 255)(frame), end="", flush=True)
     # time.sleep(1)
