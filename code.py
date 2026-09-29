@@ -13,7 +13,7 @@ height = 30
 for i in range(10000):
     chunk = [' '] * width * height # Reset current chunk data before calculating terrain
     for x in range(width):
-        topheight = 15 - int(gen.noise2((x+i) / 1.0, 0) * 10)
+        topheight = 15 - int(gen.noise2((x+i) / 10.0, 0) * 100)
         for y in range(topheight, 30):
             chunk[y * width + x] = '#'
     for textx in range(len(str(i))):
