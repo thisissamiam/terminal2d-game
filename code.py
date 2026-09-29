@@ -3,19 +3,23 @@ import time
 
 term = Terminal()
 
-x = 40
+x = 40.0
+y = 10.0
+
+vx = 0.0
+vy = 0.0
 
 left_until = 0
 right_until = 0
 
 HOLD_TIME = 0.08
-MOVE_SPEED = 30
+
+WIDTH = 80
+GROUND_Y = 20
 
 last_time = time.time()
 
 with term.cbreak(), term.hidden_cursor():
-    print(term.clear)
-
     while True:
         now = time.time()
         dt = now - last_time
@@ -30,21 +34,39 @@ with term.cbreak(), term.hidden_cursor():
             elif key.lower() == "d":
                 right_until = now + HOLD_TIME
 
+            elif key == " " and y >= GROUND_Y:
+                vy = -15
+
             elif key.lower() == "q":
                 break
 
+        vx = 0
+
         if now < left_until:
-            x -= MOVE_SPEED * dt
+            vx -= 20
 
         if now < right_until:
-            x += MOVE_SPEED * dt
+            vx += 20
 
-        if x < 0:
-            x = 0
+        vy += 40 * dt
 
-        if x > 79:
-            x = 79
+        x += vx * dt
+        y += vy * dt
 
-        print(term.home + (" " * int(x)) + "@", end="", flush=True)
+        if y > GROUND_Y:
+            y = GROUND_Y
+            vy = 0
+
+        x = max(0, min(WIDTH - 1, x))
+
+        print(term.home + term.clear, end="")
+
+        for row in range(GROUND_Y + 1):
+            if row == int(y):
+                print(" " * int(x) + "@")
+            elif row == GROUND_Y:
+                print("_" * WIDTH)
+            else:
+                print()
 
         time.sleep(1 / 60)
