@@ -10,9 +10,11 @@ with term.enable_kitty_keyboard(
             key = term.inkey()
 
             if key:
-                print(
-                    key.key_name,
-                    "pressed=", key.pressed,
-                    "repeated=", key.repeated,
-                    "released=", key.released
-                )
+                print("----------------")
+                print("str:", key)
+                print("repr:", repr(key))
+                print("key_name:", key.key_name)
+                print("code:", key.code)
+                print("pressed:", key.pressed)
+                print("repeated:", key.repeated)
+                print("released:", key.released)
