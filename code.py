@@ -20,7 +20,6 @@ for i in range(10000):
         chunk[1-height * width + textx] = str(i)[textx]
     frame = ''
     for i in range(len(chunk) // width):
-        print(chunk[i*width:i*width+width])
-        frame = frame + '\n' + "".join(line)
+        frame = frame + '\n' + "".join(chunk[i*width:i*width+width])
     print(term.home + term.color_rgb(255, 0, 255)(frame), end="", flush=True)
     time.sleep(1)
