@@ -23,13 +23,13 @@ for i in range(10000):
         for tile in chunk[i*width:i*width+width]:
             for char in tile: # Loop everything inside of the tile to find the color seperator
                 tiletext = ''
+                colorcode = None # Reset color code because the color code mode was just entered.
                 incolorcode = False
                 if char == '`': # If the char is the color seperator
                     if incolorcode:
                         incolorcode = False # This would trigger at the end of 255,0,255, meaning to that is the end, and the next tile is coming up so inside of color should go to false.
                     else:
                         incolorcode = True # For example if not inside of 255,0,255 yet, set inside to true.
-                        colorcode = None # Reset color code because the color code mode was just entered.
                         continue
                 else:
                     if not incolorcode:
