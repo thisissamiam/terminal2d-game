@@ -42,6 +42,7 @@ for i in range(10000):
             # tiletext is the TEXT that should be printed with that color
             colorcodeframelist.append(colorcode)
             tiletextframelist.append(tiletext)
+            print(colorcodeframelist)
             for i in range(len(tiletextframelist)):
                 frame = frame + term.color_rgb(colorcodeframelist[i])(tiletextframelist[i])
     print(term.home (frame), end="", flush=True)
