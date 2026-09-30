@@ -23,7 +23,7 @@ for i in range(10000):
         for tile in chunk[i*width:i*width+width]:
             incolorcode = False
             tiletext = ''
-            colorcode = None # Reset color code because the color code mode was just entered.
+            colorcode = '' # Reset color code because the color code mode was just entered.
             for char in tile: # Loop everything inside of the tile to find the color seperator
                 if char == '`': # If the char is the color seperator
                     if incolorcode:
