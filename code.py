@@ -43,6 +43,9 @@ for i in range(10000):
             colorcodeframelist.append(colorcode)
             tiletextframelist.append(tiletext)
         for i in range(len(tiletextframelist)):
-            frame = frame + term.color_rgb(colorcodeframelist[i])(tiletextframelist[i])
+            if colorcodeframelist[i]:
+                frame = frame + term.color_rgb(colorcodeframelist[i])(tiletextframelist[i])
+            else:
+                frame = frame + tiletextframelist[i]
     print(term.home + frame, end="", flush=True)
     time.sleep(1)
