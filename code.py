@@ -39,7 +39,7 @@ for i in range(10000):
             # colorcode would be the HEX color code that was parsed
             # tiletext is the TEXT that should be printed with that color
         print(tile)
-        time.sleep(10)
+        time.sleep(1)
 #     frame = frame + '\n' + "".join(line)
 # print(term.home + term.color_rgb(255, 0, 255)(frame), end="", flush=True)
 # time.sleep(1)
