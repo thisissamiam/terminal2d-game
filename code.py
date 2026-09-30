@@ -22,6 +22,7 @@ for i in range(10000):
     for i in range(len(chunk) // width):
         for tile in chunk[i*width:i*width+width]:
             for char in tile: # Loop everything inside of the tile to find the color seperator
+                tiletext = None
                 incolorcode = False
                 if char == '`': # If the char is the color seperator
                     if incolorcode:
@@ -30,8 +31,13 @@ for i in range(10000):
                         incolorcode = True # For example if not inside of 255,0,255 yet, set inside to true.
                         colorcode = None # Reset color code because the color code mode was just entered.
                         continue
+                else:
+                    if not incolorcode:
+                        tiletext += char
                 if incolorcode:
                     colorcode += char # Add to color code the next char
+                print(tiletext)
+                print(colorcode)
     #     frame = frame + '\n' + "".join(line)
     # print(term.home + term.color_rgb(255, 0, 255)(frame), end="", flush=True)
     # time.sleep(1)
