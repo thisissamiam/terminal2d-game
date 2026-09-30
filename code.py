@@ -21,6 +21,7 @@ for i in range(10000):
     frame = ''
     for i in range(len(chunk) // width):
         for tile in chunk[i*width:i*width+width]:
+            print(tile)
             incolorcode = False
             tiletext = ''
             colorcode = '' # Reset color code because the color code mode was just entered.
@@ -38,7 +39,6 @@ for i in range(10000):
                     colorcode += char # Add to color code the next char
             # colorcode would be the HEX color code that was parsed
             # tiletext is the TEXT that should be printed with that color
-            print(tile)
             time.sleep(1)
 #     frame = frame + '\n' + "".join(line)
 # print(term.home + term.color_rgb(255, 0, 255)(frame), end="", flush=True)
