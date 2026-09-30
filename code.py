@@ -40,11 +40,9 @@ for i in range(10000):
                     colorcode += char # Add to color code the next char
             # colorcode would be the HEX color code that was parsed
             # tiletext is the TEXT that should be printed with that color
-            print(colorcode)
             colorcodeframelist.append(colorcode)
             tiletextframelist.append(tiletext)
-            print(colorcodeframelist)
-            for i in range(len(tiletextframelist)):
-                frame = frame + term.color_rgb(colorcodeframelist[i])(tiletextframelist[i])
-    print(term.home (frame), end="", flush=True)
+        for i in range(len(tiletextframelist)):
+            frame = frame + term.color_rgb(colorcodeframelist[i])(tiletextframelist[i])
+    print(term.home + frame, end="", flush=True)
     time.sleep(1)
