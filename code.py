@@ -22,7 +22,7 @@ for i in range(10000):
     for i in range(len(chunk) // width):
         for tile in chunk[i*width:i*width+width]:
             for char in tile: # Loop everything inside of the tile to find the color seperator
-                tiletext = None
+                tiletext = ''
                 incolorcode = False
                 if char == '`': # If the char is the color seperator
                     if incolorcode:
