@@ -36,8 +36,8 @@ for i in range(10000):
                         tiletext += char
                 if incolorcode:
                     colorcode += char # Add to color code the next char
-                print(tiletext)
-                print(colorcode)
+            print(tiletext)
+            print(colorcode)
     #     frame = frame + '\n' + "".join(line)
     # print(term.home + term.color_rgb(255, 0, 255)(frame), end="", flush=True)
     # time.sleep(1)
