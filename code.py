@@ -13,13 +13,25 @@ height = 30
 for i in range(10000):
     chunk = [' '] * width * height # Reset current chunk data before calculating terrain
     for x in range(width):
-        topheight = 15 - int(gen.noise2((x+i) / 10.0, 0) * 20)
+        topheight = 15 - int(gen.noise2((x+i) / 10.0, 0) * 10)
         for y in range(topheight, 30):
-            chunk[y * width + x] = '#'
-    for textx in range(len(str(i))):
-        chunk[1-height * width + textx] = str(i)[textx]
+            chunk[y * width + x] = '#`255,0,255`'
+    # for textx in range(len(str(i))):
+    #     chunk[1-height * width + textx] = str(i)[textx]
     frame = ''
     for i in range(len(chunk) // width):
-        frame = frame + '\n' + "".join(chunk[i*width:i*width+width])
-    print(term.home + term.color_rgb(255, 0, 255)(frame), end="", flush=True)
-    time.sleep(0.1)
+        for tile in chunk[i*width:i*width+width]:
+            for char in tile: # Loop everything inside of the tile to find the color seperator
+                incolorcode = False
+                if char == '`': # If the char is the color seperator
+                    if incolorcode:
+                        incolorcode = False # This would trigger at the end of 255,0,255, meaning to that is the end, and the next tile is coming up so inside of color should go to false.
+                    else:
+                        incolorcode = True # For example if not inside of 255,0,255 yet, set inside to true.
+                        colorcode = None # Reset color code because the color code mode was just entered.
+                        continue
+                if incolorcode:
+                    colorcode += char # Add to color code the next char
+    #     frame = frame + '\n' + "".join(line)
+    # print(term.home + term.color_rgb(255, 0, 255)(frame), end="", flush=True)
+    # time.sleep(1)
