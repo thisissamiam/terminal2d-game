@@ -19,9 +19,9 @@ for i in range(10000):
     # for textx in range(len(str(i))):
     #     chunk[1-height * width + textx] = str(i)[textx]
     frame = ''
+    print(chunk[i*width:i*width+width])
     for i in range(len(chunk) // width):
         for tile in chunk[i*width:i*width+width]:
-            print(tile)
             incolorcode = False
             tiletext = ''
             colorcode = '' # Reset color code because the color code mode was just entered.
