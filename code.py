@@ -19,7 +19,7 @@ for i in range(10000):
     # for textx in range(len(str(i))):
     #     chunk[1-height * width + textx] = str(i)[textx]
     frame = ''
-    print(chunk[i*width:i*width+width])
+    print(chunk)
     for i in range(len(chunk) // width):
         for tile in chunk[i*width:i*width+width]:
             incolorcode = False
