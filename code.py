@@ -16,15 +16,15 @@ for i in range(10000):
         topheight = 15 - int(gen.noise2((x+i) / 10.0, 0) * 10)
         for y in range(topheight, 30):
             chunk[y * width + x] = '#`0,0,255`'
-    # for textx in range(len(str(i))):
-    #     chunk[1-height * width + textx] = str(i)[textx]
+    for textx in range(len(str(i))): # Shows X POS on the screen
+        chunk[1-height * width + textx] = str(i)[textx]
     frame = ''
     for i in range(len(chunk) // width):
         colorcoderframelist = []
         colorcodegframelist = []
         colorcodebframelist = []
         tiletextframelist = []
-        for tile in chunk[i*width:i*width+width]:
+        for tile in chunk[i*width:i*width+width]: # A for loop of all the tiles (chars) inside of the chunk (what you see on the screen at a time)
             incolorcode = False
             tiletext = ''
             colorcode = '' # Reset color code because the color code mode was just entered.
@@ -36,7 +36,7 @@ for i in range(10000):
                         incolorcode = True # For example if not inside of 255,0,255 yet, set inside to true.
                         continue # Don't want to print the seperator
                 else:
-                    if not incolorcode:
+                    if not incolorcode: # When it isn't a color, it's hopefully the char that will be printed, this should still work fine if its multiple chars, but rendering will not work so not sure why I didn't just check the 2nd char oh well.
                         tiletext += char
                 if incolorcode:
                     colorcode += char # Add to color code the next char
@@ -47,18 +47,21 @@ for i in range(10000):
             g = ''
             b = ''
             for char in colorcode: # Seperate into rgb.
-                if char == ',':
+                if char == ',': # Checking for seperator in the rgb. Example: 255,0,0 this would trigger at the ,'s
+                    # This entire block just moves to the next color code when it detects the comma in the color code
                     if colormode == 'r':
                         colormode = 'g'
                     elif colormode == 'g':
                         colormode = 'b'
                 else:
+                    # These duplicate if nested statments just add the color code char depending on what color it should be. 
                     if colormode == 'r':
                         r += char
                     elif colormode == 'g':
                         g += char
                     elif colormode == 'b':
                         b += char
+            # Add all the color codes in seperate lists (dumb way)
             colorcoderframelist.append(r)
             colorcodegframelist.append(g)
             colorcodebframelist.append(b)
