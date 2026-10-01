@@ -46,7 +46,6 @@ for i in range(10000):
             if colorcodeframelist[i] == '':
                 frame = frame + tiletextframelist[i] # Do not attempt to add a color when none is provided
             else:
-                print(colorcodeframelist[i])
                 frame = frame + term.color_rgb(colorcodeframelist[i])(tiletextframelist[i])
         frame += '\n' # Add a new line before doing the next row
                 
