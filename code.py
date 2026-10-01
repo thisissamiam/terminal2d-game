@@ -74,4 +74,4 @@ for i in range(10000):
         frame += '\n' # Add a new line before doing the next row
                 
     print(term.home + frame, end="", flush=True)
-    time.sleep(0.05)
+    time.sleep(0)
