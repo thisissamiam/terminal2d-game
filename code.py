@@ -47,5 +47,10 @@ for i in range(10000):
                 frame = frame + term.color_rgb(colorcodeframelist[i])(tiletextframelist[i])
             else:
                 frame = frame + tiletextframelist[i]
+        splitnumber = width
+        if len(frame) == splitnumber: # If screen width reached go to next line
+            frame += '\n'
+            splitnumber += width
+                
     print(term.home + frame, end="", flush=True)
     time.sleep(1)
