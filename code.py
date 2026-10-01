@@ -15,7 +15,7 @@ for i in range(10000):
     for x in range(width):
         topheight = 15 - int(gen.noise2((x+i) / 10.0, 0) * 10)
         for y in range(topheight, 30):
-            chunk[y * width + x] = '#`5,9,50`'
+            chunk[y * width + x] = '#`50,0,200`'
     for textx in range(len(str(i))): # Shows X POS on the screen
         chunk[1-height * width + textx] = str(i)[textx]
     frame = ''
