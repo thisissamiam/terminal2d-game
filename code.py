@@ -19,9 +19,9 @@ for i in range(10000):
     # for textx in range(len(str(i))):
     #     chunk[1-height * width + textx] = str(i)[textx]
     frame = ''
-    colorcodeframelist = []
-    tiletextframelist = []
     for i in range(len(chunk) // width):
+        colorcodeframelist = []
+        tiletextframelist = []
         for tile in chunk[i*width:i*width+width]:
             incolorcode = False
             tiletext = ''
@@ -44,13 +44,10 @@ for i in range(10000):
             tiletextframelist.append(tiletext)
         for i in range(len(tiletextframelist)):
             if colorcodeframelist[i] == ' ':
-                frame = frame + term.color_rgb(colorcodeframelist[i])(tiletextframelist[i])
+                frame = frame + tiletextframelist[i] # Do not attempt to add a color when none is provided
             else:
-                frame = frame + tiletextframelist[i]
-        splitnumber = width
-        if len(frame) == splitnumber: # If screen width reached go to next line
-            frame += '\n'
-            splitnumber += width
+                frame = frame + term.color_rgb(colorcodeframelist[i])(tiletextframelist[i])
+        frame += '\n' # Add a new line before doing the next row
                 
     print(term.home + frame, end="", flush=True)
     time.sleep(1)
