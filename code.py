@@ -20,7 +20,9 @@ for i in range(10000):
     #     chunk[1-height * width + textx] = str(i)[textx]
     frame = ''
     for i in range(len(chunk) // width):
-        colorcodeframelist = []
+        colorcoderframelist = []
+        colorcodegframelist = []
+        colorcodebframelist = []
         tiletextframelist = []
         for tile in chunk[i*width:i*width+width]:
             incolorcode = False
@@ -40,13 +42,32 @@ for i in range(10000):
                     colorcode += char # Add to color code the next char
             # colorcode would be the HEX color code that was parsed
             # tiletext is the TEXT that should be printed with that color
-            colorcodeframelist.append(colorcode)
+            colormode = 'r'
+            r = '' # If this color is never filled, it is blank so the color is not printed
+            g = ''
+            b = ''
+            for char in colorcode: # Seperate into rgb.
+                if char == ',':
+                    if colormode == 'r':
+                        colormode = 'g'
+                    elif colormode == 'g':
+                        colormode = 'b'
+                else:
+                    if colormode == 'r':
+                        r += char
+                    elif colormode == 'g':
+                        g += char
+                    elif colormode == 'b':
+                        b += char
+            colorcoderframelist.append(r)
+            colorcodegframelist.append(g)
+            colorcodebframelist.append(b)
             tiletextframelist.append(tiletext)
         for i in range(len(tiletextframelist)):
-            if colorcodeframelist[i] == '':
+            if colorcoderframelist[i] == '': # Just check one of the colors, assume if red doesn't exist the other ones don't either
                 frame = frame + tiletextframelist[i] # Do not attempt to add a color when none is provided
             else:
-                frame = frame + term.color_rgb(colorcodeframelist[i])(tiletextframelist[i])
+                frame = frame + term.color_rgb(colorcoderframelist[i],colorcodegframelist[i],colorcodebframelist[i])(tiletextframelist[i])
         frame += '\n' # Add a new line before doing the next row
                 
     print(term.home + frame, end="", flush=True)
