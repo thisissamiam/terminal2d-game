@@ -6,7 +6,7 @@ world = [] # Create the 2d world, starting as nothing
 seed = random.randint(0, 100000000) # Generate the seed, determines what is generated
 gen = OpenSimplex(seed=seed)
 term = blessed.Terminal() # Term is basicly the terminal, allows editing and getting data about the terminal.
-print(term.clear) # Clear the screen before printing
+print(term.clear) # Clear the screen before starting the game cuz yeah
 # Chunk Settings
 width = 100
 height = 30
@@ -17,12 +17,12 @@ for i in range(10000):
         for y in range(topheight, 30):
             chunk[y * width + x] = '#' # No colors at first
     frame = ''
-    for i in range(len(chunk) // width):
+    for row in range(height): # Every row goes through this
         colorcoderframelist = []
         colorcodegframelist = []
         colorcodebframelist = []
         tiletextframelist = []
-        for tile in chunk[i*width:i*width+width]: # A for loop of all the tiles (chars) inside of the chunk (what you see on the screen at a time)
+        for tile in chunk[row*width:row*width+width]: # A for loop of all the tiles (chars) inside of the chunk (what you see on the screen at a time)
             incolorcode = False
             tiletext = ''
             colorcode = '' # Reset color code because the color code mode was just entered.
@@ -64,12 +64,11 @@ for i in range(10000):
             colorcodegframelist.append(g)
             colorcodebframelist.append(b)
             tiletextframelist.append(tiletext)
-        for i in range(len(tiletextframelist)):
-            if colorcoderframelist[i] == '': # Just check one of the colors, assume if red doesn't exist the other ones don't either
-                frame = frame + tiletextframelist[i] # Do not attempt to add a color when none is provided
+        for tile in range(len(tiletextframelist)): # Loop all the tiles inside of the tile list
+            if colorcoderframelist[tile] == '': # Just check one of the colors, assume if red doesn't exist the other ones don't either
+                frame = frame + tiletextframelist[tile] # Do not attempt to add a color when none is provided
             else:
-                frame = frame + term.color_rgb(colorcoderframelist[i],colorcodegframelist[i],colorcodebframelist[i])(tiletextframelist[i])
+                frame = frame + term.color_rgb(colorcoderframelist[tile],colorcodegframelist[tile],colorcodebframelist[tile])(tiletextframelist[tile])
         frame += '\n' # Add a new line before doing the next row
                 
-    print(term.home + frame, end="", flush=True)
-    time.sleep(0)
+    print(term.home + frame, end="", flush=True) # Basicly clear the screen no idea what half of it does though.
