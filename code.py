@@ -24,9 +24,11 @@ def generateterrain():
 
 def findspawnlocation():
     global chunk
-    for possibley in chunk:
-        print(possibley)
-    time.sleep(10)
+    for y in range(height):
+        if chunk[y * width] == '':
+            chunk[y*width] = '!'
+            time.sleep(1)
+    
 
 def render():
     frame = ''
