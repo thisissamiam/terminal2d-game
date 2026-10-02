@@ -28,7 +28,7 @@ def findspawnlocation():
         if chunk[y * width] == ' ':
             possible = True
         elif possible == True:
-            if chunk[y*width] != ' '
+            if chunk[y*width] != ' ':
                 chunk[y*width] = '!'
                 break
             else:
