@@ -88,6 +88,6 @@ def render():
 def gameloop():
     generateterrain() # Makes the terrain and puts it into list chunk
 
+playerx = 0 # generate terrain needs this to know where to start
 generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
-playerx = 0
-playery = findspawnlocation()  
+playery = findspawnlocation() # Find a safe spot to place the player
