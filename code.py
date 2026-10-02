@@ -25,6 +25,7 @@ def findspawnlocation():
     global chunk
     for possibley in chunk:
         print(possibley)
+    time.sleep(10)
 
 
 playerx = 0
