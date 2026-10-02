@@ -29,7 +29,7 @@ def findspawnlocation():
             possible = True
         elif possible == True:
             if chunk[y*width] != ' ':
-                chunk[y+1*width] = '!'
+                chunk[(y*width)+1] = '!'
                 break
             else:
                 possible = False
@@ -95,7 +95,7 @@ def render():
 def gameloop():
     generateterrain() # Makes the terrain and puts it into list chunk
 
-playerx = -30 # generate terrain needs this to know where to start
+playerx = -50 # generate terrain needs this to know where to start
 generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
 playery = findspawnlocation() # Find a safe spot to place the player
 
