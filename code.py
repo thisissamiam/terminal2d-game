@@ -26,8 +26,13 @@ def findspawnlocation():
     global chunk
     for y in range(height):
         if chunk[y * width] == ' ':
-            chunk[y*width] = '!'
-            break
+            possible = True
+        elif possible == True:
+            if chunk[y*width] != ' '
+                chunk[y*width] = '!'
+                break
+            else:
+                possible = False
     
 
 def render():
