@@ -10,12 +10,27 @@ print(term.clear) # Clear the screen before starting the game cuz yeah
 # Chunk Settings
 width = 100
 height = 30
-for i in range(10000):
+chunk = [] # Need to make it before generateterrain function so it can be used by other functions
+def generateterrain(currentplayerx):
+    global chunk # Get chunk that was defined outside of function
     chunk = [' '] * width * height # Reset current chunk data before calculating terrain
     for x in range(width):
-        topheight = 15 - int(gen.noise2((x+i) / 10.0, 0) * 10)
-        for y in range(topheight, 30):
+        topheight = 15 - int(gen.noise2((x+currentplayerx) / 10.0, 0) * 10)
+        for y in range(topheight, height): # Places terrain from the generated height (topheight) to the bottom of the screen (the ground)
             chunk[y * width + x] = '#' # No colors at first
+    
+    # This is where stuff can be changed in the chunk, colors, stuff on screen, characters, ect.
+
+def findspawnlocation():
+    global chunk
+    for possibley in chunk:
+        print(possibley)
+
+
+playerx = 0
+playery = findspawnlocation()  
+
+def render():
     frame = ''
     for row in range(height): # Every row goes through this
         colorcoderframelist = []
@@ -72,3 +87,6 @@ for i in range(10000):
         frame += '\n' # Add a new line before doing the next row
                 
     print(term.home + frame, end="", flush=True) # Basicly clear the screen no idea what half of it does though.
+def gameloop():
+    generateterrain() # Makes the terrain and puts it into list chunk
+    render()
