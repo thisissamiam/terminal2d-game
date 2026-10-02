@@ -27,10 +27,6 @@ def findspawnlocation():
         print(possibley)
     time.sleep(10)
 
-
-playerx = 0
-playery = findspawnlocation()  
-
 def render():
     frame = ''
     for row in range(height): # Every row goes through this
@@ -90,4 +86,7 @@ def render():
     print(term.home + frame, end="", flush=True) # Basicly clear the screen no idea what half of it does though.
 def gameloop():
     generateterrain() # Makes the terrain and puts it into list chunk
-    render()
+
+generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
+playerx = 0
+playery = findspawnlocation()  
