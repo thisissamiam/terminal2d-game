@@ -25,7 +25,7 @@ def generateterrain():
 def findspawnlocation():
     global chunk
     for y in range(height):
-        if chunk[y * width] == ' ':
+        if chunk[playerx + y * width] == ' ':
             possible = True
         elif possible == True:
             if chunk[y*width] != ' ':
