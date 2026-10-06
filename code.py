@@ -24,18 +24,12 @@ def generateterrain():
     # This is where stuff can be changed in the chunk, colors, stuff on screen, characters, ect.
 
 def findspawnlocation():
-    possible = False # Scan if something is possible. Don't set that it might be possible one start.
     global chunk
     global centerx
     for y in range(height):
         if chunk[centerx + y * width] == ' ':
-            possible = True
-        elif possible == True:
-            if chunk[centerx + y*width] != ' ':
-                chunk[centerx + y*width] = '!'
-                break
-            else:
-                possible = False
+            chunk[centerx + y*width] = '!'
+            break
     
 
 def render():
