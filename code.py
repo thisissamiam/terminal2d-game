@@ -32,9 +32,11 @@ def findspawnlocation():
 
 def move():
     global worldx
+    global centerx
+    global playery
     key = term.inkey(timeout=0.01)
     if key == 'd':
-        if chunk[1 + centerx + y * width] == ' ': # Current center block in the screen but one more
+        if chunk[1 + centerx + playery * width] == ' ': # Current center block in the screen but one more
             worldx += 1
 
 def render():
