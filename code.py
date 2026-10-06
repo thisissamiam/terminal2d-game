@@ -23,6 +23,7 @@ def generateterrain():
     # This is where stuff can be changed in the chunk, colors, stuff on screen, characters, ect.
 
 def findspawnlocation():
+    possible = False # Scan if something is possible. Don't set that it might be possible one start.
     global chunk
     for y in range(height):
         if chunk[playerx + y * width] == ' ':
