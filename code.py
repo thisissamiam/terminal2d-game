@@ -57,7 +57,7 @@ def move():
     elif key == 'w':
         if chunk[centerx + (centery-1) * width] == ' ' and onground():
             worldy -= 1
-    elif key == 'KEY_UP':
+    elif key.name == 'KEY_UP':
         cursery += 1
 def gravity():
     global tick
