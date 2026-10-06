@@ -38,6 +38,9 @@ def move():
     if key == 'd':
         if chunk[1 + centerx + playery * width] == ' ': # Current center block in the screen but one more
             worldx += 1
+    elif key == 'a':
+        if chunk[centerx + playery * width - 1] == ' ': # Current center block in the screen but one less
+                    worldx -= 1
 
 def render():
     frame = ''
