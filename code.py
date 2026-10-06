@@ -111,10 +111,11 @@ def render():
                 
     print(term.home + frame, end="", flush=True) # Basicly clear the screen no idea what half of it does though.
 def gameloop():
+    global worldy
     with term.cbreak(), term.hidden_cursor():
         while True:
             if chunk[centerx + (centery+1) * width] == ' ':
-                        worldy += 1
+                worldy += 1
             move()
             generateterrain() # Makes the terrain and puts it into list chunk
             chunk[centerx + centery * width] = '!'
