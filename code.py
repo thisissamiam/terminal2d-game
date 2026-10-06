@@ -28,7 +28,7 @@ def findspawnlocation():
     global centerx
     for y in range(height):
         if chunk[centerx + y * width] != ' ': # Find the first ground
-            chunk[centerx + y*width-1] = '!' # Put the player 1 above the first ground
+            chunk[centerx + y*width] = '!' # Put the player 1 above the first ground
             break
     
 
