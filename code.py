@@ -45,6 +45,8 @@ def move():
     global worldx
     global centerx
     global worldy
+    global cursery
+    global curserx
     key = term.inkey(timeout=0.01)
     if key == 'd':
         if chunk[1 + centerx + centery * width] == ' ': # Current center block in the screen but one more
