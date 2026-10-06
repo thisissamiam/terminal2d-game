@@ -15,6 +15,9 @@ tick = 0
 centery = height // 2
 centerx = width // 2 # Get the center of the screen, generate from the center so you have 0,0 in a spot that makes sense, and spawn the player at 0,0 as well.
 chunk = [] # Need to make it before generateterrain function so it can be used by other functions
+
+
+
 def generateterrain():
     global worldx
     global worldy
@@ -31,13 +34,11 @@ def generateterrain():
     # for i, char in enumerate(text):
     #     chunk[i] = char
     # This is where stuff can be changed in the chunk, colors, stuff on screen, characters, ect.
-
 def findspawnlocation():
     global chunk
     global centerx
     topheight = 15 - int(gen.noise2(0 / 10.0, 0) * 10) # Just generate the block at x=0 and set that as the y
     return topheight -1
-
 def move():
     global worldx
     global centerx
@@ -52,7 +53,6 @@ def move():
     elif key == 'w':
         if chunk[centerx + (centery-1) * width] == ' ' and onground():
             worldy -= 1
-
 def gravity():
     global tick
     global centerx
@@ -63,13 +63,13 @@ def gravity():
         if tick >= 40:
             worldy += 1
             tick = 0
+    else:
+        tick = 0
 def onground():
     if chunk[centerx + (centery+1) * width] != ' ': # If block below player is not air, they are on the ground (hopefully)
         return True
     else:
         return False
-        
-
 def render():
     frame = ''
     for row in range(height): # Every row goes through this
