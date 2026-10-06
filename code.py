@@ -10,13 +10,14 @@ print(term.clear) # Clear the screen before starting the game cuz yeah
 # Chunk Settings
 width = 100
 height = 30
+centerx = width // 2 # Get the center of the screen, generate from the center so you have 0,0 in a spot that makes sense, and spawn the player at 0,0 as well.
 chunk = [] # Need to make it before generateterrain function so it can be used by other functions
 def generateterrain():
     global playerx
     global chunk # Get chunk that was defined outside of function
     chunk = [' '] * width * height # Reset current chunk data before calculating terrain
     for x in range(width):
-        topheight = 15 - int(gen.noise2((x+playerx+(width/2)) / 10.0, 0) * 10)
+        topheight = 15 - int(gen.noise2((x+playerx+centerx) / 10.0, 0) * 10)
         for y in range(topheight, height): # Places terrain from the generated height (topheight) to the bottom of the screen (the ground)
             chunk[y * width + x] = '#' # No colors at first
     
@@ -25,12 +26,13 @@ def generateterrain():
 def findspawnlocation():
     possible = False # Scan if something is possible. Don't set that it might be possible one start.
     global chunk
+    global centerx
     for y in range(height):
-        if chunk[(width//2) + y * width] == ' ':
+        if chunk[centerx + y * width] == ' ':
             possible = True
         elif possible == True:
-            if chunk[y*width] != ' ':
-                chunk[y*width] = '!'
+            if chunk[centerx + y*width] != ' ':
+                chunk[centerx + y*width] = '!'
                 break
             else:
                 possible = False
