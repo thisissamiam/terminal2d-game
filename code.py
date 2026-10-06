@@ -26,7 +26,7 @@ def findspawnlocation():
     possible = False # Scan if something is possible. Don't set that it might be possible one start.
     global chunk
     for y in range(height):
-        if chunk[(width/2) + y * width] == ' ':
+        if chunk[(width//2) + y * width] == ' ':
             possible = True
         elif possible == True:
             if chunk[y*width] != ' ':
