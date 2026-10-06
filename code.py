@@ -31,10 +31,9 @@ def findspawnlocation():
             return y-1
 
 def move():
-    with term.cbreak():
-        key = term.inkey(timeout=0)
-        if key == 'd':
-            playerx+1
+    key = term.inkey(timeout=0)
+    if key == 'd':
+        playerx+1
 
 def render():
     frame = ''
@@ -94,11 +93,12 @@ def render():
                 
     print(term.home + frame, end="", flush=True) # Basicly clear the screen no idea what half of it does though.
 def gameloop():
-    while True:
-        generateterrain() # Makes the terrain and puts it into list chunk
-        move()
-        chunk[centerx + playery * width] = '!'
-        render()
+    with term.cbreak(), term.hidden_cursor():
+        while True:
+            generateterrain() # Makes the terrain and puts it into list chunk
+            move()
+            chunk[centerx + playery * width] = '!'
+            render()
 
 playerx = -50 # generate terrain needs this to know where to start
 generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
