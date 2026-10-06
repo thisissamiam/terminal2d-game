@@ -96,8 +96,8 @@ def render():
 def gameloop():
     with term.cbreak(), term.hidden_cursor():
         while True:
-            generateterrain() # Makes the terrain and puts it into list chunk
             move()
+            generateterrain() # Makes the terrain and puts it into list chunk
             chunk[centerx + playery * width] = '!'
             render()
 
