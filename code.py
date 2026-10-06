@@ -31,6 +31,7 @@ def findspawnlocation():
             return y-1
 
 def move():
+    global playerx
     key = term.inkey(timeout=0)
     if key == 'd':
         playerx += 1
