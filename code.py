@@ -9,7 +9,7 @@ term = blessed.Terminal() # Term is basicly the terminal, allows editing and get
 print(term.clear) # Clear the screen before starting the game cuz yeah
 # Chunk Settings
 width = 100
-height = term.height()
+height = term.height
 worldy=0
 centery = height // 2
 centerx = width // 2 # Get the center of the screen, generate from the center so you have 0,0 in a spot that makes sense, and spawn the player at 0,0 as well.
