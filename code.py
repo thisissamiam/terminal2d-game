@@ -94,9 +94,10 @@ def render():
                 
     print(term.home + frame, end="", flush=True) # Basicly clear the screen no idea what half of it does though.
 def gameloop():
-    generateterrain() # Makes the terrain and puts it into list chunk
-    move()
-    render()
+    while True:
+        generateterrain() # Makes the terrain and puts it into list chunk
+        move()
+        render()
 
 playerx = -50 # generate terrain needs this to know where to start
 generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
