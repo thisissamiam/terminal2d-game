@@ -50,7 +50,7 @@ def move():
         if chunk[centerx + centery * width - 1] == ' ': # Current center block in the screen but one less
             worldx -= 1
     elif key == 'w':
-        if chunk[centerx + (centery-1) * width] == ' ':
+        if chunk[centerx + (centery-1) * width] == ' ' and tick == 0:
             worldy -= 1
 
 def gravity():
@@ -60,7 +60,7 @@ def gravity():
     global worldy
     if chunk[centerx + (centery+1) * width] == ' ':
         tick += 1
-        if tick >= 20:
+        if tick >= 40:
             worldy += 1
             tick = 0
     
