@@ -50,7 +50,7 @@ def move():
         if chunk[centerx + centery * width - 1] == ' ': # Current center block in the screen but one less
             worldx -= 1
     elif key == 'w':
-        if chunk[centerx + (centery-1) * width] == ' ' and tick == 0:
+        if chunk[centerx + (centery-1) * width] == ' ' and onground():
             worldy -= 1
 
 def gravity():
@@ -63,7 +63,11 @@ def gravity():
         if tick >= 40:
             worldy += 1
             tick = 0
-    
+def onground():
+    if chunk[centerx + centery * width] != ' ': # If block below player is not air, they are on the ground (hopefully)
+        return True
+    else:
+        return False
         
 
 def render():
