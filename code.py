@@ -34,7 +34,8 @@ def move():
     global worldx
     key = term.inkey(timeout=0.01)
     if key == 'd':
-        worldx += 1
+        if chunk[1 + centerx + y * width] == ' ': # Current center block in the screen but one more
+            worldx += 1
 
 def render():
     frame = ''
