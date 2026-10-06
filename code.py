@@ -16,7 +16,7 @@ def generateterrain():
     global chunk # Get chunk that was defined outside of function
     chunk = [' '] * width * height # Reset current chunk data before calculating terrain
     for x in range(width):
-        topheight = 15 - int(gen.noise2((x+playerx) / 10.0, 0) * 10)
+        topheight = 15 - int(gen.noise2((x+playerx+(width/2)) / 10.0, 0) * 10)
         for y in range(topheight, height): # Places terrain from the generated height (topheight) to the bottom of the screen (the ground)
             chunk[y * width + x] = '#' # No colors at first
     
