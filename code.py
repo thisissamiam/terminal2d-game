@@ -51,9 +51,6 @@ def move():
     elif key == 'w':
         if chunk[centerx + (centery-1) * width] == ' ':
             worldy -= 1
-    elif key == 's':
-        if chunk[centerx + (centery+1) * width] == ' ':
-            worldy += 1
 
 def render():
     frame = ''
@@ -116,6 +113,8 @@ def render():
 def gameloop():
     with term.cbreak(), term.hidden_cursor():
         while True:
+            if chunk[centerx + (centery+1) * width] == ' ':
+                        worldy += 1
             move()
             generateterrain() # Makes the terrain and puts it into list chunk
             chunk[centerx + centery * width] = '!'
