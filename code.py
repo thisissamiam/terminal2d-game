@@ -52,6 +52,16 @@ def move():
         if chunk[centerx + (centery-1) * width] == ' ':
             worldy -= 1
 
+def gravity():
+    global centerx
+    global centery
+    global worldy
+    if chunk[centerx + (centery+1) * width] == ' ' and tick == 20:
+        worldy += 1
+        tick = 0
+    tick += 1
+        
+
 def render():
     frame = ''
     for row in range(height): # Every row goes through this
@@ -111,12 +121,10 @@ def render():
                 
     print(term.home + frame, end="", flush=True) # Basicly clear the screen no idea what half of it does though.
 def gameloop():
-    global worldy
     with term.cbreak(), term.hidden_cursor():
         while True:
-            if chunk[centerx + (centery+1) * width] == ' ':
-                worldy += 1
             move()
+            gravity()
             generateterrain() # Makes the terrain and puts it into list chunk
             chunk[centerx + centery * width] = '!'
             render()
