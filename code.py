@@ -58,7 +58,7 @@ def gravity():
     global centerx
     global centery
     global worldy
-    if chunk[centerx + (centery+1) * width] == ' ':
+    if not onground(): # In the air
         tick += 1
         if tick >= 40:
             worldy += 1
