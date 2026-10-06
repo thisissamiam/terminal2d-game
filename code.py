@@ -47,10 +47,13 @@ def move():
             worldx += 1
     elif key == 'a':
         if chunk[centerx + centery * width - 1] == ' ': # Current center block in the screen but one less
-                    worldx -= 1
+            worldx -= 1
     elif key == 'w':
         if chunk[centerx + (centery-1) * width] == ' ':
-                            worldy -= 1
+            worldy -= 1
+    elif key == 's':
+        if chunk[centerx + (centery+1) * width] == ' ':
+            worldy += 1
 
 def render():
     frame = ''
