@@ -28,7 +28,7 @@ def findspawnlocation():
     global centerx
     for y in range(height):
         if chunk[centerx + y * width] != ' ': # Find the first ground
-            return(centerx + y*width)-1
+            return y-1
     
 
 def render():
