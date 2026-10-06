@@ -32,7 +32,7 @@ def findspawnlocation():
 
 def move():
     global worldx
-    key = term.inkey(timeout=0)
+    key = term.inkey(timeout=0.1)
     if key == 'd':
         worldx += 1
 
