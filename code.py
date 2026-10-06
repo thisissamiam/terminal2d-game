@@ -33,7 +33,7 @@ def findspawnlocation():
 def move():
     key = term.inkey(timeout=0)
     if key == 'd':
-        playerx+1
+        playerx += 1
 
 def render():
     frame = ''
