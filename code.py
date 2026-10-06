@@ -14,12 +14,15 @@ centerx = width // 2 # Get the center of the screen, generate from the center so
 chunk = [] # Need to make it before generateterrain function so it can be used by other functions
 def generateterrain():
     global worldx
+    global worldy
     global chunk # Get chunk that was defined outside of function
     chunk = [' '] * width * height # Reset current chunk data before calculating terrain
     for x in range(width):
         topheight = 15 - int(gen.noise2((x+worldx+centerx) / 10.0, 0) * 10)
-        for y in range(topheight, height): # Places terrain from the generated height (topheight) to the bottom of the screen (the ground)
-            chunk[y * width + x] = '#' # No colors at first
+        for y in range(height):
+            worldblocky = y+worldy
+            if worldblocky >= topheight:
+                chunk[y * width + x] = '#'
     
     # This is where stuff can be changed in the chunk, colors, stuff on screen, characters, ect.
 
@@ -33,17 +36,17 @@ def findspawnlocation():
 def move():
     global worldx
     global centerx
-    global playery
+    global worldy
     key = term.inkey(timeout=0.01)
     if key == 'd':
-        if chunk[1 + centerx + playery * width] == ' ': # Current center block in the screen but one more
+        if chunk[1 + centerx + worldy * width] == ' ': # Current center block in the screen but one more
             worldx += 1
     elif key == 'a':
-        if chunk[centerx + playery * width - 1] == ' ': # Current center block in the screen but one less
+        if chunk[centerx + worldy * width - 1] == ' ': # Current center block in the screen but one less
                     worldx -= 1
     elif key == 'w':
-        if chunk[centerx + (playery-1 * width)] == ' ':
-                            playery -= 1
+        if chunk[centerx + (worldy-1 * width)] == ' ':
+                            worldy -= 1
 
 def render():
     frame = ''
@@ -107,11 +110,11 @@ def gameloop():
         while True:
             move()
             generateterrain() # Makes the terrain and puts it into list chunk
-            chunk[centerx + playery * width] = '!'
+            chunk[centerx + worldy * width] = '!'
             render()
 
 worldx = -50 # generate terrain needs this to know where to start
 generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
-playery = findspawnlocation() # Find a safe spot to place the player
+worldy = findspawnlocation() # Find a safe spot to place the player
 render()
 gameloop()
