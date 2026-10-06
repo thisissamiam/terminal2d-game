@@ -13,11 +13,11 @@ height = 30
 centerx = width // 2 # Get the center of the screen, generate from the center so you have 0,0 in a spot that makes sense, and spawn the player at 0,0 as well.
 chunk = [] # Need to make it before generateterrain function so it can be used by other functions
 def generateterrain():
-    global playerx
+    global worldx
     global chunk # Get chunk that was defined outside of function
     chunk = [' '] * width * height # Reset current chunk data before calculating terrain
     for x in range(width):
-        topheight = 15 - int(gen.noise2((x+playerx+centerx) / 10.0, 0) * 10)
+        topheight = 15 - int(gen.noise2((x+worldx+centerx) / 10.0, 0) * 10)
         for y in range(topheight, height): # Places terrain from the generated height (topheight) to the bottom of the screen (the ground)
             chunk[y * width + x] = '#' # No colors at first
     
@@ -31,10 +31,10 @@ def findspawnlocation():
             return y-1
 
 def move():
-    global playerx
+    global worldx
     key = term.inkey(timeout=0)
     if key == 'd':
-        playerx += 1
+        worldx += 1
 
 def render():
     frame = ''
@@ -101,7 +101,7 @@ def gameloop():
             chunk[centerx + playery * width] = '!'
             render()
 
-playerx = -50 # generate terrain needs this to know where to start
+worldx = -50 # generate terrain needs this to know where to start
 generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
 playery = findspawnlocation() # Find a safe spot to place the player
 render()
