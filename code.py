@@ -58,10 +58,11 @@ def gravity():
     global centerx
     global centery
     global worldy
+    tick += 1
     if chunk[centerx + (centery+1) * width] == ' ' and tick == 20:
         worldy += 1
         tick = 0
-    tick += 1
+    
         
 
 def render():
