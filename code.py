@@ -9,7 +9,7 @@ term = blessed.Terminal() # Term is basicly the terminal, allows editing and get
 print(term.clear) # Clear the screen before starting the game cuz yeah
 # Chunk Settings
 width = 100
-height = term.height-1
+height = term.height
 worldy=0
 centery = height // 2
 centerx = width // 2 # Get the center of the screen, generate from the center so you have 0,0 in a spot that makes sense, and spawn the player at 0,0 as well.
@@ -25,9 +25,10 @@ def generateterrain():
             worldblocky = y+worldy
             if worldblocky >= topheight:
                 chunk[y * width + x] = '#'
-    text = "x=" + str(worldx) + " y=" + str(worldy)
-    for i, char in enumerate(text):
-        chunk[i] = char
+    # below is a way to add stuff to the screen
+    # text = "x=" + str(worldx) + " y=" + str(worldy)
+    # for i, char in enumerate(text):
+    #     chunk[i] = char
     # This is where stuff can be changed in the chunk, colors, stuff on screen, characters, ect.
 
 def findspawnlocation():
@@ -105,7 +106,8 @@ def render():
                 frame = frame + tiletextframelist[tile] # Do not attempt to add a color when none is provided
             else:
                 frame = frame + term.color_rgb(colorcoderframelist[tile],colorcodegframelist[tile],colorcodebframelist[tile])(tiletextframelist[tile])
-        frame += '\n' # Add a new line before doing the next row
+        if row != height - 1:
+            frame += '\n'
                 
     print(term.home + frame, end="", flush=True) # Basicly clear the screen no idea what half of it does though.
 def gameloop():
