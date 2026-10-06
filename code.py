@@ -16,6 +16,8 @@ centery = height // 2
 centerx = width // 2 # Get the center of the screen, generate from the center so you have 0,0 in a spot that makes sense, and spawn the player at 0,0 as well.
 chunk = [] # Need to make it before generateterrain function so it can be used by other functions
 
+curserx = 3
+cursery = 0
 
 
 def generateterrain():
@@ -135,6 +137,7 @@ def gameloop():
             gravity()
             generateterrain() # Makes the terrain and puts it into list chunk
             chunk[centerx + centery * width] = '!'
+            chunk[centerx+curserx + (centery+cursery) * width] = 'X'
             render()
 
 worldx = -50 # generate terrain needs this to know where to start
