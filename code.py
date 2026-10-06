@@ -11,7 +11,7 @@ print(term.clear) # Clear the screen before starting the game cuz yeah
 width = 100
 height = 30
 worldy=0
-centery = height // 2
+centery = height // 2 + 5
 centerx = width // 2 # Get the center of the screen, generate from the center so you have 0,0 in a spot that makes sense, and spawn the player at 0,0 as well.
 chunk = [] # Need to make it before generateterrain function so it can be used by other functions
 def generateterrain():
@@ -31,9 +31,8 @@ def generateterrain():
 def findspawnlocation():
     global chunk
     global centerx
-    for y in range(height):
-        if chunk[centerx + y * width] != ' ': # Find the first ground
-            return y-1
+    topheight = 15 - int(gen.noise2(0 / 10.0, 0) * 10) # Just generate the block at x=0 and set that as the y
+    return topheight -1
 
 def move():
     global worldx
@@ -41,13 +40,13 @@ def move():
     global worldy
     key = term.inkey(timeout=0.01)
     if key == 'd':
-        if chunk[1 + centerx + worldy * width] == ' ': # Current center block in the screen but one more
+        if chunk[1 + centerx + centery * width] == ' ': # Current center block in the screen but one more
             worldx += 1
     elif key == 'a':
-        if chunk[centerx + worldy * width - 1] == ' ': # Current center block in the screen but one less
+        if chunk[centerx + centery * width - 1] == ' ': # Current center block in the screen but one less
                     worldx -= 1
     elif key == 'w':
-        if chunk[centerx + (worldy-1 * width)] == ' ':
+        if chunk[centerx + (centery-1) * width] == ' ':
                             worldy -= 1
 
 def render():
@@ -116,7 +115,8 @@ def gameloop():
             render()
 
 worldx = -50 # generate terrain needs this to know where to start
-generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
 worldy = findspawnlocation() # Find a safe spot to place the player
+generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
+
 render()
 gameloop()
