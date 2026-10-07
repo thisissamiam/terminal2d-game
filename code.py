@@ -48,6 +48,7 @@ def move():
     global cursery
     global curserx
     key = term.inkey(timeout=0.01)
+    # The following below are for the player's movement
     if key == 'd':
         if chunk[1 + centerx + centery * width] == ' ': # Current center block in the screen but one more
             worldx += 1
@@ -57,8 +58,15 @@ def move():
     elif key == 'w':
         if chunk[centerx + (centery-1) * width] == ' ' and onground():
             worldy -= 1
+    # The following below are for moving the game curser
     elif key.name == 'KEY_UP':
+        cursery -= 1
+    elif key.name == 'KEY_DOWN':
         cursery += 1
+    elif key.name == 'KEY_RIGHT':
+        curserx += 1
+    elif key.name == 'KEY_LEFT':
+        curserx -= 1
 def gravity():
     global tick
     global centerx
