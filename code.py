@@ -70,6 +70,7 @@ def move():
     elif key.name == 'KEY_LEFT':
         curserx -= 1
 def gravity():
+    global velocity
     global tick
     global centerx
     global centery
