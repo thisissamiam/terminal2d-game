@@ -81,7 +81,6 @@ def gravity():
         if tick >= 40:
             worldy += 1
             tick = 0
-            velocity = 1
     else:
         tick = 0
         velocity = 1
