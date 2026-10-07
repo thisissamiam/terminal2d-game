@@ -51,7 +51,7 @@ def move():
     key = term.inkey(timeout=0.01)
     # The following below are for the player's movement
     if key == 'd':
-        if chunk[1 + centerx + centery * width] == ' ': # Current center block in the screen but one more
+        if chunk[1 + centerx + centery * width] == ' ' or chunk[1 + centerx + centery * width] == 'x': # Current center block in the screen but one more
             worldx += 1
     elif key == 'a':
         if chunk[centerx + centery * width - 1] == ' ': # Current center block in the screen but one less
