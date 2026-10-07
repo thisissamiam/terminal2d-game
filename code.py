@@ -157,8 +157,13 @@ worldx = -50 # generate terrain needs this to know where to start
 spawny = findspawnlocation() # Find a safe spot to place the player
 worldy = spawny - centery
 generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
+print("spawn topheight =", 15 - int(gen.noise2(0 / 10.0, 0) * 10))
+
+print("terrain topheight =", 15 - int(gen.noise2((worldx + centerx) / 10.0, 0) * 10))
+
 print("spawny =", spawny)
 print("worldy =", worldy)
+
 print("player block =", chunk[centerx + centery * width])
 
 input()
