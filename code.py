@@ -8,7 +8,7 @@ gen = OpenSimplex(seed=seed)
 term = blessed.Terminal() # Term is basicly the terminal, allows editing and getting data about the terminal.
 print(term.clear) # Clear the screen before starting the game cuz yeah
 # Chunk Settings
-width = 100
+width = term.width
 height = term.height
 worldy=0
 tick = 0
