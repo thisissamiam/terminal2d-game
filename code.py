@@ -60,9 +60,9 @@ def move():
     elif key == 'w':
         if chunk[centerx + (centery-1) * width] == ' ' and onground():
             worldy -= 1
-    # The following is confusing and all AI code no idea wtf is going on here.
+    # The following is confusing.
     elif key.name == 'KEY_UP':
-        if centery + cursery > 0:
+        if cursery < 5:
             cursery -= 1
 
     elif key.name == 'KEY_DOWN':
