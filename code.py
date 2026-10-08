@@ -60,17 +60,22 @@ def move():
     elif key == 'w':
         if chunk[centerx + (centery-1) * width] == ' ' and onground():
             worldy -= 1
-    # The following below are for moving the game curser
+    # The following is confusing and all AI code no idea wtf is going on here.
     elif key.name == 'KEY_UP':
-        if cursery > -centery:
+        if centery + cursery > 0:
             cursery -= 1
+
     elif key.name == 'KEY_DOWN':
-        if cursery < centery:
+        if centery + cursery < height - 1:
             cursery += 1
-    elif key.name == 'KEY_RIGHT':
-        curserx += 1
+
     elif key.name == 'KEY_LEFT':
-        curserx -= 1
+        if centerx + curserx > 0:
+            curserx -= 1
+
+    elif key.name == 'KEY_RIGHT':
+        if centerx + curserx < width - 1:
+            curserx += 1
 def gravity():
     global velocity
     global tick
