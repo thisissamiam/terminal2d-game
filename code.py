@@ -114,7 +114,10 @@ def move():
         else:
             bordertrigger = 'right'
     elif key.name == 'KEY_ENTER':
-        worldchanges[centerx+curserx + (centery+cursery) * width] = ""
+        blockx = centerx + curserx + worldx + centerx
+        blocky = centery + cursery + worldy
+
+        worldchanges[(blockx, blocky)] = ' '
 def gravity():
     global velocity
     global tick
