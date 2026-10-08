@@ -12,6 +12,7 @@ width = term.width
 height = term.height
 worldy=0
 tick = 0
+reach = 5
 velocity = 1
 centery = height // 2
 centerx = width // 2 # Get the center of the screen, generate from the center so you have 0,0 in a spot that makes sense, and spawn the player at 0,0 as well.
@@ -49,6 +50,7 @@ def move():
     global worldy
     global cursery
     global curserx
+    global reach
     key = term.inkey(timeout=0.01)
     # The following below are for the player's movement
     if key == 'd':
@@ -60,21 +62,21 @@ def move():
     elif key == 'w':
         if chunk[centerx + (centery-1) * width] == ' ' and onground():
             worldy -= 1
-    # The following is confusing.
+    # The following is confusing. and its ai code idk im not guessing all of that its been like 30 trys of trying to get bounds to work
     elif key.name == 'KEY_UP':
-        if cursery > 10:
+        if cursery > -reach:
             cursery -= 1
 
     elif key.name == 'KEY_DOWN':
-        if centery + cursery < height - 1:
+        if cursery < reach:
             cursery += 1
 
     elif key.name == 'KEY_LEFT':
-        if centerx + curserx > 0:
+        if curserx > -reach:
             curserx -= 1
 
     elif key.name == 'KEY_RIGHT':
-        if centerx + curserx < width - 1:
+        if curserx < reach:
             curserx += 1
 def gravity():
     global velocity
