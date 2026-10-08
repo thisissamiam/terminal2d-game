@@ -82,8 +82,6 @@ def move():
     elif key.name == 'KEY_RIGHT':
         if curserx < reach:
             curserx += 1
-    if bordertrigger == 'up':
-        chunk[centerx+curserx + (centery+cursery+1) * width] = '_'
 def gravity():
     global velocity
     global tick
@@ -170,6 +168,8 @@ def gameloop():
             generateterrain() # Makes the terrain and puts it into list chunk
             chunk[centerx + centery * width] = '!'
             chunk[centerx+curserx + (centery+cursery) * width] = 'X' # Center of the screen + where the curser is
+            if bordertrigger == 'up':
+                    chunk[centerx+curserx + (centery+cursery+1) * width] = '_'
             render()
 
 worldx = -50 # generate terrain needs this to know where to start
