@@ -62,10 +62,11 @@ def move():
             worldy -= 1
     # The following below are for moving the game curser
     elif key.name == 'KEY_UP':
-        if cursery > -centery: # Only if the curser is LOWER then the corner of the screen can it move
+        if cursery > -centery:
             cursery -= 1
     elif key.name == 'KEY_DOWN':
-        cursery += 1
+        if cursery < centery:
+            cursery += 1
     elif key.name == 'KEY_RIGHT':
         curserx += 1
     elif key.name == 'KEY_LEFT':
