@@ -18,11 +18,32 @@ bordertrigger = None
 centery = height // 2
 centerx = width // 2 # Get the center of the screen, generate from the center so you have 0,0 in a spot that makes sense, and spawn the player at 0,0 as well.
 chunk = [] # Need to make it before generateterrain function so it can be used by other functions
-
+worldchanges = []
 curserx = 3
 cursery = 0
 
+def editchunk():
+    # World editing
+    for y in range(height):
+        for x in range(width):
+            blockx = x + worldx + centerx
+            blocky = y + worldy
+            if (blockx,blocky) in worldchanges:
+                chunk[y * width + x] = worldchanges.get((blockx,blocky))
 
+
+
+    # Extra visual stuff
+    chunk[centerx + centery * width] = '!'
+    chunk[centerx+curserx + (centery+cursery) * width] = 'X' # Center of the screen + where the curser is
+    if bordertrigger == 'up':
+        chunk[centerx+curserx + (centery+cursery-1) * width] = '_'
+    elif bordertrigger == 'down':
+        chunk[centerx+curserx + (centery+cursery+1) * width] = '_'
+    elif bordertrigger == 'left':
+        chunk[centerx+curserx-1 + (centery+cursery) * width] = '|'
+    elif bordertrigger == 'right':
+        chunk[centerx+curserx+1 + (centery+cursery) * width] = '|'
 def generateterrain():
     global worldx
     global worldy
@@ -176,16 +197,7 @@ def gameloop():
             move()
             gravity()
             generateterrain() # Makes the terrain and puts it into list chunk
-            chunk[centerx + centery * width] = '!'
-            chunk[centerx+curserx + (centery+cursery) * width] = 'X' # Center of the screen + where the curser is
-            if bordertrigger == 'up':
-                chunk[centerx+curserx + (centery+cursery-1) * width] = '_'
-            elif bordertrigger == 'down':
-                chunk[centerx+curserx + (centery+cursery+1) * width] = '_'
-            elif bordertrigger == 'left':
-                chunk[centerx+curserx-1 + (centery+cursery) * width] = '|'
-            elif bordertrigger == 'right':
-                chunk[centerx+curserx+1 + (centery+cursery) * width] = '|'
+            editchunk()
             render()
 
 worldx = -50 # generate terrain needs this to know where to start
