@@ -68,6 +68,7 @@ def move():
             cursery -= 1
         else:
             chunk[centerx+curserx + (centery+cursery+1) * width] = '_'
+            time.sleep(1)
 
     elif key.name == 'KEY_DOWN':
         if cursery < reach:
