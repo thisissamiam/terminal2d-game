@@ -68,20 +68,30 @@ def move():
     elif key.name == 'KEY_UP':
         if cursery > -reach:
             cursery -= 1
+            bordertrigger = None
         else:
             bordertrigger = 'up'
 
     elif key.name == 'KEY_DOWN':
         if cursery < reach:
             cursery += 1
+            bordertrigger = None
+        else:
+            brodertrigger = 'down'
 
     elif key.name == 'KEY_LEFT':
         if curserx > -reach:
             curserx -= 1
+            bordertrigger = None
+        else:
+            bordertrigger = 'left'
 
     elif key.name == 'KEY_RIGHT':
         if curserx < reach:
             curserx += 1
+            bordertrigger = None
+        else:
+            bordertrigger = 'right'
 def gravity():
     global velocity
     global tick
@@ -169,7 +179,13 @@ def gameloop():
             chunk[centerx + centery * width] = '!'
             chunk[centerx+curserx + (centery+cursery) * width] = 'X' # Center of the screen + where the curser is
             if bordertrigger == 'up':
-                    chunk[centerx+curserx + (centery+cursery-1) * width] = '_'
+                chunk[centerx+curserx + (centery+cursery-1) * width] = '_'
+            elif bordertrigger == 'down':
+                chunk[centerx+curserx + (centery+cursery+1) * width] = '_'
+            elif bordertrigger == 'left':
+                chunk[centerx+curserx-1 + (centery+cursery) * width] = '|'
+            elif bordertrigger == 'right':
+                chunk[centerx+curserx+1 + (centery+cursery) * width] = '|'
             render()
 
 worldx = -50 # generate terrain needs this to know where to start
