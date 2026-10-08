@@ -14,6 +14,7 @@ worldy=0
 tick = 0
 reach = 5
 velocity = 1
+bordertrigger = None
 centery = height // 2
 centerx = width // 2 # Get the center of the screen, generate from the center so you have 0,0 in a spot that makes sense, and spawn the player at 0,0 as well.
 chunk = [] # Need to make it before generateterrain function so it can be used by other functions
@@ -51,6 +52,7 @@ def move():
     global cursery
     global curserx
     global reach
+    global bordertrigger
     key = term.inkey(timeout=0.01)
     # The following below are for the player's movement
     if key == 'd':
