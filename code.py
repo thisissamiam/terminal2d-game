@@ -67,8 +67,7 @@ def move():
         if cursery > -reach:
             cursery -= 1
         else:
-            chunk[centerx+curserx + (centery+cursery+1) * width] = '_'
-            time.sleep(1)
+            bordertrigger = 'up'
 
     elif key.name == 'KEY_DOWN':
         if cursery < reach:
@@ -81,6 +80,8 @@ def move():
     elif key.name == 'KEY_RIGHT':
         if curserx < reach:
             curserx += 1
+    if bordertrigger == 'up':
+        chunk[centerx+curserx + (centery+cursery+1) * width] = '_'
 def gravity():
     global velocity
     global tick
