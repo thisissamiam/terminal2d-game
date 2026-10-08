@@ -66,6 +66,8 @@ def move():
     elif key.name == 'KEY_UP':
         if cursery > -reach:
             cursery -= 1
+        else:
+            chunk[centerx+curserx + (centery+cursery+1) * width] = '_'
 
     elif key.name == 'KEY_DOWN':
         if cursery < reach:
@@ -163,7 +165,7 @@ def gameloop():
             gravity()
             generateterrain() # Makes the terrain and puts it into list chunk
             chunk[centerx + centery * width] = '!'
-            chunk[centerx+curserx + (centery+cursery) * width] = 'X'
+            chunk[centerx+curserx + (centery+cursery) * width] = 'X' # Center of the screen + where the curser is
             render()
 
 worldx = -50 # generate terrain needs this to know where to start
