@@ -77,7 +77,7 @@ def move():
             cursery += 1
             bordertrigger = None
         else:
-            brodertrigger = 'down'
+            bordertrigger = 'down'
 
     elif key.name == 'KEY_LEFT':
         if curserx > -reach:
