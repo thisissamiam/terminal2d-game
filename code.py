@@ -62,7 +62,7 @@ def move():
             worldy -= 1
     # The following is confusing.
     elif key.name == 'KEY_UP':
-        if cursery < 5:
+        if cursery > 5:
             cursery -= 1
 
     elif key.name == 'KEY_DOWN':
