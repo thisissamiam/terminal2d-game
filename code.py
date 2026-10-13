@@ -121,7 +121,7 @@ def move():
         blocky = centery + cursery + worldy
 
         worldchanges[(blockx, blocky)] = ' '
-    elif key.name == 'KEY_SPACE':
+    elif key == ' ':
         blockx = centerx + curserx + worldx + centerx
         blocky = centery + cursery + worldy
 
