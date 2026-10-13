@@ -15,6 +15,7 @@ tick = 0
 reach = 5
 velocity = 1
 bordertrigger = None
+undercurser = None
 centery = height // 2
 centerx = width // 2 # Get the center of the screen, generate from the center so you have 0,0 in a spot that makes sense, and spawn the player at 0,0 as well.
 chunk = [] # Need to make it before generateterrain function so it can be used by other functions
@@ -23,6 +24,7 @@ curserx = 3
 cursery = 0
 
 def editchunk():
+    global undercurser
     # World editing
     for y in range(height):
         for x in range(width):
@@ -35,6 +37,7 @@ def editchunk():
 
     # Extra visual stuff
     chunk[centerx + centery * width] = '!'
+    undercurser = chunk[centerx+curserx + (centery+cursery) * width]
     chunk[centerx+curserx + (centery+cursery) * width] = 'X' # Center of the screen + where the curser is
     if bordertrigger == 'up':
         chunk[centerx+curserx + (centery+cursery-1) * width] = '_'
@@ -197,6 +200,7 @@ def render():
                 
     print(term.home + frame, end="", flush=True) # Basicly clear the screen no idea what half of it does though.
 def gameloop():
+    global undercurser
     with term.cbreak(), term.hidden_cursor():
         while True:
             move()
@@ -204,6 +208,7 @@ def gameloop():
             generateterrain() # Makes the terrain and puts it into list chunk
             editchunk()
             render()
+            chunk[centerx+curserx + (centery+cursery) * width] = undercurser # Make sure collisions do the thing under the curser
 
 worldx = -50 # generate terrain needs this to know where to start
 spawny = findspawnlocation() # Find a safe spot to place the player
