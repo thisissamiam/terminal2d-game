@@ -121,6 +121,11 @@ def move():
         blocky = centery + cursery + worldy
 
         worldchanges[(blockx, blocky)] = ' '
+    elif key.name == 'KEY_SPACE':
+        blockx = centerx + curserx + worldx + centerx
+        blocky = centery + cursery + worldy
+
+        worldchanges[(blockx, blocky)] = '#'
 def gravity():
     global velocity
     global tick
