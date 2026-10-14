@@ -47,6 +47,11 @@ def editchunk():
         chunk[centerx+curserx-1 + (centery+cursery) * width] = '|'
     elif bordertrigger == 'right':
         chunk[centerx+curserx+1 + (centery+cursery) * width] = '|'
+    
+    # health
+    for i in health:
+        chunk[i] = '='
+    
 def generateterrain():
     global worldx
     global worldy
