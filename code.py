@@ -124,8 +124,8 @@ def move():
     elif key == ' ':
         blockx = centerx + curserx + worldx + centerx
         blocky = centery + cursery + worldy
-
-        worldchanges[(blockx, blocky)] = '#'
+        if chunk[centerx+curserx + (centery+cursery) * width] == ' ':
+            worldchanges[(blockx, blocky)] = '#'
 def gravity():
     global velocity
     global tick
