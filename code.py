@@ -15,6 +15,7 @@ tick = 0
 reach = 5
 velocity = 1
 bordertrigger = None
+health = 10
 undercurser = None
 centery = height // 2
 centerx = width // 2 # Get the center of the screen, generate from the center so you have 0,0 in a spot that makes sense, and spawn the player at 0,0 as well.
@@ -24,6 +25,7 @@ curserx = 3
 cursery = 0
 
 def editchunk():
+    global health
     global undercurser
     # World editing
     for y in range(height):
