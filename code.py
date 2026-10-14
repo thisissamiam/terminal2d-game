@@ -51,7 +51,7 @@ def editchunk():
         chunk[centerx+curserx+1 + (centery+cursery) * width] = '|'
     
     # health
-    for i in health:
+    for i in range(health):
         chunk[i] = '='
     
 def generateterrain():
