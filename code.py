@@ -54,6 +54,10 @@ def editchunk():
     for i in range(health):
         chunk[i] = '='
     
+    # Debug
+    for i in range(len(str(velocity))):
+            chunk[width+10+i] = str(velocity)[i]
+    
 def generateterrain():
     global worldx
     global worldy
@@ -145,8 +149,6 @@ def gravity():
         if tick >= 40:
             worldy += 1
             tick = 0
-        for i in range(len(str(velocity))):
-            chunk[width+10+i] = str(velocity)[i]
     else:
         tick = 0
         velocity = 1
