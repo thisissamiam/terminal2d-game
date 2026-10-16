@@ -50,7 +50,12 @@ def editchunk():
     elif bordertrigger == 'right':
         chunk[centerx+curserx+1 + (centery+cursery) * width] = '|'
     
-    health -= velocity//10
+
+    if onground():
+        health -= lastvelocity//10
+    lastvelocity = velocity
+
+    
     # health
     for i in range(int(health)):
         chunk[i] = '='
