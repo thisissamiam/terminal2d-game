@@ -53,9 +53,7 @@ def editchunk():
         chunk[centerx+curserx+1 + (centery+cursery) * width] = '|'
     
 
-    if onground():
-        health -= lastvelocity//10
-    lastvelocity = velocity
+    
 
     
     # health
@@ -153,9 +151,11 @@ def gravity():
         if tick >= 40:
             worldy += 1
             tick = 0
+        lastvelocity = velocity
     else:
         tick = 0
         velocity = 1
+        health -= lastvelocity//10
 def onground():
     if chunk[centerx + (centery+1) * width] == '#': # If block below player is not air, they are on the ground (hopefully)
         return True
