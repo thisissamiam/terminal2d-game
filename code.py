@@ -157,7 +157,7 @@ def gravity():
         tick = 0
         velocity = 1
 def onground():
-    if chunk[centerx + (centery+1) * width] != ' ': # If block below player is not air, they are on the ground (hopefully)
+    if chunk[centerx + (centery+1) * width] == '#': # If block below player is not air, they are on the ground (hopefully)
         return True
     else:
         return False
