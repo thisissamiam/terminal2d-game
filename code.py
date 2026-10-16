@@ -1,162 +1,230 @@
-
-import gc
 import random
-import statistics
-import time
-
 from opensimplex import OpenSimplex
-from pathfinding.core.grid import Grid
-from pathfinding.finder.a_star import AStarFinder
-from pathfinding.finder.best_first import BestFirst
+import blessed
+import time
+world = [] # Create the 2d world, starting as nothing
+seed = random.randint(0, 100000000) # Generate the seed, determines what is generated
+gen = OpenSimplex(seed=seed)
+term = blessed.Terminal() # Term is basicly the terminal, allows editing and getting data about the terminal.
+print(term.clear) # Clear the screen before starting the game cuz yeah
+# Chunk Settings
+width = term.width
+height = term.height
+worldy=0
+tick = 0
+reach = 5
+velocity = 1
+bordertrigger = None
+health = 10
+undercurser = None
+centery = height // 2
+centerx = width // 2 # Get the center of the screen, generate from the center so you have 0,0 in a spot that makes sense, and spawn the player at 0,0 as well.
+chunk = [] # Need to make it before generateterrain function so it can be used by other functions
+worldchanges = {}
+curserx = 3
+cursery = 0
 
-# Same general map sizes as your previous benchmark.
-SIZES = [
-    (100, 30),
-    (200, 40),
-    (400, 60),
-    (800, 100),
-    (1600, 160),
-    (3200, 240),
-]
-
-REPEATS = 3
-NOISE_SCALE = 0.025
-NOISE_HEIGHT = 0.18
-random.seed(42)
-
-
-def generate_terrain(width, height):
-    # Generate your terrain before starting any search timers.
-    noise = OpenSimplex(seed=42)
-    surface = []
-
-    for x in range(width):
-        value = noise.noise2(x * NOISE_SCALE, 0)
-        ground_y = int(
-            height * 0.55 - value * height * NOISE_HEIGHT
-        )
-        ground_y = max(2, min(height - 2, ground_y))
-        surface.append(ground_y)
-
-    matrix = []
-
+def editchunk():
+    global health
+    global undercurser
+    # World editing
     for y in range(height):
-        row = []
         for x in range(width):
-            row.append(1 if y < surface[x] else 0)
-        matrix.append(row)
-
-    return matrix, surface
-
-
-def run_search(finder, grid, start, end):
-    grid.cleanup()
-
-    before = time.perf_counter()
-    path, runs = finder.find_path(start, end, grid)
-    elapsed = time.perf_counter() - before
-
-    return elapsed, runs, bool(path)
+            blockx = x + worldx + centerx
+            blocky = y + worldy
+            if (blockx,blocky) in worldchanges:
+                chunk[y * width + x] = worldchanges.get((blockx,blocky))
 
 
-def benchmark(width, height):
-    print(f"\nGenerating {width} x {height} terrain...", flush=True)
 
-    matrix, surface = generate_terrain(width, height)
+    # Extra visual stuff
+    chunk[centerx + centery * width] = '!'
+    undercurser = chunk[centerx+curserx + (centery+cursery) * width]
+    chunk[centerx+curserx + (centery+cursery) * width] = 'X' # Center of the screen + where the curser is
+    if bordertrigger == 'up':
+        chunk[centerx+curserx + (centery+cursery-1) * width] = '_'
+    elif bordertrigger == 'down':
+        chunk[centerx+curserx + (centery+cursery+1) * width] = '_'
+    elif bordertrigger == 'left':
+        chunk[centerx+curserx-1 + (centery+cursery) * width] = '|'
+    elif bordertrigger == 'right':
+        chunk[centerx+curserx+1 + (centery+cursery) * width] = '|'
+    
+    # health
+    for i in range(health)+1:
+        chunk[i] = '='
+    
+def generateterrain():
+    global worldx
+    global worldy
+    global chunk # Get chunk that was defined outside of function
+    chunk = [' '] * width * height # Reset current chunk data before calculating terrain
+    for x in range(width):
+        topheight = 15 - int(gen.noise2((x+worldx+centerx) / 10.0, 0) * 10)
+        for y in range(height):
+            worldblocky = y+worldy
+            if worldblocky >= topheight:
+                chunk[y * width + x] = '#'
+    # below is a way to add stuff to the screen
+    # text = "x=" + str(worldx) + " y=" + str(worldy)
+    # for i, char in enumerate(text):
+    #     chunk[i] = char
+    # This is where stuff can be changed in the chunk, colors, stuff on screen, characters, ect.
+def findspawnlocation():
+    global chunk
+    global centerx
+    global worldx
+    topheight = 15 - int(gen.noise2((worldx+centerx+centerx) / 10.0, 0) * 10) # Just generate the block at x=0 and set that as the y
+    return topheight -1
+def move():
+    global worldx
+    global centerx
+    global worldy
+    global cursery
+    global curserx
+    global reach
+    global bordertrigger
+    key = term.inkey(timeout=0.01)
+    # The following below are for the player's movement
+    if key == 'd':
+        if chunk[1 + centerx + centery * width] == ' ': # Current center block in the screen but one more
+            worldx += 1
+    elif key == 'a':
+        if chunk[centerx + centery * width - 1] == ' ': # Current center block in the screen but one less
+            worldx -= 1
+    elif key == 'w':
+        if chunk[centerx + (centery-1) * width] == ' ' and onground():
+            worldy -= 1
+    # The following is confusing. and its ai code idk im not guessing all of that its been like 30 trys of trying to get bounds to work
+    elif key.name == 'KEY_UP':
+        if cursery > -reach:
+            cursery -= 1
+            bordertrigger = None
+        else:
+            bordertrigger = 'up'
 
-    before = time.perf_counter()
-    grid = Grid(matrix=matrix)
-    setup_time = time.perf_counter() - before
+    elif key.name == 'KEY_DOWN':
+        if cursery < reach:
+            cursery += 1
+            bordertrigger = None
+        else:
+            bordertrigger = 'down'
 
-    # Same endpoints for both algorithms.
-    sx, ex = 1, width - 2
-    sy = max(0, surface[sx] - 1)
-    ey = max(0, surface[ex] - 1)
+    elif key.name == 'KEY_LEFT':
+        if curserx > -reach:
+            curserx -= 1
+            bordertrigger = None
+        else:
+            bordertrigger = 'left'
 
-    start = grid.node(sx, sy)
-    end = grid.node(ex, ey)
+    elif key.name == 'KEY_RIGHT':
+        if curserx < reach:
+            curserx += 1
+            bordertrigger = None
+        else:
+            bordertrigger = 'right'
+    elif key.name == 'KEY_ENTER':
+        blockx = centerx + curserx + worldx + centerx
+        blocky = centery + cursery + worldy
 
-    algorithms = {
-        "A*": AStarFinder(),
-        "Greedy": BestFirst(),
-    }
+        worldchanges[(blockx, blocky)] = ' '
+    elif key == ' ':
+        blockx = centerx + curserx + worldx + centerx
+        blocky = centery + cursery + worldy
+        if chunk[centerx+curserx + (centery+cursery) * width] == ' ':
+            worldchanges[(blockx, blocky)] = '#'
+def gravity():
+    global velocity
+    global tick
+    global centerx
+    global centery
+    global worldy
+    if not onground(): # In the air
+        tick += velocity
+        velocity *= 1.05
+        if tick >= 40:
+            worldy += 1
+            tick = 0
+    else:
+        tick = 0
+        velocity = 1
+def onground():
+    if chunk[centerx + (centery+1) * width] != ' ': # If block below player is not air, they are on the ground (hopefully)
+        return True
+    else:
+        return False
+def render():
+    frame = ''
+    for row in range(height): # Every row goes through this
+        colorcoderframelist = []
+        colorcodegframelist = []
+        colorcodebframelist = []
+        tiletextframelist = []
+        for tile in chunk[row*width:row*width+width]: # A for loop of all the tiles (chars) inside of the chunk (what you see on the screen at a time)
+            incolorcode = False
+            tiletext = ''
+            colorcode = '' # Reset color code because the color code mode was just entered.
+            for char in tile: # Loop everything inside of the tile to find the color seperator
+                if char == '`': # If the char is the color seperator
+                    if incolorcode:
+                        incolorcode = False # This would trigger at the end of 255,0,255, meaning to that is the end, and the next tile is coming up so inside of color should go to false.
+                    else:
+                        incolorcode = True # For example if not inside of 255,0,255 yet, set inside to true.
+                        continue # Don't want to print the seperator
+                else:
+                    if not incolorcode: # When it isn't a color, it's hopefully the char that will be printed, this should still work fine if its multiple chars, but rendering will not work so not sure why I didn't just check the 2nd char oh well.
+                        tiletext += char
+                if incolorcode:
+                    colorcode += char # Add to color code the next char
+            # colorcode would be the HEX color code that was parsed
+            # tiletext is the TEXT that should be printed with that color
+            colormode = 'r'
+            r = '' # If this color is never filled, it is blank so the color is not printed
+            g = ''
+            b = ''
+            for char in colorcode: # Seperate into rgb.
+                if char == ',': # Checking for seperator in the rgb. Example: 255,0,0 this would trigger at the ,'s
+                    # This entire block just moves to the next color code when it detects the comma in the color code
+                    if colormode == 'r':
+                        colormode = 'g'
+                    elif colormode == 'g':
+                        colormode = 'b'
+                else:
+                    # These duplicate if nested statments just add the color code char depending on what color it should be. 
+                    if colormode == 'r':
+                        r += char
+                    elif colormode == 'g':
+                        g += char
+                    elif colormode == 'b':
+                        b += char
+            # Add all the color codes in seperate lists (dumb way)
+            colorcoderframelist.append(r)
+            colorcodegframelist.append(g)
+            colorcodebframelist.append(b)
+            tiletextframelist.append(tiletext)
+        for tile in range(len(tiletextframelist)): # Loop all the tiles inside of the tile list
+            if colorcoderframelist[tile] == '': # Just check one of the colors, assume if red doesn't exist the other ones don't either
+                frame = frame + tiletextframelist[tile] # Do not attempt to add a color when none is provided
+            else:
+                frame = frame + term.color_rgb(colorcoderframelist[tile],colorcodegframelist[tile],colorcodebframelist[tile])(tiletextframelist[tile])
+        if row != height - 1:
+            frame += '\n'
+                
+    print(term.home + frame, end="", flush=True) # Basicly clear the screen no idea what half of it does though.
+def gameloop():
+    global undercurser
+    with term.cbreak(), term.hidden_cursor():
+        while True:
+            move()
+            gravity()
+            generateterrain() # Makes the terrain and puts it into list chunk
+            editchunk()
+            render()
+            chunk[centerx+curserx + (centery+cursery) * width] = undercurser # Make sure collisions do the thing under the curser
 
-    results = {
-        name: {"times": [], "nodes": [], "successes": 0}
-        for name in algorithms
-    }
-
-    # Warm both algorithms up, outside measured runs.
-    for finder in algorithms.values():
-        grid.cleanup()
-        finder.find_path(start, end, grid)
-
-    # Alternate order to reduce systematic timing bias.
-    for repeat in range(REPEATS):
-        order = list(algorithms.items())
-        if repeat % 2:
-            order.reverse()
-
-        for name, finder in order:
-            elapsed, runs, success = run_search(
-                finder, grid, start, end
-            )
-
-            results[name]["times"].append(elapsed)
-            results[name]["nodes"].append(runs)
-            results[name]["successes"] += int(success)
-
-            print(
-                f"  {name:6} run {repeat + 1}: "
-                f"{elapsed * 1000:9.3f} ms | "
-                f"{runs:8,} nodes | "
-                f"{'FOUND' if success else 'NO PATH'}",
-                flush=True,
-            )
-
-    print(f"\nRESULTS — {width:,} x {height:,}")
-    print(f"Cells: {width * height:,}")
-    print(f"Grid setup (excluded): {setup_time:.2f} s")
-
-    averages = {}
-
-    for name, result in results.items():
-        average = statistics.mean(result["times"])
-        averages[name] = average
-
-        print(f"\n{name}:")
-        print(f"  Average: {average * 1000:.3f} ms")
-        print(
-            f"  Median:  "
-            f"{statistics.median(result['times']) * 1000:.3f} ms"
-        )
-        print(
-            f"  Nodes:   "
-            f"{statistics.mean(result['nodes']):,.0f} average"
-        )
-        print(
-            f"  Success: "
-            f"{result['successes']}/{REPEATS}"
-        )
-
-    if averages["Greedy"] > 0:
-        print(
-            f"\nA* / Greedy time ratio: "
-            f"{averages['A*'] / averages['Greedy']:.2f}x"
-        )
-
-    del grid, matrix, surface, algorithms
-    gc.collect()
-
-
-print("GREEDY BEST-FIRST vs A*")
-print("=======================")
-
-for width, height in SIZES:
-    try:
-        benchmark(width, height)
-    except MemoryError:
-        print("Out of memory; stopping.")
-        break
-
-print("\nBenchmark finished.")
+worldx = -50 # generate terrain needs this to know where to start
+spawny = findspawnlocation() # Find a safe spot to place the player
+worldy = spawny - centery
+generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
+render()
+gameloop()
