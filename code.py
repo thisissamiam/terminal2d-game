@@ -145,6 +145,7 @@ def gravity():
     global centerx
     global centery
     global worldy
+    global health
     if not onground(): # In the air
         tick += velocity
         velocity *= 1.05
