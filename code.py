@@ -50,7 +50,7 @@ def editchunk():
     elif bordertrigger == 'right':
         chunk[centerx+curserx+1 + (centery+cursery) * width] = '|'
     
-    if velocity/10 or whatever then every 10th do one more health
+    health -= velocity//10
     # health
     for i in range(health):
         chunk[i] = '='
