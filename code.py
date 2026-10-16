@@ -50,13 +50,10 @@ def editchunk():
     elif bordertrigger == 'right':
         chunk[centerx+curserx+1 + (centery+cursery) * width] = '|'
     
+    if velocity/10 or whatever then every 10th do one more health
     # health
     for i in range(health):
         chunk[i] = '='
-    
-    # Debug
-    for i in range(len(str(velocity))):
-            chunk[width+10+i] = str(velocity)[i]
     
 def generateterrain():
     global worldx
