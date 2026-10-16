@@ -145,6 +145,8 @@ def gravity():
         if tick >= 40:
             worldy += 1
             tick = 0
+        for i in range(len(velocity)):
+            chunk[width+10+i] = velocity[i]
     else:
         tick = 0
         velocity = 1
