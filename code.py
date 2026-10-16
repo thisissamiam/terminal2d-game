@@ -52,7 +52,7 @@ def editchunk():
     
     health -= velocity//10
     # health
-    for i in range(health):
+    for i in range(int(health)):
         chunk[i] = '='
     
 def generateterrain():
