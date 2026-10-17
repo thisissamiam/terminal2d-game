@@ -160,6 +160,7 @@ def onground():
     else:
         return False
 def render():
+
     frame = ''
     for row in range(height): # Every row goes through this
         colorcoderframelist = []
@@ -217,20 +218,25 @@ def render():
             frame += '\n'
                 
     print(term.home + frame, end="", flush=True) # Basicly clear the screen no idea what half of it does though.
+def calculatescreenres():
+    width = term.width
+    height = term.height
+    centery = height // 2
+    centerx = width // 2 # Get the center of the screen, generate from the center so you have 0,0 in a spot that makes sense, and spawn the player at 0,0 as well.
 def gameloop():
     global undercurser
     with term.cbreak(), term.hidden_cursor():
         while True:
-            width = term.width
-            height = term.height
-            centery = height // 2
-            centerx = width // 2 # Get the center of the screen, generate from the center so you have 0,0 in a spot that makes sense, and spawn the player at 0,0 as well.
+            calculatescreenres() # Incase window changes or font size is changed yeah.
             move()
             gravity()
             generateterrain() # Makes the terrain and puts it into list chunk
             editchunk()
             render()
             chunk[centerx+curserx + (centery+cursery) * width] = undercurser # Make sure collisions do the thing under the curser
+
+# First thing to do should be to figure out what the screen size is
+calculatescreenres()
 
 worldx = -50 # generate terrain needs this to know where to start
 spawny = findspawnlocation() # Find a safe spot to place the player
