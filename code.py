@@ -52,14 +52,11 @@ def editchunk():
     elif bordertrigger == 'right':
         chunk[centerx+curserx+1 + (centery+cursery) * width] = '|'
     
-
-    
-
-    
     # health
     for i in range(int(health)):
         chunk[i] = '='
-    
+    for i in range(10-int(health)):
+        chunk[i+int(health)] = '-'
 def generateterrain():
     global worldx
     global worldy
