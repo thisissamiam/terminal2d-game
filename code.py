@@ -219,6 +219,10 @@ def render():
                 
     print(term.home + frame, end="", flush=True) # Basicly clear the screen no idea what half of it does though.
 def calculatescreenres():
+    global width
+    global height
+    global centery
+    global centerx
     width = term.width
     height = term.height
     centery = height // 2
