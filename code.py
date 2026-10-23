@@ -51,9 +51,8 @@ def editchunk():
         chunk[centerx+curserx+1 + (centery+cursery) * width] = '|'
     
     # health
-    if health > 0:
-        for i in range(int(health)):
-            chunk[i] = '='
+    for i in range(int(health)):
+        chunk[i] = '='
     for i in range(10-int(health)):
         chunk[i+int(health)] = '-'
 def generateterrain():
@@ -154,6 +153,8 @@ def gravity():
         tick = 0
         velocity = 1
         health -= lastvelocity//5 # Damage on falling
+        if health < 0:
+            health = 0
         lastvelocity = 0
 def onground():
     if chunk[centerx + (centery+1) * width] == '#': # If block below player is not air, they are on the ground (hopefully)
