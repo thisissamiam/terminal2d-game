@@ -69,21 +69,26 @@ def editchunk():
             for char in range(len(text[line])):
                 chunk[(5+line)*width+centerx-len(text[line])//2+char] = text[line][char]
 
-    for (x, y), block in list(worldchanges.items()):
-        if block != '#':
-            continue
+    support = False
 
-        below = worldchanges.get((x, y + 1))
+    for distance in range(1, 11):
+        checky = y + distance
+        below = worldchanges.get((x, checky))
+
+        if below == '#':
+            suppoart = True
+            break
 
         if below is None:
             topheight = 15 - int(gen.noise2(x / 10.0, 0) * 10)
-            below_solid = y + 1 >= topheight
-        else:
-            below_solid = below == '#'
 
-        if not below_solid:
-            worldchanges[(x, y)] = ' '
-            worldchanges[(x, y + 1)] = '#'
+            if checky >= topheight:
+                support = True
+                break
+
+    if not support:
+        worldchanges[(x, y)] = ' '
+        worldchanges[(x, y + 1)] = '#'
 def generateterrain():
     global worldx
     global worldy
