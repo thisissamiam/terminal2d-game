@@ -59,14 +59,15 @@ def editchunk():
         for i in range(10-int(health)):
             chunk[i+int(health)] = '-'
     if health == 0:
-        text = '''
-        +-----------+
-        | YOU DIED  |
-        |Respawn (1)|
-        +-----------+
-        '''
-        for char in range(len(text)):
-            chunk[5*width+centerx-len(text)//2+char] = text[char]
+        text = [
+        '+-----------+',
+        '| YOU DIED  |',
+        '|Respawn (1)|',
+        '+-----------+'
+        ]
+        for line in text:
+            for char in range(len(line)):
+                chunk[5*width+centerx-len(line)//2+char] = line[char]
 def generateterrain():
     global worldx
     global worldy
