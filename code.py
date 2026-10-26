@@ -89,7 +89,6 @@ def findspawnlocation():
     global centerx
     global worldx
     topheight = 15 - int(gen.noise2((worldx+centerx+centerx) / 10.0, 0) * 10) # Just generate the block at x=0 and set that as the y
-    return topheight -1
 def move():
     global worldx
     global centerx
@@ -153,6 +152,8 @@ def move():
             health = 10
             worldx = -50
             worldy = findspawnlocation() - centery
+            while worldchanges.get((0, worldy), ' ') != ' ':
+                worldy -= 1
             curserx = 3
             cursery = 0
 def gravity():
