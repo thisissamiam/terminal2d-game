@@ -151,8 +151,10 @@ def move():
     elif key == '1':
         if health == 0:
             health = 10
+            worldx = -50
             worldy = findspawnlocation() - centery
-            worldx = 0
+            curserx = 3
+            cursery = 0
 def gravity():
     global velocity
     global tick
