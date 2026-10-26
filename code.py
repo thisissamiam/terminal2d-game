@@ -98,6 +98,7 @@ def move():
     global curserx
     global reach
     global bordertrigger
+    global health
     key = term.inkey(timeout=0.01)
     # The following below are for the player's movement
     if key == 'd':
