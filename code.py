@@ -147,6 +147,9 @@ def move():
         blocky = centery + cursery + worldy
         if chunk[centerx+curserx + (centery+cursery) * width] == ' ':
             worldchanges[(blockx, blocky)] = '#'
+    elif key == '1':
+        if health == 0:
+            health = 10
 def gravity():
     global velocity
     global tick
@@ -264,8 +267,7 @@ def gameloop():
     with term.cbreak(), term.hidden_cursor():
         while True:
             calculatescreenres() # Incase window changes or font size is changed yeah.
-            if health != 0:
-                move()
+            move()
             gravity()
             checkhealth()
             generateterrain() # Makes the terrain and puts it into list chunk
