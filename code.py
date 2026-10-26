@@ -53,11 +53,14 @@ def editchunk():
         chunk[centerx+curserx+1 + (centery+cursery) * width] = '|'
     
     # health
-    if showhealth:
-        for i in range(int(health)):
-            chunk[i] = '='
-        for i in range(10-int(health)):
-            chunk[i+int(health)] = '-'
+    for i in range(int(health)):
+        chunk[i] = '='
+    for i in range(10-int(health)):
+        chunk[i+int(health)] = '-'
+    if health == 0:
+        text = 'YOU DIED'
+        for char in range(len(text)):
+            chunk[5*width+10+char] = text[char]
 def generateterrain():
     global worldx
     global worldy
