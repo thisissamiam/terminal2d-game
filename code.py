@@ -264,7 +264,8 @@ def gameloop():
     with term.cbreak(), term.hidden_cursor():
         while True:
             calculatescreenres() # Incase window changes or font size is changed yeah.
-            move()
+            if health != 0:
+                move()
             gravity()
             checkhealth()
             generateterrain() # Makes the terrain and puts it into list chunk
