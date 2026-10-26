@@ -151,7 +151,7 @@ def move():
     elif key == '1':
         if health == 0:
             health = 10
-            worldy = spawny
+            worldy = findspawnlocation() - centery
             worldx = 0
 def gravity():
     global velocity
