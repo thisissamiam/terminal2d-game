@@ -68,10 +68,11 @@ def editchunk():
         for line in range(len(text)):
             for char in range(len(text[line])):
                 chunk[(5+line)*width+centerx-len(text[line])//2+char] = text[line][char]
-    for x,y in worldchanges:
-        if chunk[(y-1)*width+x] == ' ':
-            worldchanges[(x,y)] = ''
-            worldchanges[(x, y-1)] = '#'
+                
+    for (x, y), block in list(worldchanges.items()):
+        if block == '#' and worldchanges.get((x, y-1), ' ') == ' ':
+            worldchanges[(x, y)] = ' '
+            worldchanges[(x, y+1)] = '#'
 def generateterrain():
     global worldx
     global worldy
