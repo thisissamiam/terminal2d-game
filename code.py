@@ -15,6 +15,8 @@ reach = 5
 velocity = 1
 bordertrigger = None
 health = 10
+showhealth = True
+healthtick = 0
 lastvelocity = 0
 undercurser = None
 
@@ -51,10 +53,11 @@ def editchunk():
         chunk[centerx+curserx+1 + (centery+cursery) * width] = '|'
     
     # health
-    for i in range(int(health)):
-        chunk[i] = '='
-    for i in range(10-int(health)):
-        chunk[i+int(health)] = '-'
+    if showhealth:
+        for i in range(int(health)):
+            chunk[i] = '='
+        for i in range(10-int(health)):
+            chunk[i+int(health)] = '-'
 def generateterrain():
     global worldx
     global worldy
@@ -220,6 +223,23 @@ def render():
             frame += '\n'
                 
     print(term.home + frame, end="", flush=True) # Basicly clear the screen no idea what half of it does though.
+def checkhealth():
+    global health
+    global showhealth
+    global healthtick
+    if health <= 0:
+        healthtick += 1
+        if healthtick >= 30:
+            healthtick = 0
+        if healthtick <= 10:
+            showhealth = False
+        else:
+            showhealth = True
+    else:
+        showhealth = True
+        healthtick = 0
+
+
 def calculatescreenres():
     global width
     global height
@@ -236,6 +256,7 @@ def gameloop():
             calculatescreenres() # Incase window changes or font size is changed yeah.
             move()
             gravity()
+            checkhealth()
             generateterrain() # Makes the terrain and puts it into list chunk
             editchunk()
             render()
