@@ -153,7 +153,7 @@ def move():
             health = 10
             worldx = -50
             worldy = findspawnlocation() - centery
-            while worldchanges.get((0, centery + worldy), ' ') != ' ':
+            while worldchanges.get((-50, centery + worldy), ' ') != ' ':
                 worldy -= 1
             curserx = 3
             cursery = 0
