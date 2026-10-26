@@ -61,7 +61,7 @@ def editchunk():
     if health == 0:
         text = 'YOU DIED'
         for char in range(len(text)):
-            chunk[5*width*2+char] = text[char]
+            chunk[5*(width*2)+char] = text[char]
 def generateterrain():
     global worldx
     global worldy
