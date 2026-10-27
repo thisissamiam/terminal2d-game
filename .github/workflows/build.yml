@@ -1,0 +1,26 @@
+
+name: Build Python Game
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build executable
+        uses: Martin005/pyinstaller-action@v1.2.0
+        with:
+          spec: code.py
+          requirements: requirements.txt
+          python_ver: '3.12'
+          python_arch: x64
+          options: '--onefile, --console'
+          upload_exe_with_name: SamCraft
