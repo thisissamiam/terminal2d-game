@@ -171,7 +171,7 @@ def gravity():
         if velocity <= 30:
             velocity *= 1.05
         for i in range(len(str(velocity))):
-            chunk[5*width+i] = velocity[i]
+            chunk[5*width+i] = str(velocity)[i]
         if tick >= 40:
             worldy += 1
             tick = 0
