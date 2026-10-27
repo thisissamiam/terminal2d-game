@@ -68,6 +68,8 @@ def editchunk():
         for line in range(len(text)):
             for char in range(len(text[line])):
                 chunk[(5+line)*width+centerx-len(text[line])//2+char] = text[line][char]
+    for i in range(len(str(velocity))):
+            chunk[5*width+i] = str(velocity)[i]
 
 def generateterrain():
     global worldx
@@ -170,8 +172,7 @@ def gravity():
         tick += velocity
         if velocity <= 30:
             velocity *= 1.05
-        for i in range(len(str(velocity))):
-            chunk[5*width+i] = str(velocity)[i]
+        
         if tick >= 40:
             worldy += 1
             tick = 0
