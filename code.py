@@ -69,7 +69,7 @@ def editchunk():
             for char in range(len(text[line])):
                 chunk[(5+line)*width+centerx-len(text[line])//2+char] = text[line][char]
     for i in range(len(str(velocity))):
-            chunk[5*width+2+ai] = str(velocity)[i]
+            chunk[5*width+2+i] = str(velocity)[i]
 
 def generateterrain():
     global worldx
