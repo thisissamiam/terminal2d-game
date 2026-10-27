@@ -69,26 +69,6 @@ def editchunk():
             for char in range(len(text[line])):
                 chunk[(5+line)*width+centerx-len(text[line])//2+char] = text[line][char]
 
-    support = False
-
-    for distance in range(1, 11):
-        checky = y + distance
-        below = worldchanges.get((x, checky))
-
-        if below == '#':
-            suppoart = True
-            break
-
-        if below is None:
-            topheight = 15 - int(gen.noise2(x / 10.0, 0) * 10)
-
-            if checky >= topheight:
-                support = True
-                break
-
-    if not support:
-        worldchanges[(x, y)] = ' '
-        worldchanges[(x, y + 1)] = '#'
 def generateterrain():
     global worldx
     global worldy
@@ -188,7 +168,8 @@ def gravity():
     global lastvelocity
     if not onground(): # In the air
         tick += velocity
-        velocity *= 1.05
+        if velocity <= 30:
+            velocity *= 1.05
         if tick >= 40:
             worldy += 1
             tick = 0
