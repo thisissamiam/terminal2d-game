@@ -81,13 +81,15 @@ def generateterrain():
             worldblocky = y+worldy
             if worldblocky >= topheight:
                 chunk[y * width + x] = '#'
+        if wheatgen.noise2((x+worldx+centerx) / 10.0, 0) > 0.2:
+            chunk[(y+1)*width+x] = 'F'
     # below is a way to add stuff to the screen
     # text = "x=" + str(worldx) + " y=" + str(worldy)
     # for i, char in enumerate(text):
     #     chunk[i] = char
     # This is where stuff can be changed in the chunk, colors, stuff on screen, characters, ect.
-    if wheatgen.noise2((i+worldx+centerx) / 10.0, 0) > 0.2:
-        pass # Create wheat
+    
+        
 
     
 def findspawnlocation():
