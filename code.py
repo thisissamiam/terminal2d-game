@@ -5,6 +5,7 @@ import time
 world = [] # Create the 2d world, starting as nothing
 seed = random.randint(0, 100000000) # Generate the seed, determines what is generated
 wheatgen = OpenSimplex(seed=seed + 1) # Seed to generate wheat
+treegen = opensimplex(seed=seed + 2)
 gen = OpenSimplex(seed=seed)
 term = blessed.Terminal() # Term is basicly the terminal, allows editing and getting data about the terminal.
 print(term.clear) # Clear the screen before starting the game cuz yeah
@@ -85,6 +86,12 @@ def generateterrain():
         if wheatgen.noise2((x+worldx+centerx) / 10.0, 0) > 0.2:
             if wheaty >= 0 and wheaty < height: # Check to make sure the player isn't above or below when wheat spawns
                 chunk[wheaty*width+x] = 'F'
+        treey = topheight - worldy - 1
+        if treegen.noise2((x+worldx+centerx) / 10.0, 0) > 0.2:
+            if treey >= 0 and treey < height:
+                chunk[treey*width+x] = '|'
+            
+
     # below is a way to add stuff to the screen
     # text = "x=" + str(worldx) + " y=" + str(worldy)
     # for i, char in enumerate(text):
