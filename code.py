@@ -95,8 +95,8 @@ def generateterrain():
                         '           @    ',
                         '          @@@   ',
                         '         @@@@@  ',
-                        '           H    ',
-                        '           H    '
+                        '           |    ',
+                        '           |    '
                     ]
                     tree = list(reversed(tree))
                     for line in range(len(tree)):
