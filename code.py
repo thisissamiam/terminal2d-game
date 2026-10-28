@@ -297,7 +297,7 @@ spawny = findspawnlocation() # Find a safe spot to place the player
 worldy = spawny - centery
 
 for i in range(10):
-    print(int(wheatgen.noise2((i+worldx+centerx) / 10.0, 0) * 10))
+    print(int(wheatgen.noise2((i+3+worldx+centerx) / 10.0, 0) * 10))
 time.sleep(10)
 generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
 render()
