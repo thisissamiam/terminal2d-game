@@ -86,7 +86,8 @@ def generateterrain():
     # for i, char in enumerate(text):
     #     chunk[i] = char
     # This is where stuff can be changed in the chunk, colors, stuff on screen, characters, ect.
-
+    if wheatgen.noise2((i+worldx+centerx) / 10.0, 0) > 0.2:
+        pass # Create wheat
 
     
 def findspawnlocation():
@@ -296,9 +297,6 @@ worldx = -50 # generate terrain needs this to know where to start
 spawny = findspawnlocation() # Find a safe spot to place the player
 worldy = spawny - centery
 
-for i in range(10):
-    print(str('   ') + str(wheatgen.noise2((i+worldx+centerx) / 10.0, 0)))
-time.sleep(10)
 generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
 render()
 gameloop()
