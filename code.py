@@ -92,9 +92,11 @@ def generateterrain():
             if treegen.noise2((x+worldx+centerx) / 10.0, 0) > 0.3:
                 if treey >= 0 and treey < height:
                     tree = [
-                        '         ****         ',
-                        '           |          ',
-                        '           |          '
+                        '           @    ',
+                        '          @@@   ',
+                        '         @@@@@  ',
+                        '           H    ',
+                        '           H    '
                     ]
                     tree = list(reversed(tree))
                     for line in range(len(tree)):
