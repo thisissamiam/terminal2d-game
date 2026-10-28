@@ -81,10 +81,10 @@ def generateterrain():
             worldblocky = y+worldy
             if worldblocky >= topheight:
                 chunk[y * width + x] = '#'
-    wheaty = topheight - worldy - 1 # Removes player offset
-    if wheatgen.noise2((x+worldx+centerx) / 10.0, 0) > 0.2:
-        if wheaty >= 0 and wheaty < height: # Check to make sure the player isn't above or below when wheat spawns
-            chunk[wheaty*width+x] = 'F'
+        wheaty = topheight - worldy - 1 # Removes player offset
+        if wheatgen.noise2((x+worldx+centerx) / 10.0, 0) > 0.2:
+            if wheaty >= 0 and wheaty < height: # Check to make sure the player isn't above or below when wheat spawns
+                chunk[wheaty*width+x] = 'F'
     # below is a way to add stuff to the screen
     # text = "x=" + str(worldx) + " y=" + str(worldy)
     # for i, char in enumerate(text):
