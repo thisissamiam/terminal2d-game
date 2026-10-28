@@ -87,18 +87,20 @@ def generateterrain():
             if wheaty >= 0 and wheaty < height: # Check to make sure the player isn't above or below when wheat spawns
                 chunk[wheaty*width+x] = 'F'
         treey = topheight - worldy - 1
-        if treegen.noise2((x+worldx+centerx) / 10.0, 0) > 0.3:
-            if treey >= 0 and treey < height:
-                tree = [
-                    '         ****         ',
-                    '           |          ',
-                    '           |          '
-                ]
-                tree = list(reversed(tree))
-                for line in range(len(tree)):
-                    for char in range(len(tree[line])):
-                        if tree[line][char] != ' ':
-                            chunk[(treey-line)*width+x + char - len(tree[line]) // 2] = tree[line][char]
+        treex = x + worldx + centerx
+        if treex % 8 == 0: # Only every 8 blocks
+            if treegen.noise2((x+worldx+centerx) / 10.0, 0) > 0.3:
+                if treey >= 0 and treey < height:
+                    tree = [
+                        '         ****         ',
+                        '           |          ',
+                        '           |          '
+                    ]
+                    tree = list(reversed(tree))
+                    for line in range(len(tree)):
+                        for char in range(len(tree[line])):
+                            if tree[line][char] != ' ':
+                                chunk[(treey-line)*width+x + char - len(tree[line]) // 2] = tree[line][char]
             
 
     # below is a way to add stuff to the screen
