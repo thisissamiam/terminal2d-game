@@ -89,7 +89,15 @@ def generateterrain():
         treey = topheight - worldy - 1
         if treegen.noise2((x+worldx+centerx) / 10.0, 0) > 0.2:
             if treey >= 0 and treey < height:
-                chunk[treey*width+x] = '|'
+                tree = [
+                    '         ****         ',
+                    '           |          ',
+                    '           |          '
+                ]
+                for line in range(len(tree)):
+                    for char in range(len(line)):
+                        if char != ' ':
+                            chunk[(treey-line)*width+x+char] = char
             
 
     # below is a way to add stuff to the screen
