@@ -87,7 +87,7 @@ def generateterrain():
             if wheaty >= 0 and wheaty < height: # Check to make sure the player isn't above or below when wheat spawns
                 chunk[wheaty*width+x] = 'F'
         treey = topheight - worldy - 1
-        if treegen.noise2((x+worldx+centerx) / 10.0, 0) > 0.2:
+        if treegen.noise2((x+worldx+centerx) / 10.0, 0) > 0.3:
             if treey >= 0 and treey < height:
                 tree = [
                     '         ****         ',
