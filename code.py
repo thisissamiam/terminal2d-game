@@ -103,7 +103,9 @@ def generateterrain():
                     for line in range(len(tree)):
                         for char in range(len(tree[line])):
                             if tree[line][char] != ' ':
-                                chunk[(treey-line)*width+x + char - len(tree[line]) - 10] = tree[line][char]
+                                chunk[(treey-line)*width+x + char - len(tree[line]) - 11] = tree[line][char]
+                                print("Surface:", topheight - worldy, "Tree bottom:", treey)
+                                time.sleep(10)
             
 
     # below is a way to add stuff to the screen
