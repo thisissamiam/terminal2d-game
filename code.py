@@ -99,7 +99,7 @@ def findspawnlocation():
     global centerx
     global worldx
     topheight = 15 - int(gen.noise2((worldx+centerx+centerx) / 10.0, 0) * 10) # Just generate the block at x=0 and set that as the y
-    if wheatgen.noise2((x+worldx+centerx) / 10.0, 0) > 0.2:
+    if wheatgen.noise2((worldx+centerx) / 10.0, 0) > 0.2:
         topheight -= 1
     return topheight-1
 def move():
