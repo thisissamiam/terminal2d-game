@@ -17,6 +17,7 @@ worldy=0
 tick = 0
 reach = 5
 velocity = 1
+fpsframe = 0
 bordertrigger = None
 health = 10
 showhealth = True
@@ -239,6 +240,7 @@ def gravity():
 def onground():
     return chunk[centerx + (centery+1) * width] in solidtiles # Will return True or False
 def render():
+    global fpsframe
     global start
     frame = ''
     for row in range(height-1): # Every row goes through this
@@ -296,7 +298,11 @@ def render():
         if row != height - 1:
             frame += '\n'
     print(term.home + frame, 1 / (time.perf_counter() - start), end="", flush=True) # Basicly clear the screen no idea what half of it does though.
-    start = time.perf_counter()
+    if fpsframe > 50:
+        start = time.perf_counter()
+        fpsframe = 0
+    else:
+        fpsframe += 1
 def checkhealth():
     global health
     global showhealth
