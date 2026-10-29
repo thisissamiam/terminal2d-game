@@ -83,6 +83,8 @@ def generateterrain():
             worldblocky = y+worldy
             if worldblocky >= topheight:
                 chunk[y * width + x] = '#'
+            if topheight > 15:
+                chunk[(topheight - worldy - 1) * width + x] = '%'
         wheaty = topheight - worldy - 1 # Removes player offset
         if wheatgen.noise2((x+worldx+centerx) / 10.0, 0) > 0.2:
             if wheaty >= 0 and wheaty < height: # Check to make sure the player isn't above or below when wheat spawns
