@@ -3,11 +3,7 @@ from opensimplex import OpenSimplex
 import blessed
 import time
 world = [] # Create the 2d world, starting as nothing
-seed = random.randint(0, 100000000) # Generate the seed, determines what is generated
-wheatgen = OpenSimplex(seed=seed + 1) # Seed to generate wheat
-treegen = OpenSimplex(seed=seed + 2)
-cavegen = OpenSimplex(seed=seed + 3)
-gen = OpenSimplex(seed=seed)
+
 term = blessed.Terminal() # Term is basicly the terminal, allows editing and getting data about the terminal.
 print(term.clear) # Clear the screen before starting the game cuz yeah
 # Chunk Settings
@@ -349,6 +345,25 @@ def gameloop():
             editchunk()
             render()
             chunk[centerx+curserx + (centery+cursery) * width] = undercurser # Make sure collisions do the thing under the curser
+
+
+
+user = input('What seed? Or just hit enter for a random one')
+if user.isdigit():
+    seed = user
+else:
+    print('I am assuming you want a random seed')
+    seed = random.randint(0, 100000000) # Generate the seed, determines what is generated
+time.sleep(1)
+print('Starting generation, this probally won\'t take long')
+
+gen = OpenSimplex(seed=seed)
+wheatgen = OpenSimplex(seed=seed + 1) # Seed to generate wheat
+treegen = OpenSimplex(seed=seed + 2)
+cavegen = OpenSimplex(seed=seed + 3)
+
+
+
 
 # First thing to do should be to figure out what the screen size is
 calculatescreenres()
