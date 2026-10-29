@@ -116,15 +116,19 @@ def generateterrain():
     stats['terrain'] = (time.perf_counter() - start) * 1000
 
     # Caves
+    # Caves
     start = time.perf_counter()
 
     for x in range(width):
         worldblockx = x + worldx + centerx
+        topheight = 15 - int(gen.noise2(worldblockx / 10.0, 0) * 10)
 
         for y in range(height):
             index = y * width + x
-            if chunk[index] in solidtiles:
-                worldblocky = y + worldy
+            worldblocky = y + worldy
+
+            # Only generate caves well underground
+            if worldblocky >= topheight + 4 and chunk[index] in solidtiles:
                 cave = cavegen.noise2(
                     worldblockx / 10.0,
                     worldblocky / 10.0
