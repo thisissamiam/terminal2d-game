@@ -208,7 +208,7 @@ def move():
             curserx = 3
             cursery = 0
     elif key == 'f':
-        flight = True
+        flight = not flight
 def gravity():
     global velocity
     global tick
