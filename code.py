@@ -295,6 +295,7 @@ def render():
                 frame = frame + term.color_rgb(colorcoderframelist[tile],colorcodegframelist[tile],colorcodebframelist[tile])(tiletextframelist[tile])
         if row != height - 1:
             frame += '\n'
+    print('\n')
     print(1 / (time.perf_counter() - start))
     print(term.home + frame, end="", flush=True) # Basicly clear the screen no idea what half of it does though.
     start = time.perf_counter()
