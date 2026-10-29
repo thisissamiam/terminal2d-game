@@ -239,7 +239,7 @@ def onground():
     return chunk[centerx + (centery+1) * width] in solidtiles # Will return True or False
 def render():
     frame = ''
-    for row in range(height)-1: # Every row goes through this
+    for row in range(height-1): # Every row goes through this
         colorcoderframelist = []
         colorcodegframelist = []
         colorcodebframelist = []
