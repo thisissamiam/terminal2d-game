@@ -94,17 +94,18 @@ def generateterrain():
                 chunk[wheaty*width+x] = 'F'
     for x in range(width):
             for y in range(height):
-                # Weird stuff so it is correct cordinates
-                worldblockx = x + worldx + centerx
-                worldblocky = y + worldy
+                if chunk[y*width+x] in solidtiles:
+                    # Weird stuff so it is correct cordinates
+                    worldblockx = x + worldx + centerx
+                    worldblocky = y + worldy
+                    
+                    cave = cavegen.noise2(
+                    worldblockx / 10.0,
+                    worldblocky / 10.0
+                    )
 
-                cave = cavegen.noise2(
-                worldblockx / 10.0,
-                worldblocky / 10.0
-                )
-
-                if cave > 0.3 and chunk[y*width+x] in solidtiles:
-                    chunk[y*width+x] = ' '
+                    if cave > 0.3:
+                        chunk[y*width+x] = ' '
     for x in range(width):
         treex = x + worldx + centerx
         topheight = 15 - int(gen.noise2(treex / 10.0, 0) * 10)
@@ -130,9 +131,6 @@ def generateterrain():
                                 if 0 <= treex_screen < width and 0 <= treerow < height:
                                     chunk[treerow * width + treex_screen] = tree[line][char]
         
-    generationtime = time.perf_counter() - start
-
-    start = time.perf_counter()
 
     # Your existing rendering code goes here
 
