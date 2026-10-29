@@ -17,6 +17,7 @@ worldy=0
 tick = 0
 reach = 5
 velocity = 1
+fps = 0
 fpsframe = 0
 bordertrigger = None
 health = 10
@@ -240,6 +241,7 @@ def gravity():
 def onground():
     return chunk[centerx + (centery+1) * width] in solidtiles # Will return True or False
 def render():
+    global fps
     global fpsframe
     global start
     frame = ''
