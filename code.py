@@ -155,7 +155,11 @@ def move():
                 worldy -= 1
             else:
                 if onground():
-                    worldy -=1
+                    worldy -= 1
+    elif key == 's':
+        if flight: # Allows moving down if flying since no gravity exists
+            if chunk[centerx + (centery+1) * width] not in solidtiles:
+                worldy += 1
     # The following is confusing. and its ai code idk im not guessing all of that its been like 30 trys of trying to get bounds to work
     elif key.name == 'KEY_UP':
         if cursery > -reach:
