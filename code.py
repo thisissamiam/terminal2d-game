@@ -88,8 +88,8 @@ def generateterrain():
                 chunk[wheaty*width+x] = 'F'
     for x in range(width):
         treey = topheight - worldy - 1
-        topheight = 15 - int(gen.noise2(treex / 10.0, 0) * 10)
         treex = x + worldx + centerx
+        topheight = 15 - int(gen.noise2(treex / 10.0, 0) * 10)
         if treex % 8 == 0: # Only every 8 blocks
             if treegen.noise2((x+worldx+centerx) / 10.0, 0) > 0.3:
                 if treey >= 0 and treey < height:
