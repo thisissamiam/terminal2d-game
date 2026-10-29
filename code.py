@@ -25,6 +25,7 @@ lastvelocity = 0
 undercurser = None
 solidtiles = ['#','|']
 flight = False
+start = 0
 
 chunk = [] # Need to make it before generateterrain function so it can be used by other functions
 worldchanges = {}
@@ -238,6 +239,7 @@ def gravity():
 def onground():
     return chunk[centerx + (centery+1) * width] in solidtiles # Will return True or False
 def render():
+    global start
     frame = ''
     for row in range(height-1): # Every row goes through this
         colorcoderframelist = []
