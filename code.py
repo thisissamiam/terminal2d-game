@@ -232,10 +232,10 @@ def gravity():
             health = 0
         lastvelocity = 0
 def onground():
-    if chunk[centerx + (centery+1) * width] == '#' or chunk[centerx + (centery+1) * width] == 'F': # If block below player is not air, they are on the ground (hopefully)
-        return True
-    else:
-        return False
+    for tile in solidtiles:
+        if chunk[centerx + (centery+1) * width] == tile:
+            return True
+    return False
 def render():
 
     frame = ''
