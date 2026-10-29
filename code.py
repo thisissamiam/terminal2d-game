@@ -297,12 +297,15 @@ def render():
                 frame = frame + term.color_rgb(colorcoderframelist[tile],colorcodegframelist[tile],colorcodebframelist[tile])(tiletextframelist[tile])
         if row != height - 1:
             frame += '\n'
-    print(term.home + frame, 1 / (time.perf_counter() - start), end="", flush=True) # Basicly clear the screen no idea what half of it does though.
-    if fpsframe > 50:
+    if fpsframe > 60:
+        timeinframe = time.perf_counter() - start
+        fps = fpsframe / timeinframe
         start = time.perf_counter()
         fpsframe = 0
     else:
         fpsframe += 1
+    print(term.home + frame, fps, end="", flush=True) # Basicly clear the screen no idea what half of it does though.
+    
 def checkhealth():
     global health
     global showhealth
