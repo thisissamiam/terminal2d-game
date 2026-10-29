@@ -147,7 +147,7 @@ def move():
     global bordertrigger
     global health
     global flight
-    key = term.inkey(timeout=0)
+    key = term.inkey(timeout=0.005)
     # The following below are for the player's movement
     if key == 'd':
         if chunk[1 + centerx + centery * width] not in solidtiles:
