@@ -13,7 +13,7 @@ print(term.clear) # Clear the screen before starting the game cuz yeah
 # Chunk Settings
 import time
 
-start = time.perf_counter()
+
 worldy=0
 tick = 0
 reach = 5
@@ -77,7 +77,7 @@ def editchunk():
                 chunk[(5+line)*width+centerx-len(text[line])//2+char] = text[line][char]
 
 def generateterrain():
-    global start
+    start = time.perf_counter()
     global worldx
     global worldy
     global chunk # Get chunk that was defined outside of function
