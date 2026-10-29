@@ -74,136 +74,36 @@ def editchunk():
 def generateterrain():
     global worldx
     global worldy
-    global chunk
-
-    chunk = [' '] * width * height
-
-    print("\n========== TERRAIN DEBUG ==========")
-    print("worldx:", worldx, "worldy:", worldy)
-    print("width:", width, "height:", height)
-
-    # STEP 1: Generate terrain and wheat first
+    global chunk # Get chunk that was defined outside of function
+    chunk = [' '] * width * height # Reset current chunk data before calculating terrain
     for x in range(width):
-        worldblockx = x + worldx + centerx
-        topheight = 15 - int(gen.noise2(worldblockx / 10.0, 0) * 10)
-
+        topheight = 15 - int(gen.noise2((x+worldx+centerx) / 10.0, 0) * 10)
         for y in range(height):
-            worldblocky = y + worldy
+            worldblocky = y+worldy
             if worldblocky >= topheight:
                 chunk[y * width + x] = '#'
-
-        wheaty = topheight - worldy - 1
-
-        if wheatgen.noise2(worldblockx / 10.0, 0) > 0.2:
-            if 0 <= wheaty < height:
-                chunk[wheaty * width + x] = 'F'
-
-    print("\n========== TREE DEBUG ==========")
-
-    # STEP 2: Place trees after terrain is complete
-    for x in range(width):
-        worldblockx = x + worldx + centerx
-
-        if worldblockx % 8 != 0:
-            continue
-
-        noise = treegen.noise2(worldblockx / 10.0, 0)
-
-        if noise <= 0.3:
-            continue
-
-        topheight = 15 - int(
-            gen.noise2(worldblockx / 10.0, 0) * 10
-        )
-
-        groundy = topheight - worldy
-        treey = groundy - 1
-
-        print("\n--- TREE CANDIDATE ---")
-        print("Screen x:", x)
-        print("World x:", worldblockx)
-        print("Terrain topheight:", topheight)
-        print("worldy:", worldy)
-        print("Expected ground screen row:", groundy)
-        print("Tree bottom screen row:", treey)
-        print("Tree noise:", noise)
-
-        if not (0 <= treey < height):
-            print("SKIPPED: Tree bottom is outside the screen")
-            continue
-
-        # Check the actual terrain at the trunk position
-        actual_ground = None
-
-        for y in range(height):
-            if chunk[y * width + x] == '#':
-                actual_ground = y
-                break
-
-        print("Actual first # at trunk x:", actual_ground)
-
-        if actual_ground is not None:
-            print("Ground calculation difference:",
-                  actual_ground - groundy)
-
-        tree = [
-            '           @    ',
-            '          @@@   ',
-            '         @@@@@  ',
-            '           |    ',
-            '           |    ',
-            '           |    '
-        ]
-
-        tree = list(reversed(tree))
-
-        # Print where every non-space tree character will go
-        for line in range(len(tree)):
-            treerow = treey - line
-
-            for char in range(len(tree[line])):
-                if tree[line][char] == ' ':
-                    continue
-
-                treex = x + char - 11
-
-                if not (0 <= treex < width and
-                        0 <= treerow < height):
-                    print("OUT OF BOUNDS:",
-                          "char", tree[line][char],
-                          "row", treerow,
-                          "col", treex)
-                    continue
-
-                old_char = chunk[treerow * width + treex]
-
-                print("Placing", repr(tree[line][char]),
-                      "at row", treerow,
-                      "col", treex,
-                      "| replacing", repr(old_char))
-
-                chunk[treerow * width + treex] = tree[line][char]
-
-        # Show the ground and tree in the chunk after placement
-        print("\nChunk around tree (top to bottom):")
-
-        left = max(0, x - 12)
-        right = min(width, x + 13)
-
-        for y in range(max(0, treey - 7),
-                       min(height, groundy + 2)):
-            print(
-                str(y).rjust(3),
-                repr(''.join(chunk[y * width + left:
-                                   y * width + right]))
-            )
-
-        print("Expected trunk bottom:", treey)
-        print("Expected ground row:", groundy)
-        print("================================")
-
-    print("\n========== END DEBUG ==========")
-
+        wheaty = topheight - worldy - 1 # Removes player offset
+        if wheatgen.noise2((x+worldx+centerx) / 10.0, 0) > 0.2:
+            if wheaty >= 0 and wheaty < height: # Check to make sure the player isn't above or below when wheat spawns
+                chunk[wheaty*width+x] = 'F'
+        treey = topheight - worldy - 1
+        treex = x + worldx + centerx
+        if treex % 8 == 0: # Only every 8 blocks
+            if treegen.noise2((x+worldx+centerx) / 10.0, 0) > 0.3:
+                if treey >= 0 and treey < height:
+                    tree = [
+                        '           @    ',
+                        '          @@@   ',
+                        '         @@@@@  ',
+                        '           |    ',
+                        '           |    ',
+                        '           |    '
+                    ]
+                    tree = list(reversed(tree))
+                    for line in range(len(tree)):
+                        for char in range(len(tree[line])):
+                            if tree[line][char] != ' ':
+                                chunk[(treey-line)*width+x + char - len(tree[line]) - 11] = tree[line][char]
                                 
             
 
