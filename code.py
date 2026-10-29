@@ -90,6 +90,19 @@ def generateterrain():
             if wheaty >= 0 and wheaty < height: # Check to make sure the player isn't above or below when wheat spawns
                 chunk[wheaty*width+x] = 'F'
     for x in range(width):
+            for y in range(height):
+                # Weird stuff so it is correct cordinates
+                worldblockx = x + worldx + centerx
+                worldblocky = y + worldy
+
+                cave = cavegen.noise2(
+                worldblockx / 10.0,
+                worldblocky / 10.0
+                )
+
+                if cave > 0.3 and chunk[y*width*x] in solidtiles:
+                    chunk[y*width+x] = ' '
+    for x in range(width):
         treex = x + worldx + centerx
         topheight = 15 - int(gen.noise2(treex / 10.0, 0) * 10)
         treey = topheight - worldy - 1
@@ -114,19 +127,7 @@ def generateterrain():
                                 if 0 <= treex_screen < width and 0 <= treerow < height:
                                     chunk[treerow * width + treex_screen] = tree[line][char]
         
-        for x in range(width):
-            for y in range(height):
-                # Weird stuff so it is correct cordinates
-                worldblockx = x + worldx + centerx
-                worldblocky = y + worldy
-
-                cave = cavegen.noise2(
-                worldblockx / 10.0,
-                worldblocky / 10.0
-                )
-
-                if cave > 0.3:
-                    chunk[y*width+x] = ' '
+        
                                 
             
 
