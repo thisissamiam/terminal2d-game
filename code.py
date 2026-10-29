@@ -100,7 +100,7 @@ def generateterrain():
                 worldblocky / 10.0
                 )
 
-                if cave > 0.3 and chunk[y*width*x] in solidtiles:
+                if cave > 0.3 and chunk[y*width+x] in solidtiles:
                     chunk[y*width+x] = ' '
     for x in range(width):
         treex = x + worldx + centerx
