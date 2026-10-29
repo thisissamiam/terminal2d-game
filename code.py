@@ -238,9 +238,8 @@ def gravity():
 def onground():
     return chunk[centerx + (centery+1) * width] in solidtiles # Will return True or False
 def render():
-
     frame = ''
-    for row in range(height): # Every row goes through this
+    for row in range(height)-1: # Every row goes through this
         colorcoderframelist = []
         colorcodegframelist = []
         colorcodebframelist = []
@@ -294,8 +293,9 @@ def render():
                 frame = frame + term.color_rgb(colorcoderframelist[tile],colorcodegframelist[tile],colorcodebframelist[tile])(tiletextframelist[tile])
         if row != height - 1:
             frame += '\n'
-                
+    print(1 / (time.perf_counter() - start))
     print(term.home + frame, end="", flush=True) # Basicly clear the screen no idea what half of it does though.
+    start = time.perf_counter()
 def checkhealth():
     global health
     global showhealth
@@ -326,6 +326,7 @@ def gameloop():
     global undercurser
     with term.cbreak(), term.hidden_cursor():
         while True:
+            
             calculatescreenres() # Incase window changes or font size is changed yeah.
             move()
             if not flight:
