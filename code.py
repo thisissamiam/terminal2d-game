@@ -22,6 +22,7 @@ healthtick = 0
 lastvelocity = 0
 undercurser = None
 solidtiles = ['#','|']
+flight = False
 
 chunk = [] # Need to make it before generateterrain function so it can be used by other functions
 worldchanges = {}
@@ -139,6 +140,7 @@ def move():
     global reach
     global bordertrigger
     global health
+    global flight
     key = term.inkey(timeout=0.01)
     # The following below are for the player's movement
     if key == 'd':
@@ -149,8 +151,12 @@ def move():
             if chunk[centerx + centery * width - 1] not in solidtiles: # Current center block in the screen but one less
                 worldx -= 1
     elif key == 'w':
-        if chunk[centerx + (centery-1) * width] not in solidtiles and onground():
-            worldy -= 1
+        if chunk[centerx + (centery-1) * width] not in solidtiles:
+            if flight:
+                worldy -= 1
+            else:
+                if onground():
+                    worldy -=1
     # The following is confusing. and its ai code idk im not guessing all of that its been like 30 trys of trying to get bounds to work
     elif key.name == 'KEY_UP':
         if cursery > -reach:
@@ -198,6 +204,8 @@ def move():
                 worldy -= 1
             curserx = 3
             cursery = 0
+    elif key == 'f':
+        flight = True
 def gravity():
     global velocity
     global tick
