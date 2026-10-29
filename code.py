@@ -21,6 +21,7 @@ showhealth = True
 healthtick = 0
 lastvelocity = 0
 undercurser = None
+solidtiles = ['#','|']
 
 chunk = [] # Need to make it before generateterrain function so it can be used by other functions
 worldchanges = {}
@@ -147,8 +148,11 @@ def move():
         if chunk[centerx + centery * width - 1] == ' ': # Current center block in the screen but one less
             worldx -= 1
     elif key == 'w':
-        if chunk[centerx + (centery-1) * width] == ' ' and onground():
-            worldy -= 1
+        for tile in solidtiles:
+            if chunk[centerx + (centery-1) * width] == tile:
+                break
+            if onground():
+                worldy -= 1
     # The following is confusing. and its ai code idk im not guessing all of that its been like 30 trys of trying to get bounds to work
     elif key.name == 'KEY_UP':
         if cursery > -reach:
