@@ -77,6 +77,7 @@ def editchunk():
                 chunk[(5+line)*width+centerx-len(text[line])//2+char] = text[line][char]
 
 def generateterrain():
+    global start
     global worldx
     global worldy
     global chunk # Get chunk that was defined outside of function
