@@ -153,6 +153,7 @@ def move():
                 break
             if onground():
                 worldy -= 1
+                break
     # The following is confusing. and its ai code idk im not guessing all of that its been like 30 trys of trying to get bounds to work
     elif key.name == 'KEY_UP':
         if cursery > -reach:
