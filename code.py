@@ -11,7 +11,9 @@ gen = OpenSimplex(seed=seed)
 term = blessed.Terminal() # Term is basicly the terminal, allows editing and getting data about the terminal.
 print(term.clear) # Clear the screen before starting the game cuz yeah
 # Chunk Settings
+import time
 
+start = time.perf_counter()
 worldy=0
 tick = 0
 reach = 5
@@ -127,7 +129,18 @@ def generateterrain():
                                 if 0 <= treex_screen < width and 0 <= treerow < height:
                                     chunk[treerow * width + treex_screen] = tree[line][char]
         
-        
+    generationtime = time.perf_counter() - start
+
+    start = time.perf_counter()
+
+    # Your existing rendering code goes here
+
+    rendertime = time.perf_counter() - start
+
+    print(
+        "Generation:", round(generationtime * 1000, 2), "ms |",
+        "Rendering:", round(rendertime * 1000, 2), "ms"
+    )
                                 
             
 
