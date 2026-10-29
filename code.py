@@ -86,6 +86,7 @@ def generateterrain():
         if wheatgen.noise2((x+worldx+centerx) / 10.0, 0) > 0.2:
             if wheaty >= 0 and wheaty < height: # Check to make sure the player isn't above or below when wheat spawns
                 chunk[wheaty*width+x] = 'F'
+    for x in range(width):
         treey = topheight - worldy - 1
         treex = x + worldx + centerx
         if treex % 8 == 0: # Only every 8 blocks
