@@ -134,7 +134,7 @@ def generateterrain():
 
     # Your existing rendering code goes here
 
-    generationtime = time.perf_counter() - star
+    generationtime = time.perf_counter() - start
 
     print(
         "Generation:", round(generationtime * 1000, 2), "ms |",
