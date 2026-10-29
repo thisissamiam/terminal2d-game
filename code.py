@@ -126,7 +126,7 @@ def generateterrain():
                 )
 
                 if cave > 0.2:
-                    chunk[y*width*x] = ' '
+                    chunk[y*width+x] = ' '
                                 
             
 
