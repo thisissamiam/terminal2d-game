@@ -93,23 +93,7 @@ def generateterrain():
         if wheatgen.noise2((x+worldx+centerx) / 10.0, 0) > 0.2:
             if wheaty >= 0 and wheaty < height: # Check to make sure the player isn't above or below when wheat spawns
                 chunk[wheaty*width+x] = 'F'
-    for x in range(width):
-        worldblockx = x + worldx + centerx
-        topheight = 15 - int(gen.noise2(worldblockx / 10.0, 0) * 10)
-
-        for y in range(height):
-            index = y * width + x
-            worldblocky = y + worldy
-
-            # Only generate caves well underground
-            if worldblocky >= topheight + 4 and chunk[index] in solidtiles:
-                cave = cavegen.noise2(
-                    worldblockx / 10.0,
-                    worldblocky / 10.0
-                )
-
-                if cave > 0.3:
-                    chunk[index] = ' '
+    
     for x in range(width):
         treex = x + worldx + centerx
         topheight = 15 - int(gen.noise2(treex / 10.0, 0) * 10)
