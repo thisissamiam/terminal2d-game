@@ -125,7 +125,7 @@ def generateterrain():
                 worldblocky / 10.0
                 )
 
-                if cave > 0.2:
+                if cave > 0.3:
                     chunk[y*width+x] = ' '
                                 
             
