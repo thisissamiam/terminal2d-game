@@ -223,7 +223,7 @@ def gravity():
             health = 0
         lastvelocity = 0
 def onground():
-    return chunk[centerx + (centery+1) * width] not in solidtiles # Will return True or False
+    return chunk[centerx + (centery+1) * width] in solidtiles # Will return True or False
 def render():
 
     frame = ''
