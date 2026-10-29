@@ -105,7 +105,11 @@ def generateterrain():
                     for line in range(len(tree)):
                         for char in range(len(tree[line])):
                             if tree[line][char] != ' ':
-                                chunk[(treey-line)*width+x + char - len(tree[line]) - 11] = tree[line][char]
+                                # Below is some weird AI stuff would have not thought of those inequanitys
+                                treerow = treey - line
+                                treex_screen = x + char - 11
+                                if 0 <= treex_screen < width and 0 <= treerow < height:
+                                    chunk[treerow * width + treex_screen] = tree[line][char]
                                 
             
 
