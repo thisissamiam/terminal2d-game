@@ -142,11 +142,17 @@ def move():
     key = term.inkey(timeout=0.01)
     # The following below are for the player's movement
     if key == 'd':
-        if chunk[1 + centerx + centery * width] == ' ': # Current center block in the screen but one more
+        for tile in solidtiles:
+            if chunk[1 + centerx + centery * width] == tile: # Current center block in the screen but one more
+                break
             worldx += 1
+            break
     elif key == 'a':
-        if chunk[centerx + centery * width - 1] == ' ': # Current center block in the screen but one less
+        for tile in solidtiles:
+            if chunk[centerx + centery * width - 1] == tile: # Current center block in the screen but one less
+                break
             worldx -= 1
+            break
     elif key == 'w':
         for tile in solidtiles:
             if chunk[centerx + (centery-1) * width] == tile:
