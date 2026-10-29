@@ -6,6 +6,7 @@ world = [] # Create the 2d world, starting as nothing
 seed = random.randint(0, 100000000) # Generate the seed, determines what is generated
 wheatgen = OpenSimplex(seed=seed + 1) # Seed to generate wheat
 treegen = OpenSimplex(seed=seed + 2)
+cavegen = OpenSimplex(seed=seed + 3)
 gen = OpenSimplex(seed=seed)
 term = blessed.Terminal() # Term is basicly the terminal, allows editing and getting data about the terminal.
 print(term.clear) # Clear the screen before starting the game cuz yeah
@@ -112,6 +113,20 @@ def generateterrain():
                                 treex_screen = x + char - 11
                                 if 0 <= treex_screen < width and 0 <= treerow < height:
                                     chunk[treerow * width + treex_screen] = tree[line][char]
+        
+        for x in range(width):
+            for y in range(height):
+                # Weird stuff so it is correct cordinates
+                worldblockx = x + worldx + centerx
+                worldblocky = y + worldy
+
+                cave = cavegen.noise2(
+                worldblockx / 10.0,
+                worldblocky / 10.0
+                )
+
+                if cave > 0.2:
+                    chunk[y*width*x] = ' '
                                 
             
 
