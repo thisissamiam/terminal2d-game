@@ -147,9 +147,8 @@ def move():
         if chunk[1 + centerx + centery * width] not in solidtiles:
             worldx += 1
     elif key == 'a':
-        for tile in solidtiles:
-            if chunk[centerx + centery * width - 1] not in solidtiles: # Current center block in the screen but one less
-                worldx -= 1
+        if chunk[centerx + centery * width - 1] not in solidtiles: # Current center block in the screen but one less
+            worldx -= 1
     elif key == 'w':
         if chunk[centerx + (centery-1) * width] not in solidtiles:
             if flight:
