@@ -322,7 +322,8 @@ def gameloop():
         while True:
             calculatescreenres() # Incase window changes or font size is changed yeah.
             move()
-            gravity()
+            if not flight:
+                gravity()
             checkhealth()
             generateterrain() # Makes the terrain and puts it into list chunk
             editchunk()
