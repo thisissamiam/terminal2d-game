@@ -348,9 +348,9 @@ def gameloop():
 
 
 
-user = input('What seed? Or just hit enter for a random one')
+user = input('What seed? Or just hit enter for a random one\n')
 if user.isdigit():
-    seed = user
+    seed = int(user)
 else:
     print('I am assuming you want a random seed')
     seed = random.randint(0, 100000000) # Generate the seed, determines what is generated
