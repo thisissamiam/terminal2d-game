@@ -142,24 +142,15 @@ def move():
     key = term.inkey(timeout=0.01)
     # The following below are for the player's movement
     if key == 'd':
-        for tile in solidtiles:
-            if chunk[1 + centerx + centery * width] == tile: # Current center block in the screen but one more
-                break
+        if chunk[1 + centerx + centery * width] not in solidtiles:
             worldx += 1
-            break
     elif key == 'a':
         for tile in solidtiles:
-            if chunk[centerx + centery * width - 1] == tile: # Current center block in the screen but one less
-                break
-            worldx -= 1
-            break
+            if chunk[centerx + centery * width - 1] not in solidtiles: # Current center block in the screen but one less
+                worldx -= 1
     elif key == 'w':
-        for tile in solidtiles:
-            if chunk[centerx + (centery-1) * width] == tile:
-                break
-            if onground():
-                worldy -= 1
-                break
+        if chunk[centerx + (centery-1) * width] not in solidtiles and onground():
+            worldy -= 1
     # The following is confusing. and its ai code idk im not guessing all of that its been like 30 trys of trying to get bounds to work
     elif key.name == 'KEY_UP':
         if cursery > -reach:
@@ -232,10 +223,7 @@ def gravity():
             health = 0
         lastvelocity = 0
 def onground():
-    for tile in solidtiles:
-        if chunk[centerx + (centery+1) * width] == tile:
-            return True
-    return False
+    return chunk[centerx + (centery+1) * width] not in solidtiles # Will return True or False
 def render():
 
     frame = ''
