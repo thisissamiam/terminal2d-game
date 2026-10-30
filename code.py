@@ -3,6 +3,7 @@ from opensimplex import OpenSimplex
 import blessed
 import time
 import pickle
+import os
 world = [] # Create the 2d world, starting as nothing
 
 term = blessed.Terminal() # Term is basicly the terminal, allows editing and getting data about the terminal.
@@ -353,6 +354,9 @@ def gameloop():
 
 user = input('DO YOU WANT TO LOAD A WORLD OR MAKE ONE SAY L TO MAKE M TO MAKE\n')
 if user == 'L':
+    for filename in os.listdir("."):
+        if filename.endswith(".samcraft"):
+            print(filename)
     user = input('WHAT IS YOUR WORLD NAME IT PROBALLY CRASHES RIGHT NOW IF IT DOESNT EXIST\n')
     with open(user + ".samcraft", "rb") as file:
         saveworld = pickle.loads(zlib.decompress(file.read()))
