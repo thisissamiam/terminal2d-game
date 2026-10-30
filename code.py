@@ -212,7 +212,7 @@ def move():
             cursery = 0
     elif key == 'f':
         flight = not flight
-    elif key == 's':
+    elif key == 'p':
         saveworld = [seed, worldchanges]
         with open(worldname + ".samcraft", "w") as file:
             file.write(base64.b64encode(pickle.dumps(saveworld)).decode())
