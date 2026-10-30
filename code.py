@@ -1,11 +1,13 @@
 from opensimplex import OpenSimplex
 
-seed = 123456789
+seeds = [0, 1, 123456789, 999999999999999]
 
-a = OpenSimplex(seed)
-b = OpenSimplex(seed + 2**64)
+for seed in seeds:
+    a = OpenSimplex(seed)
+    b = OpenSimplex(seed + 2**64)
 
-print("Same permutation:", a._perm == b._perm)
-print("Same gradient indexes:", a._perm_grad_index3 == b._perm_grad_index3)
-print("Stored seed A:", a.get_seed())
-print("Stored seed B:", b.get_seed())
+    print(
+        seed,
+        (a._perm == b._perm).all(),
+        (a._perm_grad_index3 == b._perm_grad_index3).all()
+    )
