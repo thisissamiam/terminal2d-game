@@ -303,7 +303,7 @@ def render():
         fpsframe = 0
     else:
         fpsframe += 1
-    print(term.home + frame, round(fps, 1), end="", flush=True) # Basicly clear the screen no idea what half of it does though.
+    print(term.home + frame, round(fps, 1) + '   '  + seed, end="", flush=True) # Basicly clear the screen no idea what half of it does though.
     
 def checkhealth():
     global health
