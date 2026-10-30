@@ -104,7 +104,7 @@ def generateterrain():
                         '           |    ',
                         '           |    '
                     ]
-                if treey < height and treey + len(tree) > 0: # Weird AI code that fixes all my problems
+                if treey >= 0 - len(tree) and treey < height: # Weird AI code that fixes all my problems
                     tree = list(reversed(tree))
                     for line in range(len(tree)):
                         for char in range(len(tree[line])):
