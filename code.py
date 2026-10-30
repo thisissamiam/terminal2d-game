@@ -4,6 +4,7 @@ import blessed
 import time
 import pickle
 import os
+import zlib
 world = [] # Create the 2d world, starting as nothing
 
 term = blessed.Terminal() # Term is basicly the terminal, allows editing and getting data about the terminal.
@@ -17,6 +18,7 @@ reach = 5
 velocity = 1
 fps = 0
 fpsframe = 0
+saved = ''
 worldname = 'World'
 bordertrigger = None
 health = 10
@@ -143,6 +145,7 @@ def move():
     global curserx
     global reach
     global bordertrigger
+    global saved
     global health
     global flight
     key = term.inkey(timeout=0.005)
@@ -217,6 +220,7 @@ def move():
         saveworld = [seed, worldchanges]
         with open(worldname + ".samcraft", "wb") as file:
             file.write(zlib.compress(pickle.dumps(saveworld)))
+            saved = True
 def gravity():
     global velocity
     global tick
@@ -245,6 +249,7 @@ def onground():
     return chunk[centerx + (centery+1) * width] in solidtiles # Will return True or False
 def render():
     global fps
+    global saved
     global fpsframe
     global start
     frame = ''
@@ -309,7 +314,7 @@ def render():
         fpsframe = 0
     else:
         fpsframe += 1
-    print(term.home + frame, str(round(fps, 1)) + '   '  + str(seed), end="", flush=True) # Basicly clear the screen no idea what half of it does though.
+    print(term.home + frame, str(round(fps, 1)) + '   '  + str(seed) + '    ' + str(saved), end="", flush=True) # Basicly clear the screen no idea what half of it does though.
     
 def checkhealth():
     global health
