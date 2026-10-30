@@ -350,15 +350,15 @@ def gameloop():
             render()
             chunk[centerx+curserx + (centery+cursery) * width] = undercurser # Make sure collisions do the thing under the curser
 
-user = input('DO YOU WANT TO LOAD A WORLD OR MAKE ONE SAY L TO MAKE M TO MAKE')
+user = input('DO YOU WANT TO LOAD A WORLD OR MAKE ONE SAY L TO MAKE M TO MAKE\n')
 if user == 'L':
-    user = input('WHAT IS YOUR WORLD NAME IT PROBALLY CRASHES RIGHT NOW IF IT DOESNT EXIST')
+    user = input('WHAT IS YOUR WORLD NAME IT PROBALLY CRASHES RIGHT NOW IF IT DOESNT EXIST\n')
     with open(user + ".samcraft", "w") as file:
         saveworld = file.read()
         seed = saveworld[0]
         worldchanges = saveworld[1]
 elif user == 'M':
-    user = input('WHAT DO YOU WANT TO CALL YOUR WORLD')
+    user = input('WHAT DO YOU WANT TO CALL YOUR WORLD\n')
     worldname = user.strip()
 
 
