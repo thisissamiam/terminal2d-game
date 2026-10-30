@@ -1,45 +1,11 @@
 from opensimplex import OpenSimplex
 
-width = 100
-height = 30
-
-def generateworld(seed):
-    gen = OpenSimplex(seed=seed)
-    world = []
-
-    for y in range(height):
-        for x in range(width):
-            world.append(gen.noise2(x / 10.0, y / 10.0))
-
-    return world
-
-
 seed = 123456789
-original = generateworld(seed)
 
-def identical(difference):
-    return original == generateworld(seed + difference)
+a = OpenSimplex(seed)
+b = OpenSimplex(seed + 2**64)
 
-
-# Exponential search
-low = 0
-high = 1
-
-while not identical(high):
-    low = high
-    high *= 2
-    print('Searching:', high)
-
-print('Collision found at:', high)
-
-# Binary search
-while high - low > 1:
-    middle = (low + high) // 2
-
-    if identical(middle):
-        high = middle
-    else:
-        low = middle
-
-print('\nSmallest collision found:', high)
-print('Second seed:', seed + high)
+print("Same permutation:", a._perm == b._perm)
+print("Same gradient indexes:", a._perm_grad_index3 == b._perm_grad_index3)
+print("Stored seed A:", a.get_seed())
+print("Stored seed B:", b.get_seed())t
