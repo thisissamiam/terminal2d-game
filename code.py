@@ -8,13 +8,14 @@ term = blessed.Terminal() # Term is basicly the terminal, allows editing and get
 print(term.clear) # Clear the screen before starting the game cuz yeah
 # Chunk Settings
 
-
+import base64
 worldy=0
 tick = 0
 reach = 5
 velocity = 1
 fps = 0
 fpsframe = 0
+worldname = 'World'
 bordertrigger = None
 health = 10
 showhealth = True
@@ -210,6 +211,10 @@ def move():
             cursery = 0
     elif key == 'f':
         flight = not flight
+    elif key == 's':
+        saveworld = [seed, worldchanges]
+        with open("world." + worldname, "w") as file:
+            file.write(base64.b64encode(text.encode(saveworld)).decode())
 def gravity():
     global velocity
     global tick
@@ -345,14 +350,26 @@ def gameloop():
             render()
             chunk[centerx+curserx + (centery+cursery) * width] = undercurser # Make sure collisions do the thing under the curser
 
+user = input('DO YOU WANT TO LOAD A WORLD OR MAKE ONE SAY L TO MAKE M TO MAKE')
+if user == 'L':
+    user = input('WHAT IS YOUR WORLD NAME IT PROBALLY CRASHES RIGHT NOW IF IT DOESNT EXIST')
+    with open(user + ".samcraft", "w") as file:
+        saveworld = file.read()
+        seed = saveworld[0]
+        worldchanges = saveworld[1]
+elif user == 'M':
+    user = input('WHAT DO YOU WANT TO CALL YOUR WORLD')
+    worldname = user.strip()
 
 
-user = input('What seed? Or just hit enter for a random one\n')
-if user.isdigit() and len(user) < 2**64 - 100:
-    seed = int(user)
+    user = input('What seed? Or just hit enter for a random one\n')
+    if user.isdigit() and len(user) < 2**64 - 100:
+        seed = int(user)
+    else:
+        print('I am assuming you want a random seed')
+        seed = random.randint(0, 100000000) # Generate the seed, determines what is generated
 else:
-    print('I am assuming you want a random seed')
-    seed = random.randint(0, 100000000) # Generate the seed, determines what is generated
+    print('you suck its ur fault i didnt allow for lowercase letters if thats why idk u suck all ur problem')
 time.sleep(1)
 print('Starting generation, this probally won\'t take long')
 
