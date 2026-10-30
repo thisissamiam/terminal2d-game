@@ -104,16 +104,15 @@ def generateterrain():
                         '           |    ',
                         '           |    '
                     ]
-                if treey >= 0 - len(tree) and treey < height: # Weird AI code that fixes all my problems
-                    tree = list(reversed(tree))
-                    for line in range(len(tree)):
-                        for char in range(len(tree[line])):
-                            if tree[line][char] != ' ':
-                                # Below is some weird AI stuff would have not thought of those inequanitys
-                                treerow = treey - line
-                                treex_screen = x + char - 11
-                                if 0 <= treex_screen < width and 0 <= treerow < height: # Weird ai thing that should fix all my problems
-                                    chunk[treerow * width + treex_screen] = tree[line][char]
+                tree = list(reversed(tree))
+                for line in range(len(tree)):
+                    for char in range(len(tree[line])):
+                        if tree[line][char] != ' ':
+                            # Below is some weird AI stuff would have not thought of those inequanitys
+                            treerow = treey - line
+                            treex_screen = x + char - 11
+                            if 0 <= treex_screen < width and 0 <= treerow < height: # Weird ai thing that should fix all my problems
+                                chunk[treerow * width + treex_screen] = tree[line][char]
                                 
             
 
