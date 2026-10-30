@@ -214,7 +214,7 @@ def move():
         flight = not flight
     elif key == 's':
         saveworld = [seed, worldchanges]
-        with open("samcraft." + worldname, "w") as file:
+        with open(worldname + ".samcraft", "w") as file:
             file.write(base64.b64encode(pickle.dumps(saveworld)).decode())
 def gravity():
     global velocity
