@@ -96,8 +96,7 @@ def generateterrain():
         treey = topheight - worldy - 1
         if treex % 8 == 0: # Only every 8 blocks
             if treegen.noise2((treex) / 10.0, 0) > 0.3:
-                if treey < height and treey + len(tree) > 0: # Weird AI code that fixes all my problems
-                    tree = [
+                tree = [
                         '           @    ',
                         '          @@@   ',
                         '         @@@@@  ',
@@ -105,6 +104,7 @@ def generateterrain():
                         '           |    ',
                         '           |    '
                     ]
+                if treey < height and treey + len(tree) > 0: # Weird AI code that fixes all my problems
                     tree = list(reversed(tree))
                     for line in range(len(tree)):
                         for char in range(len(tree[line])):
