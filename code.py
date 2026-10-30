@@ -214,8 +214,8 @@ def move():
         flight = not flight
     elif key == 'p':
         saveworld = [seed, worldchanges]
-        with open(worldname + ".samcraft", "w") as file:
-            file.write(base64.b64encode(pickle.dumps(saveworld)).decode())
+        with open(worldname + ".samcraft", "wb") as file:
+            file.write(zlib.compress(pickle.dumps(saveworld)))
 def gravity():
     global velocity
     global tick
@@ -354,8 +354,8 @@ def gameloop():
 user = input('DO YOU WANT TO LOAD A WORLD OR MAKE ONE SAY L TO MAKE M TO MAKE\n')
 if user == 'L':
     user = input('WHAT IS YOUR WORLD NAME IT PROBALLY CRASHES RIGHT NOW IF IT DOESNT EXIST\n')
-    with open(user + ".samcraft", "r") as file:
-        saveworld = pickle.loads(base64.b64decode(file.read()))
+    with open(user + ".samcraft", "rb") as file:
+        saveworld = pickle.loads(zlib.decompress(file.read()))
         seed = saveworld[0]
         worldchanges = saveworld[1]
 elif user == 'M':
