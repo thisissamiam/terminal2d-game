@@ -365,8 +365,9 @@ if user == 'L':
     user = input('WHAT IS YOUR WORLD NAME IT PROBALLY CRASHES RIGHT NOW IF IT DOESNT EXIST\n')
     with open(user + ".samcraft", "rb") as file:
         saveworld = pickle.loads(zlib.decompress(file.read()))
-        seed = saveworld[0]
-        worldchanges = saveworld[1]
+    seed = saveworld[0]
+    worldchanges = saveworld[1]
+    loaded = True
 elif user == 'M':
     user = input('WHAT DO YOU WANT TO CALL YOUR WORLD\n')
     worldname = user.strip()
@@ -378,8 +379,10 @@ elif user == 'M':
     else:
         print('I am assuming you want a random seed')
         seed = random.randint(0, 100000000) # Generate the seed, determines what is generated
+    loaded = False
 else:
     print('you suck its ur fault i didnt allow for lowercase letters if thats why idk u suck all ur problem')
+    exit()
 time.sleep(1)
 print('Starting generation, this probally won\'t take long')
 
@@ -397,7 +400,9 @@ calculatescreenres()
 worldx = -50 # generate terrain needs this to know where to start
 spawny = findspawnlocation() # Find a safe spot to place the player
 worldy = spawny - centery
-
+if loaded:
+    while worldchanges.get((worldx + centerx * 2, centery + worldy), ' ') != ' ':
+        worldy -= 1
 generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
 render()
 gameloop()
