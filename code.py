@@ -214,7 +214,7 @@ def move():
     elif key == 's':
         saveworld = [seed, worldchanges]
         with open("world." + worldname, "w") as file:
-            file.write(base64.b64encode(text.encode(saveworld)).decode())
+            file.write(base64.b64encode(saveworld.encode()).decode())
 def gravity():
     global velocity
     global tick
