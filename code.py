@@ -2,6 +2,7 @@ import random
 from opensimplex import OpenSimplex
 import blessed
 import time
+import pickle
 world = [] # Create the 2d world, starting as nothing
 
 term = blessed.Terminal() # Term is basicly the terminal, allows editing and getting data about the terminal.
@@ -214,7 +215,7 @@ def move():
     elif key == 's':
         saveworld = [seed, worldchanges]
         with open("world." + worldname, "w") as file:
-            file.write(base64.b64encode(saveworld.encode()).decode())
+            file.write(base64.b64encode(pickle.dumps(saveworld)).decode())
 def gravity():
     global velocity
     global tick
@@ -354,7 +355,7 @@ user = input('DO YOU WANT TO LOAD A WORLD OR MAKE ONE SAY L TO MAKE M TO MAKE\n'
 if user == 'L':
     user = input('WHAT IS YOUR WORLD NAME IT PROBALLY CRASHES RIGHT NOW IF IT DOESNT EXIST\n')
     with open(user + ".samcraft", "w") as file:
-        saveworld = file.read()
+        saveworld = pickle.loads(base64.b64decode(file.read()))
         seed = saveworld[0]
         worldchanges = saveworld[1]
 elif user == 'M':
