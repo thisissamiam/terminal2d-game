@@ -1,55 +1,42 @@
 import time
 import blessed
-import sys
 
 term = blessed.Terminal()
-
-print(term.clear)
+results = []
 
 # Test 1: Single output
-print("TEST 1: Single output")
-
 start = time.perf_counter()
-print(term.home + "HELLO WORLD", flush=True)
-end = time.perf_counter()
+print("HELLO WORLD", flush=True)
+results.append(("Single output", (time.perf_counter() - start) * 1000))
 
-print("Print time:", (end - start) * 1000, "ms")
-
-
-# Test 2: Repeated output
-print("\nTEST 2: 1000 outputs")
-
+# Test 2: 1000 outputs
 start = time.perf_counter()
 
 for i in range(1000):
-    print(term.home + str(i), end="", flush=True)
+    print(str(i), end="", flush=True)
 
-end = time.perf_counter()
-
-print("\n1000 outputs:", (end - start) * 1000, "ms")
-
+results.append(("1000 outputs", (time.perf_counter() - start) * 1000))
 
 # Test 3: Large output
-print("\nTEST 3: Large output")
-
-data = "X" * 100000
+data = "X" * 10000
 
 start = time.perf_counter()
 print(data, flush=True)
-end = time.perf_counter()
+results.append(("Large output", (time.perf_counter() - start) * 1000))
 
-print("Large output time:", (end - start) * 1000, "ms")
-
-
-# Test 4: Terminal input response
-print("\nTEST 4: Press any key")
+# Test 4: Input
+print("\nPress any key")
 
 start = time.perf_counter()
 
 with term.cbreak():
     key = term.inkey(timeout=10)
 
-end = time.perf_counter()
+results.append(("Input response", (time.perf_counter() - start) * 1000))
 
-print("Input response:", (end - start) * 1000, "ms")
-print("Key:", repr(key))
+# Save results
+with open("terminal_test.txt", "w") as file:
+    for name, timing in results:
+        file.write(name + ": " + str(round(timing, 3)) + " ms\n")
+
+print("\nResults saved to terminal_test.txt")
