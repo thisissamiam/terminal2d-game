@@ -353,7 +353,10 @@ def gameloop():
                 gravity()
             checkhealth()
             generateterrain() # Makes the terrain and puts it into list chunk
+            start = time.perf_counter()
             editchunk()
+            print("Saving to:", os.path.abspath(worldname + ".samcraft"))
+            time.sleep(5)
             render()
             chunk[centerx+curserx + (centery+cursery) * width] = undercurser # Make sure collisions do the thing under the curser
 
