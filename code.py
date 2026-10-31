@@ -229,6 +229,7 @@ def move():
         file = open(worldname + ".samcraft", "wb")
         file.write(compressed)
         file.close()
+        time.sleep(5)
         saved = True
 def gravity():
     global velocity
