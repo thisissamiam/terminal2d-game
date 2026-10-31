@@ -80,6 +80,7 @@ def editchunk():
                 chunk[(5+line)*width+centerx-len(text[line])//2+char] = text[line][char]
 
 def generateterrain():
+
     global worldx
     global worldy
     global chunk # Get chunk that was defined outside of function
@@ -218,19 +219,9 @@ def move():
         flight = not flight
     elif key == 'p':
         saveworld = [seed, worldchanges]
-
-        data = pickle.dumps(saveworld)
-        compressed = zlib.compress(data)
-
-        print('Edited blocks:', len(worldchanges))
-        print('Uncompressed:', len(data), 'bytes')
-        print('Compressed:', len(compressed), 'bytes')
-
-        file = open(worldname + ".samcraft", "wb")
-        file.write(compressed)
-        file.close()
-        time.sleep(5)
-        saved = True
+        with open(worldname + ".samcraft", "wb") as file:
+            file.write(zlib.compress(pickle.dumps(saveworld)))
+            saved = True
 def gravity():
     global velocity
     global tick
@@ -362,7 +353,10 @@ def gameloop():
             if not flight:
                 gravity()
             checkhealth()
+            start = time.perf_counter()
             generateterrain() # Makes the terrain and puts it into list chunk
+            print('Terrain generation took:', time.perf_counter() - start)
+            time.sleep(5)
             editchunk()
             render()
             chunk[centerx+curserx + (centery+cursery) * width] = undercurser # Make sure collisions do the thing under the curser
@@ -373,11 +367,14 @@ if user == 'L':
         if filename.endswith(".samcraft"):
             print(filename)
     user = input('WHAT IS YOUR WORLD NAME IT PROBALLY CRASHES RIGHT NOW IF IT DOESNT EXIST\n')
+    start = time.perf_counter()
     with open(user + ".samcraft", "rb") as file:
         saveworld = pickle.loads(zlib.decompress(file.read()))
     seed = saveworld[0]
     worldchanges = saveworld[1]
     loaded = True
+    print('Loading took:', time.perf_counter() - start)
+    time.sleep(5)
 elif user == 'M':
     user = input('WHAT DO YOU WANT TO CALL YOUR WORLD\n')
     worldname = user.strip()
