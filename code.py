@@ -80,7 +80,6 @@ def editchunk():
                 chunk[(5+line)*width+centerx-len(text[line])//2+char] = text[line][char]
 
 def generateterrain():
-
     global worldx
     global worldy
     global chunk # Get chunk that was defined outside of function
@@ -353,10 +352,7 @@ def gameloop():
             if not flight:
                 gravity()
             checkhealth()
-            start = time.perf_counter()
             generateterrain() # Makes the terrain and puts it into list chunk
-            print('Terrain generation took:', time.perf_counter() - start)
-            time.sleep(5)
             editchunk()
             render()
             chunk[centerx+curserx + (centery+cursery) * width] = undercurser # Make sure collisions do the thing under the curser
@@ -373,8 +369,6 @@ if user == 'L':
     seed = saveworld[0]
     worldchanges = saveworld[1]
     loaded = True
-    print('Loading took:', time.perf_counter() - start)
-    time.sleep(5)
 elif user == 'M':
     user = input('WHAT DO YOU WANT TO CALL YOUR WORLD\n')
     worldname = user.strip()
@@ -390,7 +384,6 @@ elif user == 'M':
 else:
     print('you suck its ur fault i didnt allow for lowercase letters if thats why idk u suck all ur problem')
     exit()
-time.sleep(1)
 print('Starting generation, this probally won\'t take long')
 
 gen = OpenSimplex(seed=seed)
