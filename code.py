@@ -374,7 +374,7 @@ elif user == 'M':
 
 
     user = input('What seed? Or just hit enter for a random one\n')
-    if user.isdigit() and len(user) < 2**64 - 100:
+    if user.isdigit() and int(user) < 2**64 - 100:
         seed = int(user)
     else:
         print('I am assuming you want a random seed')
