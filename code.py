@@ -218,9 +218,18 @@ def move():
         flight = not flight
     elif key == 'p':
         saveworld = [seed, worldchanges]
-        with open(worldname + ".samcraft", "wb") as file:
-            file.write(zlib.compress(pickle.dumps(saveworld)))
-            saved = True
+
+        data = pickle.dumps(saveworld)
+        compressed = zlib.compress(data)
+
+        print('Edited blocks:', len(worldchanges))
+        print('Uncompressed:', len(data), 'bytes')
+        print('Compressed:', len(compressed), 'bytes')
+
+        file = open(worldname + ".samcraft", "wb")
+        file.write(compressed)
+        file.close()
+        saved = True
 def gravity():
     global velocity
     global tick
