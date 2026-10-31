@@ -346,7 +346,7 @@ def gameloop():
     global undercurser
     with term.cbreak(), term.hidden_cursor():
         while True:
-            
+            start = time.perf_counter()
             calculatescreenres() # Incase window changes or font size is changed yeah.
             move()
             if not flight:
@@ -354,11 +354,10 @@ def gameloop():
             checkhealth()
             generateterrain() # Makes the terrain and puts it into list chunk
             editchunk()
-            start = time.perf_counter()
             render()
-            print('Render time:', time.perf_counter() - start)
-            time.sleep(5)
             chunk[centerx+curserx + (centery+cursery) * width] = undercurser # Make sure collisions do the thing under the curser
+            print('Total startup:', time.perf_counter() - start)
+            time.sleep(5)
 
 user = input('DO YOU WANT TO LOAD A WORLD OR MAKE ONE SAY L TO MAKE M TO MAKE\n')
 if user == 'L':
