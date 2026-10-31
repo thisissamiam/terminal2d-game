@@ -357,6 +357,7 @@ def gameloop():
             start = time.perf_counter()
             render()
             print('Render time:', time.perf_counter() - start)
+            time.sleep(5)
             chunk[centerx+curserx + (centery+cursery) * width] = undercurser # Make sure collisions do the thing under the curser
 
 user = input('DO YOU WANT TO LOAD A WORLD OR MAKE ONE SAY L TO MAKE M TO MAKE\n')
