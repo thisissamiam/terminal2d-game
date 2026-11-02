@@ -1,10 +1,10 @@
-
-name: Build Python Game
+name: Build SamCraft
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   build:
