@@ -2,7 +2,7 @@ import random
 from opensimplex import OpenSimplex
 import blessed
 import time
-import pickle
+import cbor2
 import os
 import zlib
 world = [] # Create the 2d world, starting as nothing
@@ -219,7 +219,7 @@ def move():
     elif key == 'p':
         saveworld = [seed, worldchanges]
         with open(worldname + ".samcraft", "wb") as file:
-            file.write(zlib.compress(pickle.dumps(saveworld)))
+            file.write(zlib.compress(cbor2.dumps(saveworld)))
             saved = True
 def gravity():
     global velocity
@@ -364,7 +364,7 @@ if user == 'L':
     user = input('WHAT IS YOUR WORLD NAME IT PROBALLY CRASHES RIGHT NOW IF IT DOESNT EXIST\n')
     start = time.perf_counter()
     with open(user + ".samcraft", "rb") as file:
-        saveworld = pickle.loads(zlib.decompress(file.read()))
+        saveworld = cbor2.loads(zlib.decompress(file.read()))
     seed = saveworld[0]
     worldchanges = saveworld[1]
     loaded = True
