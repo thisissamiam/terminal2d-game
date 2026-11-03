@@ -405,3 +405,6 @@ if loaded:
 generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
 render()
 gameloop()
+
+
+# test
