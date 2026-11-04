@@ -159,10 +159,10 @@ def move():
     elif key == 'w':
         if chunk[centerx + (centery-1) * width] not in solidtiles:
             if flight:
-                worldy -= 10
+                worldy -= 1
             else:
                 if onground():
-                    worldy -= 1
+                    worldy -= 10
     elif key == 's':
         if flight: # Allows moving down if flying since no gravity exists
             if chunk[centerx + (centery+1) * width] not in solidtiles:
