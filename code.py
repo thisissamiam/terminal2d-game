@@ -21,7 +21,7 @@ fpsframe = 0
 saved = ''
 worldname = 'World'
 bordertrigger = None
-health = 10
+health = 100
 showhealth = True
 healthtick = 0
 lastvelocity = 0
@@ -162,7 +162,7 @@ def move():
                 worldy -= 1
             else:
                 if onground():
-                    worldy -= 10
+                    worldy -= 1
     elif key == 's':
         if flight: # Allows moving down if flying since no gravity exists
             if chunk[centerx + (centery+1) * width] not in solidtiles:
