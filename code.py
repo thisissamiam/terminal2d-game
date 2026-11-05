@@ -221,6 +221,11 @@ def move():
         with open(worldname + ".samcraft", "wb") as file:
             file.write(zlib.compress(cbor2.dumps(saveworld)))
             saved = True
+    elif key == 'T':
+        blockx = centerx + curserx + worldx + centerx
+        blocky = centery + cursery + worldy
+        if chunk[centerx+curserx + (centery+cursery) * width] == ' ':
+            worldchanges[(blockx, blocky)] = 'T'
 def gravity():
     global velocity
     global tick
