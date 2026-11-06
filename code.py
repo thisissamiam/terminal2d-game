@@ -21,7 +21,7 @@ fpsframe = 0
 saved = ''
 worldname = 'World'
 bordertrigger = None
-health = 100
+health = 10
 showhealth = True
 healthtick = 0
 lastvelocity = 0
@@ -239,6 +239,7 @@ def move():
     elif key == 'p':
         for block in worldchanges:
             print(block)
+        time.sleep(5)
         saveworld = [seed, worldchanges]
         with open(worldname + ".samcraft", "wb") as file:
             file.write(zlib.compress(cbor2.dumps(saveworld)))
