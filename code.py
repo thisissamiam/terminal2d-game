@@ -237,7 +237,7 @@ def move():
     elif key == 'f':
         flight = not flight
     elif key == 'p':
-        for (x,y),block in worldchanges:
+        for (x,y),block in worldchanges.items():
             print(x)
             print(y)
             print(block)
