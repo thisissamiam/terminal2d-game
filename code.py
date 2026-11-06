@@ -55,6 +55,14 @@ blockidtochar = {
     4: 'F'
 }
 
+chartoblockid = {
+    ' ': 0,
+    '#': 1,
+    '|': 2,
+    '@': 3,
+    'F': 4
+}
+
 def editchunk():
     global lastvelocity
     global health
@@ -237,11 +245,9 @@ def move():
     elif key == 'f':
         flight = not flight
     elif key == 'p':
-        for (x,y),block in worldchanges.items():
-            print(x)
-            print(y)
-            print(block)
-        time.sleep(5)
+        # for (x,y),block in worldchanges.items():
+        #     worldchanges[(x,y)] = chartoblockid[block]
+        # time.sleep(5)
         saveworld = [seed, worldchanges]
         with open(worldname + ".samcraft", "wb") as file:
             file.write(zlib.compress(cbor2.dumps(saveworld)))
