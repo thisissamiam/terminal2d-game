@@ -35,6 +35,26 @@ worldchanges = {}
 curserx = 3
 cursery = 0
 
+
+# Usage
+# blocks.stone, returns ID
+class blocks:
+    air = 0
+    stone = 1
+    log = 2
+    leaf = 3
+    wheat = 4
+
+# Usage
+# blockidtochar[0] but use blockidtochar[blocks.stone], makes it cleaner
+blockidtochar = {
+    0: ' ',
+    1: '#',
+    2: '|',
+    3: '@',
+    4: 'F'
+}
+
 def editchunk():
     global lastvelocity
     global health
@@ -217,6 +237,8 @@ def move():
     elif key == 'f':
         flight = not flight
     elif key == 'p':
+        for block in worldchanges:
+            print(block)
         saveworld = [seed, worldchanges]
         with open(worldname + ".samcraft", "wb") as file:
             file.write(zlib.compress(cbor2.dumps(saveworld)))
