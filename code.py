@@ -249,10 +249,8 @@ def move():
         #     worldchanges[(x,y)] = chartoblockid[block]
         # time.sleep(5)
         saveworld = [seed, worldchanges]
-        print(os.path.getsize(worldname + ".samcraft"))
         with open(worldname + ".samcraft", "wb") as file:
             file.write(zlib.compress(cbor2.dumps(saveworld)))
-        print(os.path.getsize(worldname + ".samcraft"))
         time.sleep(2)
         saved = True
     elif key == 'T':
