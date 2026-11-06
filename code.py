@@ -252,9 +252,9 @@ def move():
         print(os.path.getsize(worldname + ".samcraft"))
         with open(worldname + ".samcraft", "wb") as file:
             file.write(zlib.compress(cbor2.dumps(saveworld)))
-            print(os.path.getsize(worldname + ".samcraft"))
-            time.sleep(2)
-            saved = True
+        print(os.path.getsize(worldname + ".samcraft"))
+        time.sleep(2)
+        saved = True
     elif key == 'T':
         blockx = centerx + curserx + worldx + centerx
         blocky = centery + cursery + worldy
