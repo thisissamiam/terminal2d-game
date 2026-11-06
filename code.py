@@ -251,6 +251,7 @@ def move():
         saveworld = [seed, worldchanges]
         with open(worldname + ".samcraft", "wb") as file:
             file.write(zlib.compress(cbor2.dumps(saveworld)))
+        print(worldname)
         time.sleep(2)
         saved = True
     elif key == 'T':
