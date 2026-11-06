@@ -268,7 +268,7 @@ def gravity():
     if not onground(): # In the air
         tick += velocity
         if velocity <= 50:
-            velocity *= 1.05
+            velocity *= 1.03
         
         if tick >= 40:
             worldy += 1
