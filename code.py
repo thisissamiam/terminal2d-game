@@ -267,7 +267,7 @@ def gravity():
     global lastvelocity
     if not onground(): # In the air
         tick += velocity
-        if velocity <= 30:
+        if velocity <= 50:
             velocity *= 1.05
         
         if tick >= 40:
