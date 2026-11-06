@@ -251,8 +251,6 @@ def move():
         saveworld = [seed, worldchanges]
         with open(worldname + ".samcraft", "wb") as file:
             file.write(zlib.compress(cbor2.dumps(saveworld)))
-        print(worldname)
-        time.sleep(2)
         saved = True
     elif key == 'T':
         blockx = centerx + curserx + worldx + centerx
@@ -403,6 +401,7 @@ if user == 'L':
     start = time.perf_counter()
     with open(user + ".samcraft", "rb") as file:
         saveworld = cbor2.loads(zlib.decompress(file.read()))
+    worldname = user
     seed = saveworld[0]
     worldchanges = saveworld[1]
     loaded = True
