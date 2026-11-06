@@ -237,7 +237,9 @@ def move():
     elif key == 'f':
         flight = not flight
     elif key == 'p':
-        for block in worldchanges:
+        for (x,y),block in worldchanges:
+            print(x)
+            print(y)
             print(block)
         time.sleep(5)
         saveworld = [seed, worldchanges]
