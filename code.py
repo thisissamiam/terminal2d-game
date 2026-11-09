@@ -385,6 +385,7 @@ def gameloop():
     global undercurser
     global fpsframe
     global start
+    global height
     with term.cbreak(), term.hidden_cursor():
         while True:
             calculatescreenres() # Incase window changes or font size is changed yeah.
@@ -402,7 +403,7 @@ def gameloop():
                     fps = fpsframe / timeinframe
                     start = time.perf_counter()
                     fpsframe = 0
-                    print(str(round(fps, 1)) + '   ' + str(seed) + '    ' + str(saved) + ' CPU: ' + str(cpu) + '%', end="", flush=True)
+                    print(term.move_y(height) + term.move_x(0) + stats, end="", flush=True)
             else:
                 fpsframe += 1
             chunk[centerx+curserx + (centery+cursery) * width] = undercurser # Make sure collisions do the thing under the curser
