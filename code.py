@@ -257,6 +257,7 @@ def move():
         blocky = centery + cursery + worldy
         if chunk[centerx+curserx + (centery+cursery) * width] == ' ':
             worldchanges[(blockx, blocky)] = 'l'
+        print('L KEY PRESSED')
 def gravity():
     global velocity
     global tick
