@@ -18,6 +18,7 @@ tick = 0
 reach = 5
 velocity = 1
 fps = 0
+cpu = 0
 fpsframe = 0
 saved = ''
 worldname = 'World'
@@ -296,6 +297,7 @@ def render():
     global saved
     global fpsframe
     global start
+    global cpu
     frame = ''
     for row in range(height-1): # Every row goes through this
         colorcoderframelist = []
