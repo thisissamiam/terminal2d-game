@@ -353,12 +353,13 @@ def render():
             frame += '\n'
     if fpsframe > 60:
         timeinframe = time.perf_counter() - start
+        cpu = process.cpu_percent()
         fps = fpsframe / timeinframe
         start = time.perf_counter()
         fpsframe = 0
     else:
         fpsframe += 1
-    print(term.home + frame, str(round(fps, 1)) + '   '  + str(seed) + '    ' + str(saved) + ' CPU: ' + str(process.cpu_percent()) + '%', end="", flush=True) # Basicly clear the screen no idea what half of it does though.
+    print(term.home + frame, str(round(fps, 1)) + '   '  + str(seed) + '    ' + str(saved) + ' CPU: ' + str(cpu) + '%', end="", flush=True) # Basicly clear the screen no idea what half of it does though.
 
 def checkhealth():
     global health
