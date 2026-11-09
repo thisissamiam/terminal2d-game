@@ -6,14 +6,64 @@ import cbor2
 import os
 import zlib
 import psutil
-world = [] # Create the 2d world, starting as nothing
+import base64
 
-term = blessed.Terminal() # Term is basicly the terminal, allows editing and getting data about the terminal.
-print(term.clear) # Clear the screen before starting the game cuz yeah
+world = []
+
+term = blessed.Terminal()
+print(term.clear)
+
+# Debugging
+process = psutil.Process(os.getpid())
+last_debug_time = time.time()
+debug_frames = 0
+debug_times = {
+    'input': 0,
+    'gravity': 0,
+    'terrain': 0,
+    'editing': 0,
+    'render': 0
+}
+
+def debug_start():
+    return time.perf_counter()
+
+def debug_end(name, start):
+    debug_times[name] += time.perf_counter() - start
+
+def debug_frame():
+    global last_debug_time
+    global debug_frames
+
+    debug_frames += 1
+    now = time.time()
+
+    if now - last_debug_time >= 1:
+        elapsed = now - last_debug_time
+        fps_debug = debug_frames / elapsed
+        cpu = process.cpu_percent()
+
+        with open("game_debug.txt", "a") as file:
+            file.write(
+                "FPS: " + str(round(fps_debug, 1)) +
+                " | CPU: " + str(round(cpu, 1)) + "%" +
+                " | Input: " + str(round(debug_times['input'] * 1000 / debug_frames, 2)) + "ms/frame" +
+                " | Gravity: " + str(round(debug_times['gravity'] * 1000 / debug_frames, 2)) + "ms/frame" +
+                " | Terrain: " + str(round(debug_times['terrain'] * 1000 / debug_frames, 2)) + "ms/frame" +
+                " | Editing: " + str(round(debug_times['editing'] * 1000 / debug_frames, 2)) + "ms/frame" +
+                " | Render: " + str(round(debug_times['render'] * 1000 / debug_frames, 2)) + "ms/frame\n"
+            )
+
+        for key in debug_times:
+            debug_times[key] = 0
+
+        debug_frames = 0
+        last_debug_time = now
+
+
 # Chunk Settings
 
-import base64
-worldy=0
+worldy = 0
 tick = 0
 reach = 5
 velocity = 1
@@ -27,19 +77,17 @@ showhealth = True
 healthtick = 0
 lastvelocity = 0
 undercurser = None
-solidtiles = ['#','|']
-gravitytiles = ['#','|','l']
+solidtiles = ['#', '|']
+gravitytiles = ['#', '|', 'l']
 flight = False
 start = 0
 
-chunk = [] # Need to make it before generateterrain function so it can be used by other functions
+chunk = []
 worldchanges = {}
 curserx = 3
 cursery = 0
 
 
-# Usage
-# blocks.stone, returns ID
 class blocks:
     air = 0
     stone = 1
@@ -47,8 +95,7 @@ class blocks:
     leaf = 3
     wheat = 4
 
-# Usage
-# blockidtochar[0] but use blockidtochar[blocks.stone], makes it cleaner
+
 blockidtochar = {
     0: ' ',
     1: '#',
@@ -65,108 +112,114 @@ chartoblockid = {
     'F': 4
 }
 
+
 def editchunk():
     global lastvelocity
     global health
     global undercurser
-    # World editing
+
     for y in range(height):
         for x in range(width):
             blockx = x + worldx + centerx
             blocky = y + worldy
-            if (blockx,blocky) in worldchanges:
-                chunk[y * width + x] = worldchanges.get((blockx,blocky))
 
+            if (blockx, blocky) in worldchanges:
+                chunk[y * width + x] = worldchanges.get((blockx, blocky))
 
-
-    # Extra visual stuff
     chunk[centerx + centery * width] = '!'
-    undercurser = chunk[centerx+curserx + (centery+cursery) * width]
-    chunk[centerx+curserx + (centery+cursery) * width] = 'X' # Center of the screen + where the curser is
+    undercurser = chunk[centerx + curserx + (centery + cursery) * width]
+    chunk[centerx + curserx + (centery + cursery) * width] = 'X'
+
     if bordertrigger == 'up':
-        chunk[centerx+curserx + (centery+cursery-1) * width] = '_'
+        chunk[centerx + curserx + (centery + cursery - 1) * width] = '_'
     elif bordertrigger == 'down':
-        chunk[centerx+curserx + (centery+cursery+1) * width] = '_'
+        chunk[centerx + curserx + (centery + cursery + 1) * width] = '_'
     elif bordertrigger == 'left':
-        chunk[centerx+curserx-1 + (centery+cursery) * width] = '|'
+        chunk[centerx + curserx - 1 + (centery + cursery) * width] = '|'
     elif bordertrigger == 'right':
-        chunk[centerx+curserx+1 + (centery+cursery) * width] = '|'
-    
-    # health
+        chunk[centerx + curserx + 1 + (centery + cursery) * width] = '|'
+
     if showhealth:
         for i in range(int(health)):
             chunk[i] = '='
-        for i in range(10-int(health)):
-            chunk[i+int(health)] = '-'
+
+        for i in range(10 - int(health)):
+            chunk[i + int(health)] = '-'
+
     if health == 0:
         text = [
-        '+-----------+',
-        '| YOU DIED  |',
-        '|Respawn (1)|',
-        '+-----------+'
+            '+-----------+',
+            '| YOU DIED  |',
+            '|Respawn (1)|',
+            '+-----------+'
         ]
+
         for line in range(len(text)):
             for char in range(len(text[line])):
-                chunk[(5+line)*width+centerx-len(text[line])//2+char] = text[line][char]
+                chunk[(5 + line) * width + centerx - len(text[line]) // 2 + char] = text[line][char]
+
 
 def generateterrain():
     global worldx
     global worldy
-    global chunk # Get chunk that was defined outside of function
-    chunk = [' '] * width * height # Reset current chunk data before calculating terrain
+    global chunk
+
+    chunk = [' '] * width * height
+
     for x in range(width):
-        topheight = 15 - int(gen.noise2((x+worldx+centerx) / 10.0, 0) * 10)
+        topheight = 15 - int(gen.noise2((x + worldx + centerx) / 10.0, 0) * 10)
+
         for y in range(height):
-            worldblocky = y+worldy
+            worldblocky = y + worldy
+
             if worldblocky >= topheight:
                 chunk[y * width + x] = '#'
-        wheaty = topheight - worldy - 1 # Removes player offset
-        if wheatgen.noise2((x+worldx+centerx) / 10.0, 0) > 0.2:
-            if wheaty >= 0 and wheaty < height: # Check to make sure the player isn't above or below when wheat spawns
-                chunk[wheaty*width+x] = 'F'
-    
+
+        wheaty = topheight - worldy - 1
+
+        if wheatgen.noise2((x + worldx + centerx) / 10.0, 0) > 0.2:
+            if wheaty >= 0 and wheaty < height:
+                chunk[wheaty * width + x] = 'F'
+
     for x in range(width):
         treex = x + worldx + centerx
         topheight = 15 - int(gen.noise2(treex / 10.0, 0) * 10)
         treey = topheight - worldy - 1
-        if treex % 8 == 0: # Only every 8 blocks
-            if treegen.noise2((treex) / 10.0, 0) > 0.3:
+
+        if treex % 8 == 0:
+            if treegen.noise2(treex / 10.0, 0) > 0.3:
                 tree = [
-                        '           @    ',
-                        '          @@@   ',
-                        '         @@@@@  ',
-                        '           |    ',
-                        '           |    ',
-                        '           |    '
-                    ]
+                    '           @    ',
+                    '          @@@   ',
+                    '         @@@@@  ',
+                    '           |    ',
+                    '           |    ',
+                    '           |    '
+                ]
+
                 tree = list(reversed(tree))
+
                 for line in range(len(tree)):
                     for char in range(len(tree[line])):
                         if tree[line][char] != ' ':
-                            # Below is some weird AI stuff would have not thought of those inequanitys
                             treerow = treey - line
                             treex_screen = x + char - 11
-                            if 0 <= treex_screen < width and 0 <= treerow < height: # Weird ai thing that should fix all my problems
+
+                            if 0 <= treex_screen < width and 0 <= treerow < height:
                                 chunk[treerow * width + treex_screen] = tree[line][char]
-                                
-            
 
-    # below is a way to add stuff to the screen
-    # text = "x=" + str(worldx) + " y=" + str(worldy)
-    # for i, char in enumerate(text):
-    #     chunk[i] = char
-    # This is where stuff can be changed in the chunk, colors, stuff on screen, characters, ect.
-    
-        
 
-    
 def findspawnlocation():
     global centerx
-    global worldx
-    topheight = 15 - int(gen.noise2((worldx+centerx+centerx) / 10.0, 0) * 10) # Just generate the block at x=0 and set that as the y
-    if wheatgen.noise2((worldx+centerx+centerx) / 10.0, 0) > 0.2:
+
+    topheight = 15 - int(gen.noise2((worldx + centerx + centerx) / 10.0, 0) * 10)
+
+    if wheatgen.noise2((worldx + centerx + centerx) / 10.0, 0) > 0.2:
         topheight -= 1
-    return topheight-1
+
+    return topheight - 1
+
+
 def move():
     global worldx
     global centerx
@@ -178,26 +231,30 @@ def move():
     global saved
     global health
     global flight
+
     key = term.inkey(timeout=0.005)
-    # The following below are for the player's movement
+
     if key == 'd':
         if chunk[1 + centerx + centery * width] not in solidtiles:
             worldx += 1
+
     elif key == 'a':
-        if chunk[centerx + centery * width - 1] not in solidtiles: # Current center block in the screen but one less
+        if chunk[centerx + centery * width - 1] not in solidtiles:
             worldx -= 1
+
     elif key == 'w':
-        if chunk[centerx + (centery-1) * width] not in solidtiles:
+        if chunk[centerx + (centery - 1) * width] not in solidtiles:
             if flight:
                 worldy -= 1
             else:
                 if onground():
                     worldy -= 1
+
     elif key == 's':
-        if flight: # Allows moving down if flying since no gravity exists
-            if chunk[centerx + (centery+1) * width] not in solidtiles:
+        if flight:
+            if chunk[centerx + (centery + 1) * width] not in solidtiles:
                 worldy += 1
-    # The following is confusing. and its ai code idk im not guessing all of that its been like 30 trys of trying to get bounds to work
+
     elif key.name == 'KEY_UP':
         if cursery > -reach:
             cursery -= 1
@@ -225,40 +282,50 @@ def move():
             bordertrigger = None
         else:
             bordertrigger = 'right'
+
     elif key.name == 'KEY_ENTER':
         blockx = centerx + curserx + worldx + centerx
         blocky = centery + cursery + worldy
-
         worldchanges[(blockx, blocky)] = ' '
+
     elif key == ' ':
         blockx = centerx + curserx + worldx + centerx
         blocky = centery + cursery + worldy
-        if chunk[centerx+curserx + (centery+cursery) * width] == ' ':
+
+        if chunk[centerx + curserx + (centery + cursery) * width] == ' ':
             worldchanges[(blockx, blocky)] = '#'
+
     elif key == '1':
         if health == 0:
             health = 10
             worldx = -50
             worldy = findspawnlocation() - centery
+
             while worldchanges.get((worldx + centerx * 2, centery + worldy), ' ') != ' ':
                 worldy -= 1
+
             curserx = 3
             cursery = 0
+
     elif key == 'f':
         flight = not flight
+
     elif key == 'p':
-        # for (x,y),block in worldchanges.items():
-        #     worldchanges[(x,y)] = chartoblockid[block]
-        # time.sleep(5)
         saveworld = [seed, worldchanges]
+
         with open(worldname + ".samcraft", "wb") as file:
             file.write(zlib.compress(cbor2.dumps(saveworld)))
+
         saved = True
+
     elif key == 'l':
         blockx = centerx + curserx + worldx + centerx
         blocky = centery + cursery + worldy
-        if chunk[centerx+curserx + (centery+cursery) * width] == ' ':
+
+        if chunk[centerx + curserx + (centery + cursery) * width] == ' ':
             worldchanges[(blockx, blocky)] = 'l'
+
+
 def gravity():
     global velocity
     global tick
@@ -267,84 +334,104 @@ def gravity():
     global worldy
     global health
     global lastvelocity
-    if not onground(): # In the air
+
+    if not onground():
         tick += velocity
+
         if velocity <= 50:
             velocity *= 1.03
-        
+
         if tick >= 40:
             worldy += 1
             tick = 0
+
         lastvelocity = velocity
+
     else:
         tick = 0
         velocity = 1
-        health -= lastvelocity//5 # Damage on falling
+        health -= lastvelocity // 5
+
         if health < 0:
             health = 0
+
         lastvelocity = 0
+
+
 def onground():
-    return chunk[centerx + (centery+1) * width] in gravitytiles # Will return True or False
+    return chunk[centerx + (centery + 1) * width] in gravitytiles
+
+
 def render():
     global fps
     global saved
     global fpsframe
     global start
+
     frame = ''
-    for row in range(height-1): # Every row goes through this
+
+    for row in range(height - 1):
         colorcoderframelist = []
         colorcodegframelist = []
         colorcodebframelist = []
         tiletextframelist = []
-        for tile in chunk[row*width:row*width+width]: # A for loop of all the tiles (chars) inside of the chunk (what you see on the screen at a time)
+
+        for tile in chunk[row * width:row * width + width]:
             incolorcode = False
             tiletext = ''
-            colorcode = '' # Reset color code because the color code mode was just entered.
-            for char in tile: # Loop everything inside of the tile to find the color seperator
-                if char == '`': # If the char is the color seperator
+            colorcode = ''
+
+            for char in tile:
+                if char == '`':
                     if incolorcode:
-                        incolorcode = False # This would trigger at the end of 255,0,255, meaning to that is the end, and the next tile is coming up so inside of color should go to false.
+                        incolorcode = False
                     else:
-                        incolorcode = True # For example if not inside of 255,0,255 yet, set inside to true.
-                        continue # Don't want to print the seperator
+                        incolorcode = True
+                        continue
                 else:
-                    if not incolorcode: # When it isn't a color, it's hopefully the char that will be printed, this should still work fine if its multiple chars, but rendering will not work so not sure why I didn't just check the 2nd char oh well.
+                    if not incolorcode:
                         tiletext += char
+
                 if incolorcode:
-                    colorcode += char # Add to color code the next char
-            # colorcode would be the HEX color code that was parsed
-            # tiletext is the TEXT that should be printed with that color
+                    colorcode += char
+
             colormode = 'r'
-            r = '' # If this color is never filled, it is blank so the color is not printed
+            r = ''
             g = ''
             b = ''
-            for char in colorcode: # Seperate into rgb.
-                if char == ',': # Checking for seperator in the rgb. Example: 255,0,0 this would trigger at the ,'s
-                    # This entire block just moves to the next color code when it detects the comma in the color code
+
+            for char in colorcode:
+                if char == ',':
                     if colormode == 'r':
                         colormode = 'g'
                     elif colormode == 'g':
                         colormode = 'b'
                 else:
-                    # These duplicate if nested statments just add the color code char depending on what color it should be. 
                     if colormode == 'r':
                         r += char
                     elif colormode == 'g':
                         g += char
                     elif colormode == 'b':
                         b += char
-            # Add all the color codes in seperate lists (dumb way)
+
             colorcoderframelist.append(r)
             colorcodegframelist.append(g)
             colorcodebframelist.append(b)
             tiletextframelist.append(tiletext)
-        for tile in range(len(tiletextframelist)): # Loop all the tiles inside of the tile list
-            if colorcoderframelist[tile] == '': # Just check one of the colors, assume if red doesn't exist the other ones don't either
-                frame = frame + tiletextframelist[tile] # Do not attempt to add a color when none is provided
+
+        for tile in range(len(tiletextframelist)):
+            if colorcoderframelist[tile] == '':
+                frame = frame + tiletextframelist[tile]
             else:
-                frame = frame + term.color_rgb(colorcoderframelist[tile],colorcodegframelist[tile],colorcodebframelist[tile])(tiletextframelist[tile])
+                frame = frame + term.color_rgb(
+                    colorcoderframelist[tile],
+                    colorcodegframelist[tile],
+                    colorcodebframelist[tile]
+                )(tiletextframelist[tile])
+
         if row != height - 1:
             frame += '\n'
+
     if fpsframe > 60:
         timeinframe = time.perf_counter() - start
         fps = fpsframe / timeinframe
@@ -352,20 +439,31 @@ def render():
         fpsframe = 0
     else:
         fpsframe += 1
-    print(term.home + frame, str(round(fps, 1)) + '   '  + str(seed) + '    ' + str(saved), end="", flush=True) # Basicly clear the screen no idea what half of it does though.
+
+    print(
+        term.home + frame,
+        str(round(fps, 1)) + '   ' + str(seed) + '    ' + str(saved),
+        end="",
+        flush=True
+    )
+
 
 def checkhealth():
     global health
     global showhealth
     global healthtick
+
     if health <= 0:
         healthtick += 1
+
         if healthtick >= 30:
             healthtick = 0
+
         if healthtick <= 10:
             showhealth = False
         else:
             showhealth = True
+
     else:
         showhealth = True
         healthtick = 0
@@ -376,84 +474,103 @@ def calculatescreenres():
     global height
     global centery
     global centerx
+
     width = term.width
     height = term.height
     centery = height // 2
-    centerx = width // 2 # Get the center of the screen, generate from the center so you have 0,0 in a spot that makes sense, and spawn the player at 0,0 as well.
+    centerx = width // 2
+
+
 def gameloop():
     global undercurser
+
     with term.cbreak(), term.hidden_cursor():
         while True:
-            calculatescreenres() # Incase window changes or font size is changed yeah.
+            frame_start = time.perf_counter()
+
+            calculatescreenres()
+
+            stage_start = debug_start()
             move()
+            debug_end('input', stage_start)
+
+            stage_start = debug_start()
             if not flight:
                 gravity()
             checkhealth()
-            generateterrain() # Makes the terrain and puts it into list chunk
+            debug_end('gravity', stage_start)
+
+            stage_start = debug_start()
+            generateterrain()
+            debug_end('terrain', stage_start)
+
+            stage_start = debug_start()
             editchunk()
+            debug_end('editing', stage_start)
+
+            stage_start = debug_start()
             render()
-            chunk[centerx+curserx + (centery+cursery) * width] = undercurser # Make sure collisions do the thing under the curser
-            get_cpu_usage()
-last_cpu_check = 0
-process = psutil.Process(os.getpid())
-def get_cpu_usage():
-    global last_cpu_check
+            debug_end('render', stage_start)
 
-    if time.time() - last_cpu_check >= 1:
-        last_cpu_check = time.time()
+            chunk[centerx + curserx + (centery + cursery) * width] = undercurser
 
-        cpu = process.cpu_percent()
-        with open("cpu_usage.txt", "a") as file:
-            file.write(str(cpu) + "%\n")
+            debug_frame()
+
+
 user = input('DO YOU WANT TO LOAD A WORLD OR MAKE ONE SAY L TO MAKE M TO MAKE\n')
+
 if user == 'L':
     for filename in os.listdir("."):
         if filename.endswith(".samcraft"):
             print(filename)
+
     user = input('WHAT IS YOUR WORLD NAME IT PROBALLY CRASHES RIGHT NOW IF IT DOESNT EXIST\n')
+
     start = time.perf_counter()
+
     with open(user + ".samcraft", "rb") as file:
         saveworld = cbor2.loads(zlib.decompress(file.read()))
+
     worldname = user
     seed = saveworld[0]
     worldchanges = saveworld[1]
     loaded = True
+
 elif user == 'M':
     user = input('WHAT DO YOU WANT TO CALL YOUR WORLD\n')
     worldname = user.strip()
 
-
     user = input('What seed? Or just hit enter for a random one\n')
+
     if user.isdigit() and int(user) < 2**64 - 100:
         seed = int(user)
     else:
         print('I am assuming you want a random seed')
-        seed = random.randint(0, 100000000) # Generate the seed, determines what is generated
+        seed = random.randint(0, 100000000)
+
     loaded = False
+
 else:
     print('you suck its ur fault i didnt allow for lowercase letters if thats why idk u suck all ur problem')
     exit()
+
 print('Starting generation, this probally won\'t take long')
 
 gen = OpenSimplex(seed=seed)
-wheatgen = OpenSimplex(seed=seed + 1) # Seed to generate wheat
+wheatgen = OpenSimplex(seed=seed + 1)
 treegen = OpenSimplex(seed=seed + 2)
 cavegen = OpenSimplex(seed=seed + 3)
 
-
-
-
-# First thing to do should be to figure out what the screen size is
 calculatescreenres()
 
-worldx = -50 # generate terrain needs this to know where to start
-spawny = findspawnlocation() # Find a safe spot to place the player
+worldx = -50
+spawny = findspawnlocation()
 worldy = spawny - centery
+
 if loaded:
     while worldchanges.get((worldx + centerx * 2, centery + worldy), ' ') != ' ':
         worldy -= 1
-generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
+
+generateterrain()
 render()
 gameloop()
-
-
