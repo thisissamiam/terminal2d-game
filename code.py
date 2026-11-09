@@ -252,7 +252,7 @@ def move():
         with open(worldname + ".samcraft", "wb") as file:
             file.write(zlib.compress(cbor2.dumps(saveworld)))
         saved = True
-    elif key == 'T':
+    elif key == 'l':
         blockx = centerx + curserx + worldx + centerx
         blocky = centery + cursery + worldy
         if chunk[centerx+curserx + (centery+cursery) * width] == ' ':
