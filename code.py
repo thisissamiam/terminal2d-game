@@ -398,7 +398,7 @@ def gameloop():
             if not flight:
                 gravity()
             checkhealth()
-            if not onground() and not idle:
+            if not onground() or not idle:
                 generateterrain() # Makes the terrain and puts it into list chunk
                 editchunk()
                 render()
