@@ -395,7 +395,7 @@ def gameloop():
             chunk[centerx+curserx + (centery+cursery) * width] = undercurser # Make sure collisions do the thing under the curser
             get_cpu_usage()
 last_cpu_check = 0
-
+process = psutil.Process(os.getpid())
 def get_cpu_usage():
     global last_cpu_check
 
