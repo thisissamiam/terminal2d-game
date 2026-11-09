@@ -5,6 +5,7 @@ import time
 import cbor2
 import os
 import zlib
+import psutil
 world = [] # Create the 2d world, starting as nothing
 
 term = blessed.Terminal() # Term is basicly the terminal, allows editing and getting data about the terminal.
@@ -352,7 +353,7 @@ def render():
     else:
         fpsframe += 1
     print(term.home + frame, str(round(fps, 1)) + '   '  + str(seed) + '    ' + str(saved), end="", flush=True) # Basicly clear the screen no idea what half of it does though.
-    
+
 def checkhealth():
     global health
     global showhealth
@@ -392,7 +393,18 @@ def gameloop():
             editchunk()
             render()
             chunk[centerx+curserx + (centery+cursery) * width] = undercurser # Make sure collisions do the thing under the curser
+            get_cpu_usage()
+last_cpu_check = 0
 
+def get_cpu_usage():
+    global last_cpu_check
+
+    if time.time() - last_cpu_check >= 1:
+        last_cpu_check = time.time()
+
+        cpu = process.cpu_percent()
+        with open("cpu_usage.txt", "a") as file:
+            file.write(str(cpu) + "%\n")
 user = input('DO YOU WANT TO LOAD A WORLD OR MAKE ONE SAY L TO MAKE M TO MAKE\n')
 if user == 'L':
     for filename in os.listdir("."):
