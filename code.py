@@ -398,9 +398,10 @@ def gameloop():
             if not flight:
                 gravity()
             checkhealth()
-            generateterrain() # Makes the terrain and puts it into list chunk
-            editchunk()
-            render()
+            if not onground() and not idle:
+                generateterrain() # Makes the terrain and puts it into list chunk
+                editchunk()
+                render()
             chunk[centerx+curserx + (centery+cursery) * width] = undercurser # Make sure collisions do the thing under the curser
 
 user = input('DO YOU WANT TO LOAD A WORLD OR MAKE ONE SAY L TO MAKE M TO MAKE\n')
