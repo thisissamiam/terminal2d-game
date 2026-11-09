@@ -353,16 +353,7 @@ def render():
                 frame = frame + term.color_rgb(colorcoderframelist[tile],colorcodegframelist[tile],colorcodebframelist[tile])(tiletextframelist[tile])
         if row != height - 1:
             frame += '\n'
-    if fpsframe > 60:
-        timeinframe = time.perf_counter() - start
-        cpu = process.cpu_percent()
-        fps = fpsframe / timeinframe
-        start = time.perf_counter()
-        fpsframe = 0
-    else:
-        fpsframe += 1
-    print(term.home + frame, str(round(fps, 1)) + '   '  + str(seed) + '    ' + str(saved) + ' CPU: ' + str(cpu) + '%', end="", flush=True) # Basicly clear the screen no idea what half of it does though.
-
+    print(term.home + frame, end="", flush=True)
 def checkhealth():
     global health
     global showhealth
@@ -390,7 +381,10 @@ def calculatescreenres():
     centery = height // 2
     centerx = width // 2 # Get the center of the screen, generate from the center so you have 0,0 in a spot that makes sense, and spawn the player at 0,0 as well.
 def gameloop():
+    
     global undercurser
+    global fpsframe
+    global start
     with term.cbreak(), term.hidden_cursor():
         while True:
             calculatescreenres() # Incase window changes or font size is changed yeah.
@@ -402,6 +396,15 @@ def gameloop():
                 generateterrain() # Makes the terrain and puts it into list chunk
                 editchunk()
                 render()
+            if fpsframe > 60:
+                    timeinframe = time.perf_counter() - start
+                    cpu = process.cpu_percent()
+                    fps = fpsframe / timeinframe
+                    start = time.perf_counter()
+                    fpsframe = 0
+                    print(str(round(fps, 1)) + '   ' + str(seed) + '    ' + str(saved) + ' CPU: ' + str(cpu) + '%', end="", flush=True)
+            else:
+                fpsframe += 1
             chunk[centerx+curserx + (centery+cursery) * width] = undercurser # Make sure collisions do the thing under the curser
 
 user = input('DO YOU WANT TO LOAD A WORLD OR MAKE ONE SAY L TO MAKE M TO MAKE\n')
