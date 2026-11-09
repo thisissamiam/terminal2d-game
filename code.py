@@ -358,7 +358,7 @@ def render():
         fpsframe = 0
     else:
         fpsframe += 1
-    print(term.home + frame, str(round(fps, 1)) + '   '  + str(seed) + '    ' + str(saved) + ' CPU: ' + str(process.cpu_percent() + '%'), end="", flush=True) # Basicly clear the screen no idea what half of it does though.
+    print(term.home + frame, str(round(fps, 1)) + '   '  + str(seed) + '    ' + str(saved) + ' CPU: ' + str(process.cpu_percent()) + '%', end="", flush=True) # Basicly clear the screen no idea what half of it does though.
 
 def checkhealth():
     global health
