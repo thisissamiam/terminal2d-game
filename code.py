@@ -193,8 +193,9 @@ def move():
     global flight
     global idle
     global lastmove
-    key = key = keys.get()
-    if not key:
+    try:
+        key = keys.get_nowait()
+    except queue.Empty:
         idle = True
         return
 
@@ -476,7 +477,7 @@ if loaded:
 generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
 editchunk()
 render()
-movement = threading.Thread(target=move, daemon=True)
+movement = threading.Thread(target=inputkeys, daemon=True)
 movement.start()
 gameloop()
 
