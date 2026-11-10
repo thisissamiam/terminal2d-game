@@ -33,7 +33,7 @@ gravitytiles = ['#','|','H']
 flight = False
 start = 0
 idle = False
-lastkey = None
+lastkeytime = None
 
 chunk = [] # Need to make it before generateterrain function so it can be used by other functions
 worldchanges = {}
@@ -182,13 +182,11 @@ def move():
     global health
     global flight
     global idle
-    global lastkey
+    global lastkeytime
     key = term.inkey(timeout=0.01)
     # The following below are for the player's movement
-    if key:
-        if key == lastkey:
-            return
-        lastkey = key # If it's a different key then save that key as the last one so the new one can't be held
+    lastkeytime += 0.1
+    if key and lastkeytime > 5:
         idle = False
         if key == 'd':
             if chunk[1 + centerx + centery * width] not in solidtiles:
@@ -274,7 +272,7 @@ def move():
                 worldchanges[(blockx, blocky)] = 'H'
     else:
         idle = True
-        lastkey = None
+        lastkeytime = 0
 def gravity():
     global velocity
     global tick
