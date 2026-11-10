@@ -187,6 +187,7 @@ def move():
     # The following below are for the player's movement
     lastkeytime += 0.1
     if key and lastkeytime > 5:
+        lastkeytime = 0
         idle = False
         if key == 'd':
             if chunk[1 + centerx + centery * width] not in solidtiles:
@@ -272,7 +273,6 @@ def move():
                 worldchanges[(blockx, blocky)] = 'H'
     else:
         idle = True
-        lastkeytime = 0
 def gravity():
     global velocity
     global tick
