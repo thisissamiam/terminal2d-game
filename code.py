@@ -171,6 +171,8 @@ def findspawnlocation():
     if wheatgen.noise2((worldx+centerx+centerx) / 10.0, 0) > 0.2:
         topheight -= 1
     return topheight-1
+lastmove = 0
+
 def move():
     global worldx
     global centerx
@@ -183,112 +185,107 @@ def move():
     global health
     global flight
     global idle
-    global timemove
+    global lastmove
 
     key = term.inkey(timeout=0.01)
 
-    if timemove > 50:
-        if key:
-            timemove = 0
-            idle = False
+    now = time.perf_counter()
 
-            if key == 'd':
-                if chunk[1 + centerx + centery * width] not in solidtiles:
-                    worldx += 1
+    if not key:
+        idle = True
+        return
 
-            elif key == 'a':
-                if chunk[centerx + centery * width - 1] not in solidtiles:
-                    worldx -= 1
+    if now - lastmove < 0.2:
+        return
 
-            elif key == 'w':
-                if chunk[centerx + (centery-1) * width] not in solidtiles:
-                    if flight:
-                        worldy -= 1
-                    else:
-                        if onground():
-                            worldy -= 1
+    lastmove = now
+    idle = False
 
-            elif key == 's':
-                if flight:
-                    if chunk[centerx + (centery+1) * width] not in solidtiles:
-                        worldy += 1
-                else:
-                    if chunk[centerx + (centery+1) * width] == 'H':
-                        worldy += 1
+    if key == 'd':
+        if chunk[1 + centerx + centery * width] not in solidtiles:
+            worldx += 1
 
-            elif key.name == 'KEY_UP':
-                if cursery > -reach:
-                    cursery -= 1
-                    bordertrigger = None
-                else:
-                    bordertrigger = 'up'
+    elif key == 'a':
+        if chunk[centerx + centery * width - 1] not in solidtiles:
+            worldx -= 1
 
-            elif key.name == 'KEY_DOWN':
-                if cursery < reach:
-                    cursery += 1
-                    bordertrigger = None
-                else:
-                    bordertrigger = 'down'
+    elif key == 'w':
+        if chunk[centerx + (centery-1) * width] not in solidtiles:
+            if flight:
+                worldy -= 1
+            elif onground():
+                worldy -= 1
 
-            elif key.name == 'KEY_LEFT':
-                if curserx > -reach:
-                    curserx -= 1
-                    bordertrigger = None
-                else:
-                    bordertrigger = 'left'
+    elif key == 's':
+        if flight:
+            if chunk[centerx + (centery+1) * width] not in solidtiles:
+                worldy += 1
+        elif chunk[centerx + (centery+1) * width] == 'H':
+            worldy += 1
 
-            elif key.name == 'KEY_RIGHT':
-                if curserx < reach:
-                    curserx += 1
-                    bordertrigger = None
-                else:
-                    bordertrigger = 'right'
-
-            elif key.name == 'KEY_ENTER':
-                blockx = centerx + curserx + worldx + centerx
-                blocky = centery + cursery + worldy
-                worldchanges[(blockx, blocky)] = ' '
-
-            elif key == ' ':
-                blockx = centerx + curserx + worldx + centerx
-                blocky = centery + cursery + worldy
-                if chunk[centerx+curserx + (centery+cursery) * width] == ' ':
-                    worldchanges[(blockx, blocky)] = '#'
-
-            elif key == '1':
-                if health == 0:
-                    health = 10
-                    worldx = -50
-                    worldy = findspawnlocation() - centery
-                    while worldchanges.get((worldx + centerx * 2, centery + worldy), ' ') != ' ':
-                        worldy -= 1
-                    curserx = 3
-                    cursery = 0
-
-            elif key == 'f':
-                flight = not flight
-
-            elif key == 'p':
-                saveworld = [seed, worldchanges]
-                with open(worldname + ".samcraft", "wb") as file:
-                    file.write(zlib.compress(cbor2.dumps(saveworld)))
-                saved = True
-
-            elif key == 'l':
-                blockx = centerx + curserx + worldx + centerx
-                blocky = centery + cursery + worldy
-                if chunk[centerx+curserx + (centery+cursery) * width] == ' ':
-                    worldchanges[(blockx, blocky)] = 'H'
-
+    elif key.name == 'KEY_UP':
+        if cursery > -reach:
+            cursery -= 1
+            bordertrigger = None
         else:
-            idle = True
+            bordertrigger = 'up'
 
-    else:
-        # Discard all buffered keypresses during cooldown
-        while term.inkey(timeout=0):
-            pass
+    elif key.name == 'KEY_DOWN':
+        if cursery < reach:
+            cursery += 1
+            bordertrigger = None
+        else:
+            bordertrigger = 'down'
 
-        timemove += 1
+    elif key.name == 'KEY_LEFT':
+        if curserx > -reach:
+            curserx -= 1
+            bordertrigger = None
+        else:
+            bordertrigger = 'left'
+
+    elif key.name == 'KEY_RIGHT':
+        if curserx < reach:
+            curserx += 1
+            bordertrigger = None
+        else:
+            bordertrigger = 'right'
+
+    elif key.name == 'KEY_ENTER':
+        blockx = centerx + curserx + worldx + centerx
+        blocky = centery + cursery + worldy
+        worldchanges[(blockx, blocky)] = ' '
+
+    elif key == ' ':
+        blockx = centerx + curserx + worldx + centerx
+        blocky = centery + cursery + worldy
+        if chunk[centerx+curserx + (centery+cursery) * width] == ' ':
+            worldchanges[(blockx, blocky)] = '#'
+
+    elif key == '1':
+        if health == 0:
+            health = 10
+            worldx = -50
+            worldy = findspawnlocation() - centery
+            while worldchanges.get((worldx + centerx * 2, centery + worldy), ' ') != ' ':
+                worldy -= 1
+            curserx = 3
+            cursery = 0
+
+    elif key == 'f':
+        flight = not flight
+
+    elif key == 'p':
+        saveworld = [seed, worldchanges]
+        with open(worldname + ".samcraft", "wb") as file:
+            file.write(zlib.compress(cbor2.dumps(saveworld)))
+        saved = True
+
+    elif key == 'l':
+        blockx = centerx + curserx + worldx + centerx
+        blocky = centery + cursery + worldy
+        if chunk[centerx+curserx + (centery+cursery) * width] == ' ':
+            worldchanges[(blockx, blocky)] = 'H'
 def gravity():
     global velocity
     global tick
