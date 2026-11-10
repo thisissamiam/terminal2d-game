@@ -277,7 +277,7 @@ def move():
     else:
         timemove += 1
         while key != '':
-            pass
+            key = term.inkey(timeout=0)
 def gravity():
     global velocity
     global tick
