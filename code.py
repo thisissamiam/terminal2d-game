@@ -396,6 +396,7 @@ def gameloop():
     with term.cbreak(), term.hidden_cursor():
         while True:
             timemove += 1
+            term.inkey(timeout=0)
             if timemove > 100:
                 move()
             if not flight:
