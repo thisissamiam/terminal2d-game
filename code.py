@@ -199,7 +199,6 @@ def move():
         idle = True
         return
 
-    lastmove = now
     idle = False
 
     if key == 'd':
