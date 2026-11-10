@@ -183,7 +183,7 @@ def move():
     global flight
     global idle
     global lastkeytime
-    key = term.inkey(timeout=0.1)
+    key = term.inkey(timeout=0.01)
     # The following below are for the player's movement
     lastkeytime += 0.1
     if key and lastkeytime > 5:
