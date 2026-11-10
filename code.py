@@ -276,7 +276,7 @@ def move():
             idle = True
     else:
         timemove += 1
-        while term.inkey(timeout=0):
+        while key != '':
             pass
 def gravity():
     global velocity
