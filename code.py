@@ -187,8 +187,6 @@ def move():
     key = term.inkey(timeout=0.01)
     # The following below are for the player's movement
     if timemove > 50:
-        while term.inkey(timeout=0):
-            pass
         if key:
             timemove = 0
             idle = False
@@ -278,6 +276,8 @@ def move():
             idle = True
     else:
         timemove += 1
+        while term.inkey(timeout=0):
+            pass
 def gravity():
     global velocity
     global tick
