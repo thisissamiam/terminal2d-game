@@ -391,7 +391,6 @@ def gameloop():
     global height
     with term.cbreak(), term.hidden_cursor():
         while True:
-            calculatescreenres() # Incase window changes or font size is changed yeah.
             move()
             if not flight:
                 gravity()
@@ -410,7 +409,6 @@ def gameloop():
             else:
                 fpsframe += 1
             chunk[centerx+curserx + (centery+cursery) * width] = undercurser # Make sure collisions do the thing under the curser
-
 user = input('DO YOU WANT TO LOAD A WORLD OR MAKE ONE SAY L TO MAKE M TO MAKE\n').upper()
 if user == 'L':
     for filename in os.listdir("."):
@@ -459,6 +457,7 @@ if loaded:
     while worldchanges.get((worldx + centerx * 2, centery + worldy), ' ') != ' ':
         worldy -= 1
 generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
+editchunk()
 render()
 gameloop()
 
