@@ -184,18 +184,22 @@ def move():
     global flight
     global idle
     global timemove
+
     key = term.inkey(timeout=0.01)
-    # The following below are for the player's movement
+
     if timemove > 50:
         if key:
             timemove = 0
             idle = False
+
             if key == 'd':
                 if chunk[1 + centerx + centery * width] not in solidtiles:
                     worldx += 1
+
             elif key == 'a':
-                if chunk[centerx + centery * width - 1] not in solidtiles: # Current center block in the screen but one less
+                if chunk[centerx + centery * width - 1] not in solidtiles:
                     worldx -= 1
+
             elif key == 'w':
                 if chunk[centerx + (centery-1) * width] not in solidtiles:
                     if flight:
@@ -203,51 +207,54 @@ def move():
                     else:
                         if onground():
                             worldy -= 1
+
             elif key == 's':
-                if flight: # Allows moving down if flying since no gravity exists
+                if flight:
                     if chunk[centerx + (centery+1) * width] not in solidtiles:
                         worldy += 1
                 else:
                     if chunk[centerx + (centery+1) * width] == 'H':
                         worldy += 1
-            # The following is confusing. and its ai code idk im not guessing all of that its been like 30 trys of trying to get bounds to work
+
             elif key.name == 'KEY_UP':
                 if cursery > -reach:
                     cursery -= 1
                     bordertrigger = None
                 else:
                     bordertrigger = 'up'
-    
+
             elif key.name == 'KEY_DOWN':
                 if cursery < reach:
                     cursery += 1
                     bordertrigger = None
                 else:
                     bordertrigger = 'down'
-    
+
             elif key.name == 'KEY_LEFT':
                 if curserx > -reach:
                     curserx -= 1
                     bordertrigger = None
                 else:
                     bordertrigger = 'left'
-    
+
             elif key.name == 'KEY_RIGHT':
                 if curserx < reach:
                     curserx += 1
                     bordertrigger = None
                 else:
                     bordertrigger = 'right'
+
             elif key.name == 'KEY_ENTER':
                 blockx = centerx + curserx + worldx + centerx
                 blocky = centery + cursery + worldy
-    
                 worldchanges[(blockx, blocky)] = ' '
+
             elif key == ' ':
                 blockx = centerx + curserx + worldx + centerx
                 blocky = centery + cursery + worldy
                 if chunk[centerx+curserx + (centery+cursery) * width] == ' ':
                     worldchanges[(blockx, blocky)] = '#'
+
             elif key == '1':
                 if health == 0:
                     health = 10
@@ -257,27 +264,31 @@ def move():
                         worldy -= 1
                     curserx = 3
                     cursery = 0
+
             elif key == 'f':
                 flight = not flight
+
             elif key == 'p':
-                # for (x,y),block in worldchanges.items():
-                #     worldchanges[(x,y)] = chartoblockid[block]
-                # time.sleep(5)
                 saveworld = [seed, worldchanges]
                 with open(worldname + ".samcraft", "wb") as file:
                     file.write(zlib.compress(cbor2.dumps(saveworld)))
                 saved = True
+
             elif key == 'l':
                 blockx = centerx + curserx + worldx + centerx
                 blocky = centery + cursery + worldy
                 if chunk[centerx+curserx + (centery+cursery) * width] == ' ':
                     worldchanges[(blockx, blocky)] = 'H'
+
         else:
             idle = True
+
     else:
+        # Discard all buffered keypresses during cooldown
+        while term.inkey(timeout=0):
+            pass
+
         timemove += 1
-        while key != '':
-            key = term.inkey(timeout=0)
 def gravity():
     global velocity
     global tick
