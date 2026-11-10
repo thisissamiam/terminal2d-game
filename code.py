@@ -186,7 +186,6 @@ def move():
     global timemove
     key = term.inkey(timeout=0.01)
     # The following below are for the player's movement
-    timemove += 1
     if timemove > 300:
         if key:
             lastkeytime = 0
@@ -275,7 +274,8 @@ def move():
                     worldchanges[(blockx, blocky)] = 'H'
         else:
             idle = True
-        timemove = 0
+    else:
+        timemove += 1
 def gravity():
     global velocity
     global tick
