@@ -9,7 +9,7 @@ print("Press Q to quit.\n")
 
 with term.cbreak():
     while True:
-        key = term.inkey(timeout=0.01)
+        key = term.inkey(timeout=0)
 
         if key:
             print(
