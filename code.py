@@ -186,9 +186,9 @@ def move():
     global timemove
     key = term.inkey(timeout=0.01)
     # The following below are for the player's movement
-    if timemove > 300:
+    if timemove > 50:
         if key:
-            lastkeytime = 0
+            timemove = 0
             idle = False
             if key == 'd':
                 if chunk[1 + centerx + centery * width] not in solidtiles:
