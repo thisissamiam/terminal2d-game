@@ -397,8 +397,9 @@ def gameloop():
         while True:
             timemove += 1
             term.inkey(timeout=0)
-            if timemove > 1000:
+            if timemove > 300:
                 move()
+                timemove = 0
             if not flight:
                 gravity()
             checkhealth()
