@@ -7,6 +7,7 @@ import os
 import zlib
 import psutil
 import queue
+import threading
 world = [] # Create the 2d world, starting as nothing
 process = psutil.Process(os.getpid())
 term = blessed.Terminal() # Term is basicly the terminal, allows editing and getting data about the terminal.
