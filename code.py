@@ -186,9 +186,9 @@ def move():
     key = term.inkey(timeout=0.01)
     # The following below are for the player's movement
     if key:
-        lastkey = key
         if key == lastkey:
             return
+        lastkey = key # If it's a different key then save that key as the last one so the new one can't be held
         idle = False
         if key == 'd':
             if chunk[1 + centerx + centery * width] not in solidtiles:
