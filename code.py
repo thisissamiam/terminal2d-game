@@ -182,11 +182,9 @@ def move():
     global health
     global flight
     global idle
-    global lastkeytime
     key = term.inkey(timeout=0.01)
     # The following below are for the player's movement
-    lastkeytime += 0.1
-    if key and lastkeytime > 5:
+    if key:
         lastkeytime = 0
         idle = False
         if key == 'd':
@@ -273,7 +271,6 @@ def move():
                 worldchanges[(blockx, blocky)] = 'H'
     else:
         idle = True
-        key = None
 def gravity():
     global velocity
     global tick
