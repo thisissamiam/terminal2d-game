@@ -273,6 +273,7 @@ def move():
                 worldchanges[(blockx, blocky)] = 'H'
     else:
         idle = True
+        key = None
 def gravity():
     global velocity
     global tick
