@@ -33,7 +33,7 @@ gravitytiles = ['#','|','H']
 flight = False
 start = 0
 idle = False
-lastkeytime = None
+lastkeytime = 0
 
 chunk = [] # Need to make it before generateterrain function so it can be used by other functions
 worldchanges = {}
