@@ -19,6 +19,7 @@ reach = 5
 velocity = 1
 fps = 0
 cpu = 0
+timemove = 0
 fpsframe = 0
 saved = ''
 worldname = 'World'
@@ -391,9 +392,12 @@ def gameloop():
     global fpsframe
     global start
     global height
+    global timemove
     with term.cbreak(), term.hidden_cursor():
         while True:
-            move()
+            timemove += 1
+            if timemove > 100:
+                move()
             if not flight:
                 gravity()
             checkhealth()
