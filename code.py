@@ -364,7 +364,6 @@ def gameloop():
         movement.start()
         while True:
             
-            time.sleep(1 / 60)
             move()
             if not flight:
                 gravity()
