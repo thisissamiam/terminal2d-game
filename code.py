@@ -179,6 +179,7 @@ keys = queue.Queue(maxsize=1)
 def inputkeys():
     global keys
     while True:
+        key = term.inkey(timeout=0.05)
         if key:
             try:
                 keys.put_nowait(key)
