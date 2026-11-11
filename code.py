@@ -16,6 +16,7 @@ print(term.clear) # Clear the screen before starting the game cuz yeah
 
 import base64
 worldy=0
+chunktemplate = [' '] * width * height
 tick = 0
 reach = 5
 velocity = 1
@@ -118,8 +119,9 @@ def editchunk():
 def generateterrain():
     global worldx
     global worldy
+    global chunktemplate
     global chunk # Get chunk that was defined outside of function
-    chunk = [' '] * width * height # Reset current chunk data before calculating terrain
+    chunk = chunk = chunktemplate.copy()
     for x in range(width):
         topheight = 15 - int(gen.noise2((x+worldx+centerx) / 10.0, 0) * 10)
         for y in range(height):
