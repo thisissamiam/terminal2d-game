@@ -8,6 +8,7 @@ import zlib
 import psutil
 import queue
 import threading
+import yappi
 world = [] # Create the 2d world, starting as nothing
 process = psutil.Process(os.getpid())
 term = blessed.Terminal() # Term is basicly the terminal, allows editing and getting data about the terminal.
@@ -417,6 +418,7 @@ def gameloop():
         movement = threading.Thread(target=inputkeys, daemon=True)
         movement.start()
         while True:
+            
             time.sleep(1 / 60)
             move()
             if not flight:
@@ -487,5 +489,10 @@ if loaded:
 generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
 editchunk()
 render()
-gameloop()
-
+yappi.start()
+try:
+    gameloop()
+except KeyboardInterrupt:
+    yappi.stop()
+    yappi.get_func_stats().print_all()
+    yappi.get_thread_stats().print_all()
