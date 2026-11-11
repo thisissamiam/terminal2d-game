@@ -183,7 +183,7 @@ def move():
     global health
     global flight
     global idle
-    key = term.inkey(timeout=0.01)
+    key = term.inkey(timeout=0.05)
     # The following below are for the player's movement
     if key:
         lastkeytime = 0
