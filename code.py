@@ -324,10 +324,8 @@ def render():
     frame = ''
     for row in range(height-1):
         for tile in chunk[width*row]:
-            frame += tile
-        frame += '\n'
-        if row != height - 1:
-            frame += '\n'
+            tiles = chunk[width*row:width*(row+1)] # First half: Second half is doing between row + next row the tiles inside of it so basicly one row
+            frame += ''.join(tiles) + '\n'
     print(term.home + frame, end="", flush=True)
 def checkhealth():
     global health
