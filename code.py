@@ -175,11 +175,11 @@ def findspawnlocation():
     return topheight-1
 lastmove = 0
 
-keys = queue.Queue()
+keys = queue.Queue(maxsize=1)
 def inputkeys():
     global keys
     while True:
-        keys.put(term.inkey(timeout=0))
+        keys.put(term.inkey(timeout=0.01))
 
 def move():
     global worldx
@@ -408,6 +408,8 @@ def gameloop():
     global start
     global height
     with term.cbreak(), term.hidden_cursor():
+        movement = threading.Thread(target=inputkeys, daemon=True)
+        movement.start()
         while True:
             move()
             if not flight:
@@ -477,8 +479,6 @@ if loaded:
 generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
 editchunk()
 render()
-movement = threading.Thread(target=inputkeys, daemon=True)
-movement.start()
 gameloop()
 
 
