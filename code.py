@@ -6,6 +6,8 @@ import cbor2
 import os
 import zlib
 import psutil
+import queue
+import threading
 world = [] # Create the 2d world, starting as nothing
 process = psutil.Process(os.getpid())
 term = blessed.Terminal() # Term is basicly the terminal, allows editing and getting data about the terminal.
@@ -19,6 +21,7 @@ reach = 5
 velocity = 1
 fps = 0
 cpu = 0
+timemove = 0
 fpsframe = 0
 saved = ''
 worldname = 'World'
@@ -170,6 +173,19 @@ def findspawnlocation():
     if wheatgen.noise2((worldx+centerx+centerx) / 10.0, 0) > 0.2:
         topheight -= 1
     return topheight-1
+lastmove = 0
+
+keys = queue.Queue(maxsize=1)
+def inputkeys():
+    global keys
+    while True:
+        key = term.inkey(timeout=0.01)
+        if key:
+            try:
+                keys.put_nowait(key)
+            except queue.Full:
+                pass
+
 def move():
     global worldx
     global centerx
@@ -182,95 +198,100 @@ def move():
     global health
     global flight
     global idle
-    key = term.inkey(timeout=0.01)
-    # The following below are for the player's movement
-    if key:
-        lastkeytime = 0
-        idle = False
-        if key == 'd':
-            if chunk[1 + centerx + centery * width] not in solidtiles:
-                worldx += 1
-        elif key == 'a':
-            if chunk[centerx + centery * width - 1] not in solidtiles: # Current center block in the screen but one less
-                worldx -= 1
-        elif key == 'w':
-            if chunk[centerx + (centery-1) * width] not in solidtiles:
-                if flight:
-                    worldy -= 1
-                else:
-                    if onground():
-                        worldy -= 1
-        elif key == 's':
-            if flight: # Allows moving down if flying since no gravity exists
-                if chunk[centerx + (centery+1) * width] not in solidtiles:
-                    worldy += 1
-            else:
-                if chunk[centerx + (centery+1) * width] == 'H':
-                    worldy += 1
-        # The following is confusing. and its ai code idk im not guessing all of that its been like 30 trys of trying to get bounds to work
-        elif key.name == 'KEY_UP':
-            if cursery > -reach:
-                cursery -= 1
-                bordertrigger = None
-            else:
-                bordertrigger = 'up'
-
-        elif key.name == 'KEY_DOWN':
-            if cursery < reach:
-                cursery += 1
-                bordertrigger = None
-            else:
-                bordertrigger = 'down'
-
-        elif key.name == 'KEY_LEFT':
-            if curserx > -reach:
-                curserx -= 1
-                bordertrigger = None
-            else:
-                bordertrigger = 'left'
-
-        elif key.name == 'KEY_RIGHT':
-            if curserx < reach:
-                curserx += 1
-                bordertrigger = None
-            else:
-                bordertrigger = 'right'
-        elif key.name == 'KEY_ENTER':
-            blockx = centerx + curserx + worldx + centerx
-            blocky = centery + cursery + worldy
-
-            worldchanges[(blockx, blocky)] = ' '
-        elif key == ' ':
-            blockx = centerx + curserx + worldx + centerx
-            blocky = centery + cursery + worldy
-            if chunk[centerx+curserx + (centery+cursery) * width] == ' ':
-                worldchanges[(blockx, blocky)] = '#'
-        elif key == '1':
-            if health == 0:
-                health = 10
-                worldx = -50
-                worldy = findspawnlocation() - centery
-                while worldchanges.get((worldx + centerx * 2, centery + worldy), ' ') != ' ':
-                    worldy -= 1
-                curserx = 3
-                cursery = 0
-        elif key == 'f':
-            flight = not flight
-        elif key == 'p':
-            # for (x,y),block in worldchanges.items():
-            #     worldchanges[(x,y)] = chartoblockid[block]
-            # time.sleep(5)
-            saveworld = [seed, worldchanges]
-            with open(worldname + ".samcraft", "wb") as file:
-                file.write(zlib.compress(cbor2.dumps(saveworld)))
-            saved = True
-        elif key == 'l':
-            blockx = centerx + curserx + worldx + centerx
-            blocky = centery + cursery + worldy
-            if chunk[centerx+curserx + (centery+cursery) * width] == ' ':
-                worldchanges[(blockx, blocky)] = 'H'
-    else:
+    global lastmove
+    try:
+        key = keys.get_nowait()
+    except queue.Empty:
         idle = True
+        return
+
+    idle = False
+
+    if key == 'd':
+        if chunk[1 + centerx + centery * width] not in solidtiles:
+            worldx += 1
+
+    elif key == 'a':
+        if chunk[centerx + centery * width - 1] not in solidtiles:
+            worldx -= 1
+
+    elif key == 'w':
+        if chunk[centerx + (centery-1) * width] not in solidtiles:
+            if flight:
+                worldy -= 1
+            elif onground():
+                worldy -= 1
+
+    elif key == 's':
+        if flight:
+            if chunk[centerx + (centery+1) * width] not in solidtiles:
+                worldy += 1
+        elif chunk[centerx + (centery+1) * width] == 'H':
+            worldy += 1
+
+    elif key.name == 'KEY_UP':
+        if cursery > -reach:
+            cursery -= 1
+            bordertrigger = None
+        else:
+            bordertrigger = 'up'
+
+    elif key.name == 'KEY_DOWN':
+        if cursery < reach:
+            cursery += 1
+            bordertrigger = None
+        else:
+            bordertrigger = 'down'
+
+    elif key.name == 'KEY_LEFT':
+        if curserx > -reach:
+            curserx -= 1
+            bordertrigger = None
+        else:
+            bordertrigger = 'left'
+
+    elif key.name == 'KEY_RIGHT':
+        if curserx < reach:
+            curserx += 1
+            bordertrigger = None
+        else:
+            bordertrigger = 'right'
+
+    elif key.name == 'KEY_ENTER':
+        blockx = centerx + curserx + worldx + centerx
+        blocky = centery + cursery + worldy
+        worldchanges[(blockx, blocky)] = ' '
+
+    elif key == ' ':
+        blockx = centerx + curserx + worldx + centerx
+        blocky = centery + cursery + worldy
+        if chunk[centerx+curserx + (centery+cursery) * width] == ' ':
+            worldchanges[(blockx, blocky)] = '#'
+
+    elif key == '1':
+        if health == 0:
+            health = 10
+            worldx = -50
+            worldy = findspawnlocation() - centery
+            while worldchanges.get((worldx + centerx * 2, centery + worldy), ' ') != ' ':
+                worldy -= 1
+            curserx = 3
+            cursery = 0
+
+    elif key == 'f':
+        flight = not flight
+
+    elif key == 'p':
+        saveworld = [seed, worldchanges]
+        with open(worldname + ".samcraft", "wb") as file:
+            file.write(zlib.compress(cbor2.dumps(saveworld)))
+        saved = True
+
+    elif key == 'l':
+        blockx = centerx + curserx + worldx + centerx
+        blocky = centery + cursery + worldy
+        if chunk[centerx+curserx + (centery+cursery) * width] == ' ':
+            worldchanges[(blockx, blocky)] = 'H'
 def gravity():
     global velocity
     global tick
@@ -392,7 +413,10 @@ def gameloop():
     global start
     global height
     with term.cbreak(), term.hidden_cursor():
+        movement = threading.Thread(target=inputkeys, daemon=True)
+        movement.start()
         while True:
+            time.sleep(1 / 60)
             move()
             if not flight:
                 gravity()
@@ -407,7 +431,7 @@ def gameloop():
                     fps = fpsframe / timeinframe
                     start = time.perf_counter()
                     fpsframe = 0
-                    print(term.move_y(height) + term.move_x(0) + str(round(fps, 1)) + '   ' + str(seed) + '    ' + str(saved) + ' CPU: ' + str(cpu) + '%     ', end="", flush=True)
+                    print(term.move_y(height) + term.move_x(0) + str(round(fps, 1)) + '   ' + str(seed) + '    ' + str(saved) + ' CPU: ' + str(cpu) + '%     ' + str(timemove) + '      ', end="", flush=True)
             else:
                 fpsframe += 1
             chunk[centerx+curserx + (centery+cursery) * width] = undercurser # Make sure collisions do the thing under the curser
