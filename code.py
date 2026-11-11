@@ -188,7 +188,7 @@ def move():
     global idle
     global lastmove
     key = term.inkey(timeout=0.01)
-    if key != lastmove:
+    if key != lastmove and key != '':
         lastmove = key
         idle = False
         if key == 'd':
