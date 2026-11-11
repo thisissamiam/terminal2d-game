@@ -16,7 +16,6 @@ print(term.clear) # Clear the screen before starting the game cuz yeah
 
 import base64
 worldy=0
-chunktemplate = [' '] * width * height
 tick = 0
 reach = 5
 velocity = 1
@@ -477,6 +476,7 @@ cavegen = OpenSimplex(seed=seed + 3)
 
 # First thing to do should be to figure out what the screen size is
 calculatescreenres()
+chunktemplate = [' '] * width * height
 
 worldx = -50 # generate terrain needs this to know where to start
 spawny = findspawnlocation() # Find a safe spot to place the player
