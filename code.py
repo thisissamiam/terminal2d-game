@@ -187,10 +187,10 @@ def move():
     global flight
     global idle
     global lastmove
+    key = term.inkey(timeout=0.01)
     if key != lastmove:
         lastmove = key
         idle = False
-        key = term.inkey(timeout=0.01)
         if key == 'd':
             if chunk[1 + centerx + centery * width] not in solidtiles:
                 worldx += 1
