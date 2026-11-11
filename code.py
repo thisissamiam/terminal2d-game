@@ -178,7 +178,8 @@ lastmove = 0
 keys = queue.Queue()
 def inputkeys():
     global keys
-    keys.put(term.inkey(timeout=0))
+    while True:
+        keys.put(term.inkey(timeout=0))
 
 def move():
     global worldx
