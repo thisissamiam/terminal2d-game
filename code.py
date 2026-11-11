@@ -323,8 +323,7 @@ def onground():
 def render():
     frame = ''
     for row in range(height-1):
-        for tile in range(len(tiletextframelist)):
-            frame += tile
+        frame += row + '\n'
         if row != height - 1:
             frame += '\n'
     print(term.home + frame, end="", flush=True)
