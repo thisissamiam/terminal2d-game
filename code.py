@@ -1,4 +1,4 @@
-import random
+code.pyimport random
 from opensimplex import OpenSimplex
 import blessed
 import time
@@ -7,7 +7,6 @@ import os
 import zlib
 import psutil
 import queue
-import threading
 world = [] # Create the 2d world, starting as nothing
 process = psutil.Process(os.getpid())
 term = blessed.Terminal() # Term is basicly the terminal, allows editing and getting data about the terminal.
@@ -175,16 +174,10 @@ def findspawnlocation():
     return topheight-1
 lastmove = 0
 
-keys = queue.Queue(maxsize=1)
+keys = queue.Queue()
 def inputkeys():
     global keys
-    while True:
-        key = term.inkey(timeout=0.05)
-        if key:
-            try:
-                keys.put_nowait(key)
-            except queue.Full:
-                pass
+    keys.put(key = term.inkey(timeout=0))
 
 def move():
     global worldx
@@ -199,11 +192,6 @@ def move():
     global flight
     global idle
     global lastmove
-    try:
-        key = keys.get_nowait()
-    except queue.Empty:
-        idle = True
-        return
 
     idle = False
 
@@ -413,10 +401,7 @@ def gameloop():
     global start
     global height
     with term.cbreak(), term.hidden_cursor():
-        movement = threading.Thread(target=inputkeys, daemon=True)
-        movement.start()
         while True:
-            time.sleep(1 / 60)
             move()
             if not flight:
                 gravity()
@@ -485,6 +470,7 @@ if loaded:
 generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
 editchunk()
 render()
+movement = threading.Thread(target=move, daemon=True)
+movement.start()
 gameloop()
-
 
