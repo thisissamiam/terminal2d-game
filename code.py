@@ -1,4 +1,4 @@
-code.pyimport random
+import random
 from opensimplex import OpenSimplex
 import blessed
 import time
