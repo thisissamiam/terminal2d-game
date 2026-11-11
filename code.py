@@ -183,7 +183,7 @@ def move():
     global health
     global flight
     global idle
-    key = term.inkey(timeout=0.05)
+    key = term.inkey(timeout=0.01)
     # The following below are for the player's movement
     if key:
         lastkeytime = 0
@@ -395,6 +395,7 @@ def gameloop():
     global timemove
     with term.cbreak(), term.hidden_cursor():
         while True:
+            time.sleep(1/60)
             timemove += 1
             term.inkey(timeout=0)
             if timemove > 300:
