@@ -179,7 +179,7 @@ keys = queue.Queue(maxsize=1)
 def inputkeys():
     global keys
     while True:
-        keys.put(term.inkey(timeout=0.01))
+        keys.put(term.inkey(timeout=0.05))
 
 def move():
     global worldx
