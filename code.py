@@ -174,10 +174,7 @@ def findspawnlocation():
     return topheight-1
 lastmove = 0
 
-keys = queue.Queue()
-def inputkeys():
-    global keys
-    keys.put(key = term.inkey(timeout=0))
+
 
 def move():
     global worldx
@@ -194,7 +191,7 @@ def move():
     global lastmove
 
     idle = False
-
+    key = term.inkey(timeout=0.01)
     if key == 'd':
         if chunk[1 + centerx + centery * width] not in solidtiles:
             worldx += 1
@@ -470,7 +467,5 @@ if loaded:
 generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
 editchunk()
 render()
-movement = threading.Thread(target=move, daemon=True)
-movement.start()
 gameloop()
 
