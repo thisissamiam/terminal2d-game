@@ -393,6 +393,7 @@ def gameloop():
     global height
     with term.cbreak(), term.hidden_cursor():
         while True:
+            time.sleep(1/60)
             move()
             if not flight:
                 gravity()
