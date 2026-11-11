@@ -433,7 +433,7 @@ if loaded:
 generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
 editchunk()
 render()
-yappi.start()
+# yappi.start()
 try:
     gameloop()
 except KeyboardInterrupt:
