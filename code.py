@@ -189,6 +189,7 @@ def move():
     global lastmove
     key = term.inkey(timeout=0.01)
     if key != '':
+        print()
         lastmove = key
         idle = False
         if key == 'd':
