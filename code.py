@@ -19,7 +19,6 @@ reach = 5
 velocity = 1
 fps = 0
 cpu = 0
-timemove = 0
 fpsframe = 0
 saved = ''
 worldname = 'World'
@@ -392,15 +391,9 @@ def gameloop():
     global fpsframe
     global start
     global height
-    global timemove
     with term.cbreak(), term.hidden_cursor():
         while True:
-            time.sleep(1/60)
-            timemove += 1
-            term.inkey(timeout=0)
-            if timemove > 300:
-                move()
-                timemove = 0
+            move()
             if not flight:
                 gravity()
             checkhealth()
@@ -414,7 +407,7 @@ def gameloop():
                     fps = fpsframe / timeinframe
                     start = time.perf_counter()
                     fpsframe = 0
-                    print(term.move_y(height) + term.move_x(0) + str(round(fps, 1)) + '   ' + str(seed) + '    ' + str(saved) + ' CPU: ' + str(cpu) + '%     ' + str(timemove) + '      ', end="", flush=True)
+                    print(term.move_y(height) + term.move_x(0) + str(round(fps, 1)) + '   ' + str(seed) + '    ' + str(saved) + ' CPU: ' + str(cpu) + '%     ', end="", flush=True)
             else:
                 fpsframe += 1
             chunk[centerx+curserx + (centery+cursery) * width] = undercurser # Make sure collisions do the thing under the curser
