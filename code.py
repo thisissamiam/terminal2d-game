@@ -321,64 +321,10 @@ def gravity():
 def onground():
     return chunk[centerx + (centery+1) * width] in gravitytiles # Will return True or False
 def render():
-    global fps
-    global saved
-    global fpsframe
-    global start
-    global cpu
     frame = ''
-    for row in range(height-1): # Every row goes through this
-        colorcoderframelist = []
-        colorcodegframelist = []
-        colorcodebframelist = []
-        tiletextframelist = []
-        for tile in chunk[row*width:row*width+width]: # A for loop of all the tiles (chars) inside of the chunk (what you see on the screen at a time)
-            incolorcode = False
-            tiletext = ''
-            colorcode = '' # Reset color code because the color code mode was just entered.
-            for char in tile: # Loop everything inside of the tile to find the color seperator
-                if char == '`': # If the char is the color seperator
-                    if incolorcode:
-                        incolorcode = False # This would trigger at the end of 255,0,255, meaning to that is the end, and the next tile is coming up so inside of color should go to false.
-                    else:
-                        incolorcode = True # For example if not inside of 255,0,255 yet, set inside to true.
-                        continue # Don't want to print the seperator
-                else:
-                    if not incolorcode: # When it isn't a color, it's hopefully the char that will be printed, this should still work fine if its multiple chars, but rendering will not work so not sure why I didn't just check the 2nd char oh well.
-                        tiletext += char
-                if incolorcode:
-                    colorcode += char # Add to color code the next char
-            # colorcode would be the HEX color code that was parsed
-            # tiletext is the TEXT that should be printed with that color
-            colormode = 'r'
-            r = '' # If this color is never filled, it is blank so the color is not printed
-            g = ''
-            b = ''
-            for char in colorcode: # Seperate into rgb.
-                if char == ',': # Checking for seperator in the rgb. Example: 255,0,0 this would trigger at the ,'s
-                    # This entire block just moves to the next color code when it detects the comma in the color code
-                    if colormode == 'r':
-                        colormode = 'g'
-                    elif colormode == 'g':
-                        colormode = 'b'
-                else:
-                    # These duplicate if nested statments just add the color code char depending on what color it should be. 
-                    if colormode == 'r':
-                        r += char
-                    elif colormode == 'g':
-                        g += char
-                    elif colormode == 'b':
-                        b += char
-            # Add all the color codes in seperate lists (dumb way)
-            colorcoderframelist.append(r)
-            colorcodegframelist.append(g)
-            colorcodebframelist.append(b)
-            tiletextframelist.append(tiletext)
-        for tile in range(len(tiletextframelist)): # Loop all the tiles inside of the tile list
-            if colorcoderframelist[tile] == '': # Just check one of the colors, assume if red doesn't exist the other ones don't either
-                frame = frame + tiletextframelist[tile] # Do not attempt to add a color when none is provided
-            else:
-                frame = frame + term.color_rgb(colorcoderframelist[tile],colorcodegframelist[tile],colorcodebframelist[tile])(tiletextframelist[tile])
+    for row in range(height-1):
+        for tile in range(len(tiletextframelist)):
+            frame += tile
         if row != height - 1:
             frame += '\n'
     print(term.home + frame, end="", flush=True)
