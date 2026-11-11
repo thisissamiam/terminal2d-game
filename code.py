@@ -6,7 +6,6 @@ import cbor2
 import os
 import zlib
 import psutil
-import queue
 world = [] # Create the 2d world, starting as nothing
 process = psutil.Process(os.getpid())
 term = blessed.Terminal() # Term is basicly the terminal, allows editing and getting data about the terminal.
@@ -16,7 +15,6 @@ print(term.clear) # Clear the screen before starting the game cuz yeah
 import base64
 worldy=0
 tick = 0
-lastmove = None
 reach = 5
 velocity = 1
 fps = 0
@@ -173,7 +171,6 @@ def findspawnlocation():
     if wheatgen.noise2((worldx+centerx+centerx) / 10.0, 0) > 0.2:
         topheight -= 1
     return topheight-1
-
 def move():
     global worldx
     global centerx
@@ -186,33 +183,32 @@ def move():
     global health
     global flight
     global idle
-    global lastmove
     key = term.inkey(timeout=0.01)
-    if key != '':
-        lastmove = key
+    # The following below are for the player's movement
+    if key:
+        lastkeytime = 0
         idle = False
         if key == 'd':
             if chunk[1 + centerx + centery * width] not in solidtiles:
                 worldx += 1
-
         elif key == 'a':
-            if chunk[centerx + centery * width - 1] not in solidtiles:
+            if chunk[centerx + centery * width - 1] not in solidtiles: # Current center block in the screen but one less
                 worldx -= 1
-
         elif key == 'w':
             if chunk[centerx + (centery-1) * width] not in solidtiles:
                 if flight:
                     worldy -= 1
-                elif onground():
-                    worldy -= 1
-
+                else:
+                    if onground():
+                        worldy -= 1
         elif key == 's':
-            if flight:
+            if flight: # Allows moving down if flying since no gravity exists
                 if chunk[centerx + (centery+1) * width] not in solidtiles:
                     worldy += 1
-            elif chunk[centerx + (centery+1) * width] == 'H':
-                worldy += 1
-
+            else:
+                if chunk[centerx + (centery+1) * width] == 'H':
+                    worldy += 1
+        # The following is confusing. and its ai code idk im not guessing all of that its been like 30 trys of trying to get bounds to work
         elif key.name == 'KEY_UP':
             if cursery > -reach:
                 cursery -= 1
@@ -240,18 +236,16 @@ def move():
                 bordertrigger = None
             else:
                 bordertrigger = 'right'
-
         elif key.name == 'KEY_ENTER':
             blockx = centerx + curserx + worldx + centerx
             blocky = centery + cursery + worldy
-            worldchanges[(blockx, blocky)] = ' '
 
+            worldchanges[(blockx, blocky)] = ' '
         elif key == ' ':
             blockx = centerx + curserx + worldx + centerx
             blocky = centery + cursery + worldy
             if chunk[centerx+curserx + (centery+cursery) * width] == ' ':
                 worldchanges[(blockx, blocky)] = '#'
-
         elif key == '1':
             if health == 0:
                 health = 10
@@ -261,16 +255,16 @@ def move():
                     worldy -= 1
                 curserx = 3
                 cursery = 0
-
         elif key == 'f':
             flight = not flight
-
         elif key == 'p':
+            # for (x,y),block in worldchanges.items():
+            #     worldchanges[(x,y)] = chartoblockid[block]
+            # time.sleep(5)
             saveworld = [seed, worldchanges]
             with open(worldname + ".samcraft", "wb") as file:
                 file.write(zlib.compress(cbor2.dumps(saveworld)))
             saved = True
-
         elif key == 'l':
             blockx = centerx + curserx + worldx + centerx
             blocky = centery + cursery + worldy
@@ -398,9 +392,14 @@ def gameloop():
     global fpsframe
     global start
     global height
+    global timemove
     with term.cbreak(), term.hidden_cursor():
         while True:
-            move()
+            timemove += 1
+            term.inkey(timeout=0)
+            if timemove > 300:
+                move()
+                timemove = 0
             if not flight:
                 gravity()
             checkhealth()
