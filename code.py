@@ -411,6 +411,7 @@ def gameloop():
         movement = threading.Thread(target=inputkeys, daemon=True)
         movement.start()
         while True:
+            time.sleep(1 / 60)
             move()
             if not flight:
                 gravity()
