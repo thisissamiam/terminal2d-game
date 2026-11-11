@@ -16,6 +16,7 @@ print(term.clear) # Clear the screen before starting the game cuz yeah
 import base64
 worldy=0
 tick = 0
+lastmove = None
 reach = 5
 velocity = 1
 fps = 0
@@ -172,9 +173,6 @@ def findspawnlocation():
     if wheatgen.noise2((worldx+centerx+centerx) / 10.0, 0) > 0.2:
         topheight -= 1
     return topheight-1
-lastmove = 0
-
-
 
 def move():
     global worldx
@@ -189,94 +187,97 @@ def move():
     global flight
     global idle
     global lastmove
+    if key != lastmove:
+        lastmove = key
+        idle = False
+        key = term.inkey(timeout=0.01)
+        if key == 'd':
+            if chunk[1 + centerx + centery * width] not in solidtiles:
+                worldx += 1
 
-    idle = False
-    key = term.inkey(timeout=0.01)
-    if key == 'd':
-        if chunk[1 + centerx + centery * width] not in solidtiles:
-            worldx += 1
+        elif key == 'a':
+            if chunk[centerx + centery * width - 1] not in solidtiles:
+                worldx -= 1
 
-    elif key == 'a':
-        if chunk[centerx + centery * width - 1] not in solidtiles:
-            worldx -= 1
+        elif key == 'w':
+            if chunk[centerx + (centery-1) * width] not in solidtiles:
+                if flight:
+                    worldy -= 1
+                elif onground():
+                    worldy -= 1
 
-    elif key == 'w':
-        if chunk[centerx + (centery-1) * width] not in solidtiles:
+        elif key == 's':
             if flight:
-                worldy -= 1
-            elif onground():
-                worldy -= 1
-
-    elif key == 's':
-        if flight:
-            if chunk[centerx + (centery+1) * width] not in solidtiles:
+                if chunk[centerx + (centery+1) * width] not in solidtiles:
+                    worldy += 1
+            elif chunk[centerx + (centery+1) * width] == 'H':
                 worldy += 1
-        elif chunk[centerx + (centery+1) * width] == 'H':
-            worldy += 1
 
-    elif key.name == 'KEY_UP':
-        if cursery > -reach:
-            cursery -= 1
-            bordertrigger = None
-        else:
-            bordertrigger = 'up'
+        elif key.name == 'KEY_UP':
+            if cursery > -reach:
+                cursery -= 1
+                bordertrigger = None
+            else:
+                bordertrigger = 'up'
 
-    elif key.name == 'KEY_DOWN':
-        if cursery < reach:
-            cursery += 1
-            bordertrigger = None
-        else:
-            bordertrigger = 'down'
+        elif key.name == 'KEY_DOWN':
+            if cursery < reach:
+                cursery += 1
+                bordertrigger = None
+            else:
+                bordertrigger = 'down'
 
-    elif key.name == 'KEY_LEFT':
-        if curserx > -reach:
-            curserx -= 1
-            bordertrigger = None
-        else:
-            bordertrigger = 'left'
+        elif key.name == 'KEY_LEFT':
+            if curserx > -reach:
+                curserx -= 1
+                bordertrigger = None
+            else:
+                bordertrigger = 'left'
 
-    elif key.name == 'KEY_RIGHT':
-        if curserx < reach:
-            curserx += 1
-            bordertrigger = None
-        else:
-            bordertrigger = 'right'
+        elif key.name == 'KEY_RIGHT':
+            if curserx < reach:
+                curserx += 1
+                bordertrigger = None
+            else:
+                bordertrigger = 'right'
 
-    elif key.name == 'KEY_ENTER':
-        blockx = centerx + curserx + worldx + centerx
-        blocky = centery + cursery + worldy
-        worldchanges[(blockx, blocky)] = ' '
+        elif key.name == 'KEY_ENTER':
+            blockx = centerx + curserx + worldx + centerx
+            blocky = centery + cursery + worldy
+            worldchanges[(blockx, blocky)] = ' '
 
-    elif key == ' ':
-        blockx = centerx + curserx + worldx + centerx
-        blocky = centery + cursery + worldy
-        if chunk[centerx+curserx + (centery+cursery) * width] == ' ':
-            worldchanges[(blockx, blocky)] = '#'
+        elif key == ' ':
+            blockx = centerx + curserx + worldx + centerx
+            blocky = centery + cursery + worldy
+            if chunk[centerx+curserx + (centery+cursery) * width] == ' ':
+                worldchanges[(blockx, blocky)] = '#'
 
-    elif key == '1':
-        if health == 0:
-            health = 10
-            worldx = -50
-            worldy = findspawnlocation() - centery
-            while worldchanges.get((worldx + centerx * 2, centery + worldy), ' ') != ' ':
-                worldy -= 1
-            curserx = 3
-            cursery = 0
+        elif key == '1':
+            if health == 0:
+                health = 10
+                worldx = -50
+                worldy = findspawnlocation() - centery
+                while worldchanges.get((worldx + centerx * 2, centery + worldy), ' ') != ' ':
+                    worldy -= 1
+                curserx = 3
+                cursery = 0
 
-    elif key == 'f':
-        flight = not flight
+        elif key == 'f':
+            flight = not flight
 
-    elif key == 'p':
-        saveworld = [seed, worldchanges]
-        with open(worldname + ".samcraft", "wb") as file:
-            file.write(zlib.compress(cbor2.dumps(saveworld)))
-        saved = True
+        elif key == 'p':
+            saveworld = [seed, worldchanges]
+            with open(worldname + ".samcraft", "wb") as file:
+                file.write(zlib.compress(cbor2.dumps(saveworld)))
+            saved = True
 
-    elif key == 'l':
-        blockx = centerx + curserx + worldx + centerx
-        blocky = centery + cursery + worldy
-        if chunk[centerx+curserx + (centery+cursery) * width] == ' ':
-            worldchanges[(blockx, blocky)] = 'H'
+        elif key == 'l':
+            blockx = centerx + curserx + worldx + centerx
+            blocky = centery + cursery + worldy
+            if chunk[centerx+curserx + (centery+cursery) * width] == ' ':
+                worldchanges[(blockx, blocky)] = 'H'
+    else:
+        idle = True
 def gravity():
     global velocity
     global tick
