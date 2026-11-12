@@ -425,7 +425,8 @@ text = [
         '+-----------+'
         ]
 text = [
-    'hello world i love you!'
+    'hello world i love you!',
+    'multiple lines of text!'
 ]
 
 textborders = ['+','','+']
