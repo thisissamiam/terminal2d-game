@@ -434,8 +434,10 @@ for i in range(len(text[0])):
 textborders[0] += '+'
 textborders[1] += '|'
 textborders[1] += text[0]
-
-
+textborders[1] += '|'
+for i in range(len(text[1])):
+    textborders[1] += '-'
+textborders[1] += '+'
 
 
 
