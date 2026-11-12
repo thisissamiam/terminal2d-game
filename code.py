@@ -424,6 +424,24 @@ text = [
         '| hi        |',
         '+-----------+'
         ]
+text = [
+    'hello world'
+]
+
+textborders = '+'
+for i in len(text[0]):
+    textborders += '-'
+
+
+
+
+
+
+
+
+
+
+    
 for line in range(len(text)):
     for char in range(len(text[line])):
         chunk[(5+line)*width+centerx-len(text[line])//2+char] = text[line][char]
