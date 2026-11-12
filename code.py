@@ -426,7 +426,8 @@ text = [
         ]
 text = [
     'hello world i love you!',
-    'multiple lines of text!'
+    'multiple lines of text!',
+    'another line'
 ]
 
 # Makes the start chars + and adds how many lines are needed to display the text
