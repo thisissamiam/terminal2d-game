@@ -450,7 +450,7 @@ print(textborders)
 #     textborders[2] += '-'
 # textborders[2] += '+'
 
-exit()
+
 
 
 
