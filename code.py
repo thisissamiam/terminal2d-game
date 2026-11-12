@@ -305,16 +305,16 @@ def gravity():
     if not onground(): # In the air
         tick += velocity
         if velocity <= 50:
-            velocity *= 1.2
+            velocity *= 1.05
         
-        if tick >= 20:
+        if tick >= 40:
             worldy += 1
             tick = 0
         lastvelocity = velocity
     else:
         tick = 0
         velocity = 1
-        health -= lastvelocity//20 # Damage on falling
+        health -= lastvelocity//2 # Damage on falling
         if health < 0:
             health = 0
         lastvelocity = 0
