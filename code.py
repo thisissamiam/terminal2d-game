@@ -435,7 +435,7 @@ for line in text:
 
 
 # Find longest line's index in text
-longestlineindex = lines.index(max(text, key=len))
+longestlineindex = text.index(max(text, key=len))
 
 
 
