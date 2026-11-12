@@ -208,67 +208,67 @@ def move():
         return
 
     idle = False
-
-    if key == 'd':
-        if chunk[1 + centerx + centery * width] not in solidtiles:
-            worldx += 1
-
-    elif key == 'a':
-        if chunk[centerx + centery * width - 1] not in solidtiles:
-            worldx -= 1
-
-    elif key == 'w':
-        if chunk[centerx + (centery-1) * width] not in solidtiles:
+    if health != 0:
+        if key == 'd':
+            if chunk[1 + centerx + centery * width] not in solidtiles:
+                worldx += 1
+    
+        elif key == 'a':
+            if chunk[centerx + centery * width - 1] not in solidtiles:
+                worldx -= 1
+    
+        elif key == 'w':
+            if chunk[centerx + (centery-1) * width] not in solidtiles:
+                if flight:
+                    worldy -= 1
+                elif onground():
+                    worldy -= 1
+    
+        elif key == 's':
             if flight:
-                worldy -= 1
-            elif onground():
-                worldy -= 1
-
-    elif key == 's':
-        if flight:
-            if chunk[centerx + (centery+1) * width] not in solidtiles:
+                if chunk[centerx + (centery+1) * width] not in solidtiles:
+                    worldy += 1
+            elif chunk[centerx + (centery+1) * width] == 'H':
                 worldy += 1
-        elif chunk[centerx + (centery+1) * width] == 'H':
-            worldy += 1
-
-    elif key.name == 'KEY_UP':
-        if cursery > -reach:
-            cursery -= 1
-            bordertrigger = None
-        else:
-            bordertrigger = 'up'
-
-    elif key.name == 'KEY_DOWN':
-        if cursery < reach:
-            cursery += 1
-            bordertrigger = None
-        else:
-            bordertrigger = 'down'
-
-    elif key.name == 'KEY_LEFT':
-        if curserx > -reach:
-            curserx -= 1
-            bordertrigger = None
-        else:
-            bordertrigger = 'left'
-
-    elif key.name == 'KEY_RIGHT':
-        if curserx < reach:
-            curserx += 1
-            bordertrigger = None
-        else:
-            bordertrigger = 'right'
-
-    elif key.name == 'KEY_ENTER':
-        blockx = centerx + curserx + worldx + centerx
-        blocky = centery + cursery + worldy
-        worldchanges[(blockx, blocky)] = ' '
-
-    elif key == ' ':
-        blockx = centerx + curserx + worldx + centerx
-        blocky = centery + cursery + worldy
-        if chunk[centerx+curserx + (centery+cursery) * width] == ' ':
-            worldchanges[(blockx, blocky)] = '#'
+    
+        elif key.name == 'KEY_UP':
+            if cursery > -reach:
+                cursery -= 1
+                bordertrigger = None
+            else:
+                bordertrigger = 'up'
+    
+        elif key.name == 'KEY_DOWN':
+            if cursery < reach:
+                cursery += 1
+                bordertrigger = None
+            else:
+                bordertrigger = 'down'
+    
+        elif key.name == 'KEY_LEFT':
+            if curserx > -reach:
+                curserx -= 1
+                bordertrigger = None
+            else:
+                bordertrigger = 'left'
+    
+        elif key.name == 'KEY_RIGHT':
+            if curserx < reach:
+                curserx += 1
+                bordertrigger = None
+            else:
+                bordertrigger = 'right'
+    
+        elif key.name == 'KEY_ENTER':
+            blockx = centerx + curserx + worldx + centerx
+            blocky = centery + cursery + worldy
+            worldchanges[(blockx, blocky)] = ' '
+    
+        elif key == ' ':
+            blockx = centerx + curserx + worldx + centerx
+            blocky = centery + cursery + worldy
+            if chunk[centerx+curserx + (centery+cursery) * width] == ' ':
+                worldchanges[(blockx, blocky)] = '#'
 
     elif key == '1':
         if health == 0:
@@ -314,7 +314,7 @@ def gravity():
     else:
         tick = 0
         velocity = 1
-        health -= lastvelocity//5 # Damage on falling
+        health -= lastvelocity//20 # Damage on falling
         if health < 0:
             health = 0
         lastvelocity = 0
