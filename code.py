@@ -430,6 +430,7 @@ text = [
 ]
 
 # Makes the start chars + and adds how many lines are needed to display the text
+textborders = []
 
 textborders.append('+')
 textborders = ['']
