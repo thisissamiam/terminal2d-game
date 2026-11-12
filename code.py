@@ -433,11 +433,10 @@ text = [
 textborders = []
 
 textborders.append('+')
-textborders = ['']
+textborders.append('')
 textborders.append('+')
 
-print(textborders)
-exit()
+
 for i in range(len(text[0])):
     textborders[0] += '-'
 textborders[0] += '+'
