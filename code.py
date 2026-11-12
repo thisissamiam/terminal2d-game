@@ -382,6 +382,18 @@ def gameloop():
             else:
                 fpsframe += 1
             chunk[centerx+curserx + (centery+cursery) * width] = undercurser # Make sure collisions do the thing under the curser
+
+
+text = [
+        '+-----------+',
+        '| hi        |',
+        '+-----------+'
+        ]
+        for line in range(len(text)):
+            for char in range(len(text[line])):
+                chunk[(5+line)*width+centerx-len(text[line])//2+char] = text[line][char]
+
+exit()
 user = input('DO YOU WANT TO LOAD A WORLD OR MAKE ONE SAY L TO MAKE M TO MAKE\n').upper()
 if user == 'L':
     for filename in os.listdir("."):
