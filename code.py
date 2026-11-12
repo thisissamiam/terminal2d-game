@@ -422,7 +422,7 @@ chunk = chunk = chunktemplate.copy()
 
 text = [
     'hello world i love you!',
-    'LONGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG line.',
+    'LONGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG line.',
     'another line'
 ]
 
