@@ -419,14 +419,10 @@ def gameloop():
 calculatescreenres()
 chunktemplate = [' '] * width * height
 chunk = chunk = chunktemplate.copy()
-text = [
-        '+-----------+',
-        '| hi        |',
-        '+-----------+'
-        ]
+
 text = [
     'hello world i love you!',
-    'multiple lines of text!',
+    'LONGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG line.',
     'another line'
 ]
 
@@ -434,17 +430,24 @@ text = [
 textborders = []
 
 textborders.append('+')
-for lines in text:
+for line in text:
     textborders.append('')
+
+
+
+# Makes the top border of the text
 textborders.append('+')
-
-
 for i in range(len(text[0])):
     textborders[0] += '-'
 textborders[0] += '+'
-textborders[1] += '|'
-textborders[1] += text[0]
-textborders[1] += '|'
+
+
+for line in range(len(text)+1): # +1 accounts for border taking one line
+    textborders[line] += '|'
+    textborders[line] += text[line-1] # Removes the account for border in the loop
+    textborders[line] += '|'
+
+
 print(textborders)
 # for i in range(len(text[0])):
 #     textborders[2] += '-'
