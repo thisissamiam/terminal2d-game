@@ -383,7 +383,7 @@ def gameloop():
                 fpsframe += 1
             chunk[centerx+curserx + (centery+cursery) * width] = undercurser # Make sure collisions do the thing under the curser
 
-
+chunk = chunk = chunktemplate.copy()
 text = [
         '+-----------+',
         '| hi        |',
@@ -392,63 +392,68 @@ text = [
         for line in range(len(text)):
             for char in range(len(text[line])):
                 chunk[(5+line)*width+centerx-len(text[line])//2+char] = text[line][char]
+frame = ''
+    for row in range(height-1):
+        for tile in chunk[width*row]:
+            tiles = chunk[width*row:width*(row+1)] # First half: Second half is doing between row + next row the tiles inside of it so basicly one row
+            frame += ''.join(tiles) + '\n'
+    print(term.home + frame, end="", flush=True)
 
-exit()
-user = input('DO YOU WANT TO LOAD A WORLD OR MAKE ONE SAY L TO MAKE M TO MAKE\n').upper()
-if user == 'L':
-    for filename in os.listdir("."):
-        if filename.endswith(".samcraft"):
-            print(filename)
-    user = input('WHAT IS YOUR WORLD NAME IT PROBALLY CRASHES RIGHT NOW IF IT DOESNT EXIST\n')
-    start = time.perf_counter()
-    with open(user + ".samcraft", "rb") as file:
-        saveworld = cbor2.loads(zlib.decompress(file.read()))
-    worldname = user
-    seed = saveworld[0]
-    worldchanges = saveworld[1]
-    loaded = True
-elif user == 'M':
-    user = input('WHAT DO YOU WANT TO CALL YOUR WORLD\n')
-    worldname = user.strip()
-
-
-    user = input('What seed? Or just hit enter for a random one\n')
-    if user.isdigit() and int(user) < 2**64 - 100:
-        seed = int(user)
-    else:
-        print('I am assuming you want a random seed')
-        seed = random.randint(0, 100000000) # Generate the seed, determines what is generated
-    loaded = False
-else:
-    print('you suck its ur fault i didnt allow for lowercase letters if thats why idk u suck all ur problem')
-    exit()
-print('Starting generation, this probally won\'t take long')
-
-gen = OpenSimplex(seed=seed)
-wheatgen = OpenSimplex(seed=seed + 1) # Seed to generate wheat
-treegen = OpenSimplex(seed=seed + 2)
-cavegen = OpenSimplex(seed=seed + 3)
+# user = input('DO YOU WANT TO LOAD A WORLD OR MAKE ONE SAY L TO MAKE M TO MAKE\n').upper()
+# if user == 'L':
+#     for filename in os.listdir("."):
+#         if filename.endswith(".samcraft"):
+#             print(filename)
+#     user = input('WHAT IS YOUR WORLD NAME IT PROBALLY CRASHES RIGHT NOW IF IT DOESNT EXIST\n')
+#     start = time.perf_counter()
+#     with open(user + ".samcraft", "rb") as file:
+#         saveworld = cbor2.loads(zlib.decompress(file.read()))
+#     worldname = user
+#     seed = saveworld[0]
+#     worldchanges = saveworld[1]
+#     loaded = True
+# elif user == 'M':
+#     user = input('WHAT DO YOU WANT TO CALL YOUR WORLD\n')
+#     worldname = user.strip()
 
 
+#     user = input('What seed? Or just hit enter for a random one\n')
+#     if user.isdigit() and int(user) < 2**64 - 100:
+#         seed = int(user)
+#     else:
+#         print('I am assuming you want a random seed')
+#         seed = random.randint(0, 100000000) # Generate the seed, determines what is generated
+#     loaded = False
+# else:
+#     print('you suck its ur fault i didnt allow for lowercase letters if thats why idk u suck all ur problem')
+#     exit()
+# print('Starting generation, this probally won\'t take long')
+
+# gen = OpenSimplex(seed=seed)
+# wheatgen = OpenSimplex(seed=seed + 1) # Seed to generate wheat
+# treegen = OpenSimplex(seed=seed + 2)
+# cavegen = OpenSimplex(seed=seed + 3)
 
 
-# First thing to do should be to figure out what the screen size is
-calculatescreenres()
-chunktemplate = [' '] * width * height
 
-worldx = -50 # generate terrain needs this to know where to start
-spawny = findspawnlocation() # Find a safe spot to place the player
-worldy = spawny - centery
-if loaded:
-    while worldchanges.get((worldx + centerx * 2, centery + worldy), ' ') != ' ':
-        worldy -= 1
-generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
-editchunk()
-render()
-# yappi.start()
-try:
-    gameloop()
-except KeyboardInterrupt:
-    yappi.stop()
-    yappi.get_func_stats().print_all()
-    yappi.get_thread_stats().print_all()
+
+# # First thing to do should be to figure out what the screen size is
+# calculatescreenres()
+# chunktemplate = [' '] * width * height
+
+# worldx = -50 # generate terrain needs this to know where to start
+# spawny = findspawnlocation() # Find a safe spot to place the player
+# worldy = spawny - centery
+# if loaded:
+#     while worldchanges.get((worldx + centerx * 2, centery + worldy), ' ') != ' ':
+#         worldy -= 1
+# generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
+# editchunk()
+# render()
+# # yappi.start()
+# try:
+#     gameloop()
+# except KeyboardInterrupt:
+#     yappi.stop()
+#     yappi.get_func_stats().print_all()
+#     yappi.get_thread_stats().print_all()
