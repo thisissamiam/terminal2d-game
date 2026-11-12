@@ -433,7 +433,8 @@ text = [
 textborders = []
 
 textborders.append('+')
-textborders.append('')
+for lines in text:
+    textborders.append('')
 textborders.append('+')
 
 
