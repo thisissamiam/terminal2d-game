@@ -383,24 +383,6 @@ def gameloop():
                 fpsframe += 1
             chunk[centerx+curserx + (centery+cursery) * width] = undercurser # Make sure collisions do the thing under the curser
 
-calculatescreenres()
-chunktemplate = [' '] * width * height
-chunk = chunk = chunktemplate.copy()
-text = [
-        '+-----------+',
-        '| hi        |',
-        '+-----------+'
-        ]
-for line in range(len(text)):
-    for char in range(len(text[line])):
-        chunk[(5+line)*width+centerx-len(text[line])//2+char] = text[line][char]
-frame = ''
-for row in range(height-1):
-    for tile in chunk[width*row]:
-        tiles = chunk[width*row:width*(row+1)] # First half: Second half is doing between row + next row the tiles inside of it so basicly one row
-        frame += ''.join(tiles) + '\n'
-print(term.home + frame, end="", flush=True)
-
 # user = input('DO YOU WANT TO LOAD A WORLD OR MAKE ONE SAY L TO MAKE M TO MAKE\n').upper()
 # if user == 'L':
 #     for filename in os.listdir("."):
@@ -431,31 +413,58 @@ print(term.home + frame, end="", flush=True)
 #     exit()
 # print('Starting generation, this probally won\'t take long')
 
-# gen = OpenSimplex(seed=seed)
-# wheatgen = OpenSimplex(seed=seed + 1) # Seed to generate wheat
-# treegen = OpenSimplex(seed=seed + 2)
-# cavegen = OpenSimplex(seed=seed + 3)
+
+
+# First thing to do should be to figure out what the screen size is
+calculatescreenres()
+chunktemplate = [' '] * width * height
+chunk = chunk = chunktemplate.copy()
+text = [
+        '+-----------+',
+        '| hi        |',
+        '+-----------+'
+        ]
+for line in range(len(text)):
+    for char in range(len(text[line])):
+        chunk[(5+line)*width+centerx-len(text[line])//2+char] = text[line][char]
+frame = ''
+for row in range(height-1):
+    for tile in chunk[width*row]:
+        tiles = chunk[width*row:width*(row+1)] # First half: Second half is doing between row + next row the tiles inside of it so basicly one row
+        frame += ''.join(tiles) + '\n'
+print(term.home + frame, end="", flush=True)
 
 
 
 
-# # First thing to do should be to figure out what the screen size is
-# calculatescreenres()
-# chunktemplate = [' '] * width * height
 
-# worldx = -50 # generate terrain needs this to know where to start
-# spawny = findspawnlocation() # Find a safe spot to place the player
-# worldy = spawny - centery
-# if loaded:
-#     while worldchanges.get((worldx + centerx * 2, centery + worldy), ' ') != ' ':
-#         worldy -= 1
-# generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
-# editchunk()
-# render()
-# # yappi.start()
-# try:
-#     gameloop()
-# except KeyboardInterrupt:
-#     yappi.stop()
-#     yappi.get_func_stats().print_all()
-#     yappi.get_thread_stats().print_all()
+
+
+
+
+
+
+
+
+
+
+gen = OpenSimplex(seed=seed)
+wheatgen = OpenSimplex(seed=seed + 1) # Seed to generate wheat
+treegen = OpenSimplex(seed=seed + 2)
+cavegen = OpenSimplex(seed=seed + 3)
+worldx = -50 # generate terrain needs this to know where to start
+spawny = findspawnlocation() # Find a safe spot to place the player
+worldy = spawny - centery
+if loaded:
+    while worldchanges.get((worldx + centerx * 2, centery + worldy), ' ') != ' ':
+        worldy -= 1
+generateterrain() # Call this before game loop, must do this so the character can be created before the game is started
+editchunk()
+render()
+# yappi.start()
+try:
+    gameloop()
+except KeyboardInterrupt:
+    yappi.stop()
+    yappi.get_func_stats().print_all()
+    yappi.get_thread_stats().print_all()
