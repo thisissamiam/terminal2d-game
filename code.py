@@ -389,9 +389,9 @@ text = [
         '| hi        |',
         '+-----------+'
         ]
-        for line in range(len(text)):
-            for char in range(len(text[line])):
-                chunk[(5+line)*width+centerx-len(text[line])//2+char] = text[line][char]
+for line in range(len(text)):
+    for char in range(len(text[line])):
+        chunk[(5+line)*width+centerx-len(text[line])//2+char] = text[line][char]
 frame = ''
 for row in range(height-1):
     for tile in chunk[width*row]:
