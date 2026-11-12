@@ -442,10 +442,10 @@ for i in range(len(text[0])):
 textborders[0] += '+'
 
 
-for line in range(len(text)+1): # +1 accounts for border taking one line
-    textborders[line] += '|'
-    textborders[line] += text[line-1] # Removes the account for border in the loop
-    textborders[line] += '|'
+# for line in range(len(text)+1): # +1 accounts for border taking one line
+#     textborders[line] += '|'
+#     textborders[line] += text[line-1] # Removes the account for border in the loop
+#     textborders[line] += '|'
 
 
 print(textborders)
