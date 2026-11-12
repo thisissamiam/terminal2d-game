@@ -423,7 +423,7 @@ chunk = chunk = chunktemplate.copy()
 text = [
     'hello world i love you!',
     'LONGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG line.',
-    'another line'
+    'another line '
 ]
 
 # Makes the start chars + and adds how many lines are needed to display the text
