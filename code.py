@@ -429,7 +429,7 @@ text = [
 ]
 
 textborders = '+'
-for i in len(range(text[0])):
+for i in range(len(text[0])):
     textborders += '-'
 
 
