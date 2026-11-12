@@ -448,7 +448,7 @@ textborders[0] += '+'
 
 for line in range(len(text)):
     textborders[line+1] += '|'
-    textborders[line+1] += ' ' * text[longestlineindex].len()
+    textborders[line+1] += ' ' * len(text[longestlineindex])
     textborders[line+1] += text[line]
     textborders[line+1] += '|'
     
