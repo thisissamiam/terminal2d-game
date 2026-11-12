@@ -393,11 +393,11 @@ text = [
             for char in range(len(text[line])):
                 chunk[(5+line)*width+centerx-len(text[line])//2+char] = text[line][char]
 frame = ''
-    for row in range(height-1):
-        for tile in chunk[width*row]:
-            tiles = chunk[width*row:width*(row+1)] # First half: Second half is doing between row + next row the tiles inside of it so basicly one row
-            frame += ''.join(tiles) + '\n'
-    print(term.home + frame, end="", flush=True)
+for row in range(height-1):
+    for tile in chunk[width*row]:
+        tiles = chunk[width*row:width*(row+1)] # First half: Second half is doing between row + next row the tiles inside of it so basicly one row
+        frame += ''.join(tiles) + '\n'
+print(term.home + frame, end="", flush=True)
 
 # user = input('DO YOU WANT TO LOAD A WORLD OR MAKE ONE SAY L TO MAKE M TO MAKE\n').upper()
 # if user == 'L':
