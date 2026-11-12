@@ -441,7 +441,7 @@ for i in range(len(text[0])):
 
 
 
-    
+text = textborders
 for line in range(len(text)):
     for char in range(len(text[line])):
         chunk[(5+line)*width+centerx-len(text[line])//2+char] = text[line][char]
