@@ -448,7 +448,7 @@ for line in range(len(text)+1): # +1 accounts for border taking one line
     textborders[line] += '|'
     print('time')
 
-
+exit()
 print(textborders)
 # for i in range(len(text[0])):
 #     textborders[2] += '-'
