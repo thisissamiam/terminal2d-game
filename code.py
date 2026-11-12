@@ -448,7 +448,7 @@ textborders[0] += '+'
 
 for line in range(len(text)):
     textborders[line+1] += '|'
-    textborders[line+1] += ' ' * (len(text[longestlineindex]) - text[line]) # Longest line length - current line, should never be negative because longest line will be always higher or the same and if it is 0 it will add 0 spaces.
+    textborders[line+1] += ' ' * (len(text[longestlineindex]) - len(text[line])) # Longest line length - current line, should never be negative because longest line will be always higher or the same and if it is 0 it will add 0 spaces.
     textborders[line+1] += text[line]
     textborders[line+1] += '|'
     
