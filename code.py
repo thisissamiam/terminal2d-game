@@ -428,9 +428,9 @@ text = [
     'hello world'
 ]
 
-textborders = '+'
+textborders = ['-']
 for i in range(len(text[0])):
-    textborders += '-'
+    textborders[0] += '-'
 
 
 
@@ -439,8 +439,7 @@ for i in range(len(text[0])):
 
 
 
-print(textborders)
-exit()
+
 text = textborders
 for line in range(len(text)):
     for char in range(len(text[line])):
