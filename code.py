@@ -383,6 +383,7 @@ def gameloop():
                 fpsframe += 1
             chunk[centerx+curserx + (centery+cursery) * width] = undercurser # Make sure collisions do the thing under the curser
 
+chunktemplate = [' '] * width * height
 chunk = chunk = chunktemplate.copy()
 text = [
         '+-----------+',
