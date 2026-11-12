@@ -447,7 +447,7 @@ print(term.home + frame, end="", flush=True)
 
 
 
-
+exit()
 gen = OpenSimplex(seed=seed)
 wheatgen = OpenSimplex(seed=seed + 1) # Seed to generate wheat
 treegen = OpenSimplex(seed=seed + 2)
