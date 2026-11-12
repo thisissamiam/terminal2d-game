@@ -434,10 +434,14 @@ for line in text:
     textborders.append('')
 
 
+# Find longest line's index in text
+longestlineindex = lines.index(max(text, key=len))
+
+
 
 # Makes the top border of the text
 textborders.append('+')
-for i in range(len(text[0])):
+for i in range(len(text[longestlineindex])):
     textborders[0] += '-'
 textborders[0] += '+'
 
