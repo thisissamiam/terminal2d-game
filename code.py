@@ -429,7 +429,14 @@ text = [
     'multiple lines of text!'
 ]
 
-textborders = ['+','','+']
+# Makes the start chars + and adds how many lines are needed to display the text
+
+textborders.append('+')
+textborders = ['']
+textborders.append('+')
+
+
+
 for i in range(len(text[0])):
     textborders[0] += '-'
 textborders[0] += '+'
