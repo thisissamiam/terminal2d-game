@@ -428,13 +428,13 @@ text = [
     'hello world'
 ]
 
-textborders = ['+']
+textborders = ['+','','+']
 for i in range(len(text[0])):
     textborders[0] += '-'
 textborders[0] += '+'
 textborders[0] += '\n'
 textborders[0] += '|'
-textborders[0] += text[0]
+textborders[1] += text[0]
 
 
 
