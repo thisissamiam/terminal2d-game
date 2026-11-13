@@ -417,7 +417,7 @@ print('Starting generation, this probally won\'t take long')
 
 # First thing to do should be to figure out what the screen size is
 calculatescreenres()
-# chunktemplate = [' '] * width * height
+chunktemplate = [' '] * width * height
 # chunk = chunk = chunktemplate.copy()
 
 # text = [
