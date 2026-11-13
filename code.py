@@ -383,115 +383,107 @@ def gameloop():
                 fpsframe += 1
             chunk[centerx+curserx + (centery+cursery) * width] = undercurser # Make sure collisions do the thing under the curser
 
-# user = input('DO YOU WANT TO LOAD A WORLD OR MAKE ONE SAY L TO MAKE M TO MAKE\n').upper()
-# if user == 'L':
-#     for filename in os.listdir("."):
-#         if filename.endswith(".samcraft"):
-#             print(filename)
-#     user = input('WHAT IS YOUR WORLD NAME IT PROBALLY CRASHES RIGHT NOW IF IT DOESNT EXIST\n')
-#     start = time.perf_counter()
-#     with open(user + ".samcraft", "rb") as file:
-#         saveworld = cbor2.loads(zlib.decompress(file.read()))
-#     worldname = user
-#     seed = saveworld[0]
-#     worldchanges = saveworld[1]
-#     loaded = True
-# elif user == 'M':
-#     user = input('WHAT DO YOU WANT TO CALL YOUR WORLD\n')
-#     worldname = user.strip()
+user = input('DO YOU WANT TO LOAD A WORLD OR MAKE ONE SAY L TO MAKE M TO MAKE\n').upper()
+if user == 'L':
+    for filename in os.listdir("."):
+        if filename.endswith(".samcraft"):
+            print(filename)
+    user = input('WHAT IS YOUR WORLD NAME IT PROBALLY CRASHES RIGHT NOW IF IT DOESNT EXIST\n')
+    start = time.perf_counter()
+    with open(user + ".samcraft", "rb") as file:
+        saveworld = cbor2.loads(zlib.decompress(file.read()))
+    worldname = user
+    seed = saveworld[0]
+    worldchanges = saveworld[1]
+    loaded = True
+elif user == 'M':
+    user = input('WHAT DO YOU WANT TO CALL YOUR WORLD\n')
+    worldname = user.strip()
 
 
-#     user = input('What seed? Or just hit enter for a random one\n')
-#     if user.isdigit() and int(user) < 2**64 - 100:
-#         seed = int(user)
-#     else:
-#         print('I am assuming you want a random seed')
-#         seed = random.randint(0, 100000000) # Generate the seed, determines what is generated
-#     loaded = False
-# else:
-#     print('you suck its ur fault i didnt allow for lowercase letters if thats why idk u suck all ur problem')
-#     exit()
-# print('Starting generation, this probally won\'t take long')
+    user = input('What seed? Or just hit enter for a random one\n')
+    if user.isdigit() and int(user) < 2**64 - 100:
+        seed = int(user)
+    else:
+        print('I am assuming you want a random seed')
+        seed = random.randint(0, 100000000) # Generate the seed, determines what is generated
+    loaded = False
+else:
+    print('you suck its ur fault i didnt allow for lowercase letters if thats why idk u suck all ur problem')
+    exit()
+print('Starting generation, this probally won\'t take long')
 
 
 
 # First thing to do should be to figure out what the screen size is
 calculatescreenres()
-chunktemplate = [' '] * width * height
-chunk = chunk = chunktemplate.copy()
+# chunktemplate = [' '] * width * height
+# chunk = chunk = chunktemplate.copy()
 
-text = [
-    'hello world i love you!',
-    'LONGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG line.',
-    'another line '
-]
+# text = [
+#     'hello world i love you!',
+#     'LONGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG line.',
+#     'another line '
+# ]
 
-# Makes the start chars + and adds how many lines are needed to display the text
-textborders = []
+# # Makes the start chars + and adds how many lines are needed to display the text
+# textborders = []
 
-textborders.append('+')
-for line in text:
-    textborders.append('')
-
-
-# Find longest line's index in text
-longestlineindex = text.index(max(text, key=len))
+# textborders.append('+')
+# for line in text:
+#     textborders.append('')
 
 
+# # Find longest line's index in text
+# longestlineindex = text.index(max(text, key=len))
 
-# Makes the top border of the text
-textborders.append('+')
-for i in range(len(text[longestlineindex])):
-    textborders[0] += '-'
-textborders[0] += '+'
 
-def findneededspacesintextminuslongesttext():
-    return (len(text[longestlineindex]) - len(text[line]))//2
 
-for line in range(len(text)):
-    textborders[line+1] += '|'
-    textborders[line+1] += ' ' * findneededspacesintextminuslongesttext()
-    textborders[line+1] += text[line]
-    textborders[line+1] += ' ' * findneededspacesintextminuslongesttext()
-    textborders[line+1] += '|'
+# # Makes the top border of the text
+# textborders.append('+')
+# for i in range(len(text[longestlineindex])):
+#     textborders[0] += '-'
+# textborders[0] += '+'
+
+# def findneededspacesintextminuslongesttext():
+#     return (len(text[longestlineindex]) - len(text[line]))//2
+
+# for line in range(len(text)):
+#     textborders[line+1] += '|'
+#     textborders[line+1] += ' ' * findneededspacesintextminuslongesttext()
+#     textborders[line+1] += text[line]
+#     textborders[line+1] += ' ' * findneededspacesintextminuslongesttext()
+#     textborders[line+1] += '|'
     
 
 
-print(textborders)
-# for i in range(len(text[0])):
-#     textborders[2] += '-'
-# textborders[2] += '+'
+# print(textborders)
+# # for i in range(len(text[0])):
+# #     textborders[2] += '-'
+# # textborders[2] += '+'
 
 
 
 
 
 
-text = textborders
-for line in range(len(text)):
-    for char in range(len(text[line])):
-        chunk[(5+line)*width+centerx-len(text[line])//2+char] = text[line][char]
-frame = ''
-for row in range(height-1):
-    for tile in chunk[width*row]:
-        tiles = chunk[width*row:width*(row+1)] # First half: Second half is doing between row + next row the tiles inside of it so basicly one row
-        frame += ''.join(tiles) + '\n'
-print(term.home + frame, end="", flush=True)
+# text = textborders
+# for line in range(len(text)):
+#     for char in range(len(text[line])):
+#         chunk[(5+line)*width+centerx-len(text[line])//2+char] = text[line][char]
+# frame = ''
+# for row in range(height-1):
+#     for tile in chunk[width*row]:
+#         tiles = chunk[width*row:width*(row+1)] # First half: Second half is doing between row + next row the tiles inside of it so basicly one row
+#         frame += ''.join(tiles) + '\n'
+# print(term.home + frame, end="", flush=True)
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-exit()
+# exit()
 gen = OpenSimplex(seed=seed)
 wheatgen = OpenSimplex(seed=seed + 1) # Seed to generate wheat
 treegen = OpenSimplex(seed=seed + 2)
